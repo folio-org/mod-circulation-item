@@ -1,0 +1,904 @@
+openapi: 3.0.0
+info:
+  title: Remote storages API
+  version: v1
+servers:
+  - url: /remote-storage/
+paths:
+  /configurations:
+    get:
+      responses:
+        '200':
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/storageConfigurations"
+        '500':
+          description: Internal server error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Internal server error
+      description: Get a list of remote storage configurations
+      operationId: getConfigurations
+      parameters:
+        - $ref: "#/components/parameters/trait_pageable_offset"
+        - $ref: "#/components/parameters/trait_pageable_limit"
+        - $ref: "#/components/parameters/trait_queryable_query"
+    post:
+      responses:
+        '201':
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/storageConfiguration"
+        '400':
+          description: Bad request
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Bad request
+        '422':
+          $ref: "#/components/responses/trait_validate_422"
+        '500':
+          description: Internal server error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Internal server error
+      description: Add new remote storage configuration
+      operationId: postConfiguration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/storageConfiguration"
+        required: true
+  /configurations/{configId}:
+    get:
+      responses:
+        '200':
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/storageConfiguration"
+        '404':
+          description: Configuration not found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Configuration not found
+        '500':
+          description: Internal server error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Internal server error
+      operationId: getConfigurationById
+    put:
+      responses:
+        '204':
+          description: No content
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: No content
+        '400':
+          description: Bad request
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Bad request
+        '404':
+          description: Configuration not found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Configuration not found
+        '500':
+          description: Internal server error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Internal server error
+      description: Change the remote storage configuration
+      operationId: putConfiguration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/storageConfiguration"
+        required: true
+    delete:
+      responses:
+        '204':
+          description: No content
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: No content
+        '404':
+          description: Configuration not found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Configuration not found
+        '500':
+          description: Internal server error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Internal server error
+      operationId: deleteConfigurationById
+    parameters:
+      - name: configId
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/uuid"
+  /mappings:
+    post:
+      responses:
+        '201':
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/remoteLocationConfigurationMapping"
+        '400':
+          description: Bad request
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Bad request
+        '422':
+          $ref: "#/components/responses/trait_validate_422"
+        '500':
+          description: Internal server error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Internal server error
+      description: Add/update a mapping between remote and Folio locations
+      operationId: postMapping
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/remoteLocationConfigurationMapping"
+        required: true
+    get:
+      responses:
+        '200':
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/remoteLocationConfigurationMappings"
+        '500':
+          description: Internal server error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Internal server error
+      description: Get a list of location mappings
+      operationId: getMappings
+      parameters:
+        - $ref: "#/components/parameters/trait_queryable_final_location_id"
+        - $ref: "#/components/parameters/trait_queryable_configuration_id"
+        - $ref: "#/components/parameters/trait_pageable_offset"
+        - $ref: "#/components/parameters/trait_pageable_limit"
+  /mappings/{folioLocationId}:
+    get:
+      responses:
+        '200':
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/remoteLocationConfigurationMapping"
+        '404':
+          description: Mapping not found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Mapping not found
+        '500':
+          description: Internal server error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Internal server error
+      operationId: getMappingById
+    delete:
+      responses:
+        '204':
+          description: No content
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: No content
+        '404':
+          description: Mapping not found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Mapping not found
+        '500':
+          description: Internal server error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Internal server error
+      operationId: deleteMappingById
+    parameters:
+      - name: folioLocationId
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/uuid"
+  /extended-mappings:
+    post:
+      responses:
+        '201':
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/extendedRemoteLocationConfigurationMapping"
+        '400':
+          description: Bad request
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Bad request
+        '422':
+          $ref: "#/components/responses/trait_validate_422"
+        '500':
+          description: Internal server error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Internal server error
+      description: Add/update a mapping between remote and Folio locations
+      operationId: postExtendedRemoteLocationConfigurationMapping
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/extendedRemoteLocationConfigurationMapping"
+        required: true
+    get:
+      responses:
+        '200':
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/extendedRemoteLocationConfigurationMappings"
+        '500':
+          description: Internal server error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Internal server error
+      description: Get a list of location mappings
+      operationId: getExtendedRemoteLocationConfigurationMappings
+      parameters:
+        - $ref: "#/components/parameters/trait_queryable_final_location_id"
+        - $ref: "#/components/parameters/trait_queryable_configuration_id"
+        - $ref: "#/components/parameters/trait_queryable_original_location_id"
+        - $ref: "#/components/parameters/trait_pageable_offset"
+        - $ref: "#/components/parameters/trait_pageable_limit"
+  /extended-mappings/{finalLocationId}:
+    get:
+      responses:
+        '200':
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/extendedRemoteLocationConfigurationMappings"
+        '404':
+          description: Mapping not found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Mapping not found
+        '500':
+          description: Internal server error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Internal server error
+      operationId: getExtendedRemoteLocationConfigurationMappingsById
+    parameters:
+      - name: finalLocationId
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/uuid"
+
+  /extended-mappings/{remoteStorageConfigurationId}/{originalLocationId}:
+    delete:
+      responses:
+        '204':
+          description: No content
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: No content
+        '404':
+          description: Mapping not found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Mapping not found
+        '500':
+          description: Internal server error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Internal server error
+      operationId: deleteOriginalLocationByRemoteStorageConfigurationIdAndOriginalLocationId
+      parameters:
+        - name: remoteStorageConfigurationId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/uuid"
+        - name: originalLocationId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/uuid"
+  /extended-mappings/locations:
+    get:
+      responses:
+        '200':
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/extendedRemoteLocationConfigurationMappings"
+        '500':
+          description: Internal server error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Internal server error
+      description: Get a list of location mappings
+      operationId: getExtendedRemoteLocationConfigurationMappingsLocations
+      parameters:
+        - $ref: "#/components/parameters/trait_queryable_configuration_id"
+        - $ref: "#/components/parameters/trait_pageable_offset"
+        - $ref: "#/components/parameters/trait_pageable_limit"
+  /providers:
+    get:
+      responses:
+        '200':
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/providers"
+        '500':
+          description: Internal server error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Internal server error
+      description: Get a list of providers
+      operationId: getProviders
+  /accessions:
+    post:
+      responses:
+        '201':
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/accessionQueue"
+        '400':
+          description: Bad request
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Bad request
+        '422':
+          $ref: "#/components/responses/trait_validate_422"
+        '500':
+          description: Internal server error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Internal server error
+      description: Perform remote storage initiated accession
+      operationId: postAccession
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/accessionRequest"
+        required: true
+    get:
+      responses:
+        '200':
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/accessionQueues"
+        '500':
+          description: Internal server error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Internal server error
+      description: Get a list of accession records
+      operationId: getAccessions
+      parameters:
+        - $ref: "#/components/parameters/trait_queryable_accessioned"
+        - $ref: "#/components/parameters/trait_queryable_storage_id"
+        - $ref: "#/components/parameters/trait_queryable_created_date"
+        - $ref: "#/components/parameters/trait_pageable_offset"
+        - $ref: "#/components/parameters/trait_pageable_limit"
+  /accessions/id/{accessionId}:
+    put:
+      responses:
+        '204':
+          description: Set accession date time
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: No content
+      description: Set accessioned date by accession queue id
+      operationId: setAccessionedById
+      parameters:
+        - name: accessionId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/uuid"
+  /accessions/barcode/{barcode}:
+    put:
+      responses:
+        '204':
+          description: Set accession date time
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: No content
+      description: Set accessioned date by item barcode
+      operationId: setAccessionedByBarcode
+      parameters:
+        - name: barcode
+          in: path
+          required: true
+          schema:
+            type: string
+  /pub-sub-handlers/log-record-event:
+    description: "Handler for PubSub event"
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/pubSubEvent"
+        required: true
+      responses:
+        '204':
+          description: No content
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: No content
+  /retrievals:
+    get:
+      responses:
+        '200':
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/retrievalQueues"
+        '500':
+          description: Internal server error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Internal server error
+      description: Get a list of retrieval records
+      operationId: getRetrievals
+      parameters:
+        - $ref: "#/components/parameters/trait_queryable_retrieved"
+        - $ref: "#/components/parameters/trait_queryable_storage_id"
+        - $ref: "#/components/parameters/trait_queryable_created_date"
+        - $ref: "#/components/parameters/trait_pageable_offset"
+        - $ref: "#/components/parameters/trait_pageable_limit"
+  /retrievals/id/{retrievalId}:
+    put:
+      responses:
+        '204':
+          description: Set retrieve date time
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: No content
+      description: Set retrieval date by retrieval queue id
+      operationId: setRetrievedById
+      parameters:
+        - name: retrievalId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/uuid"
+  /retrievals/barcode/{barcode}:
+    put:
+      responses:
+        '204':
+          description: Set retrieve date time
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: No content
+      description: Set retrieved date by item barcode
+      operationId: setRetrievedByBarcode
+      parameters:
+        - name: barcode
+          in: path
+          required: true
+          schema:
+            type: string
+  /retrieve/{remoteStorageConfigurationId}/checkInItem:
+    post:
+      responses:
+        '200':
+          description: Checked-in the item
+          content:
+            text/plain:
+              schema:
+                type: string
+        '400':
+          description: Bad request
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Bad request
+        '422':
+          $ref: "#/components/responses/trait_validate_422"
+        '500':
+          description: Internal server error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Internal server error
+      description: Check-in the item in the primary service by barcode value
+      operationId: checkInItemByBarcodeWithRemoteStorageConfigurationId
+      parameters:
+        - name: remoteStorageConfigurationId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/uuid"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/checkInItem"
+        required: true
+  /retrieve/{remoteStorageConfigurationId}/checkInItemByHoldId:
+    post:
+      responses:
+        '200':
+          description: Checked-in the item by holdId
+          content:
+            text/plain:
+              schema:
+                type: string
+        '400':
+          description: Bad request
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Bad request
+        '422':
+          $ref: "#/components/responses/trait_validate_422"
+        '500':
+          description: Internal server error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Internal server error
+      description: Check-in the item in the primary service by barcode value
+      operationId: checkInItemByHoldIdWithRemoteStorageConfigurationId
+      parameters:
+        - name: remoteStorageConfigurationId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/checkInItemByHoldId"
+        required: true
+  /return/{remoteStorageConfigurationId}:
+    post:
+      responses:
+        '200':
+          description: Return the item by barcode
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/returnItemResponse"
+        '500':
+          description: Internal server error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Internal server error
+      description: Return the item by barcode
+      operationId: returnItemByBarcode
+      parameters:
+        - name: remoteStorageConfigurationId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/checkInItem"
+        required: true
+  /items/barcode/{barcode}/markAsMissing:
+    post:
+      responses:
+        '201':
+          description: Mark item as missing
+          content:
+            text/plain:
+              schema:
+                type: string
+        '400':
+          description: Bad request
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Bad request
+        '500':
+          description: Internal server error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Internal server error
+      description: Mark item as missing
+      operationId: markItemAsMissingByBarcode
+      parameters:
+        - name: barcode
+          in: path
+          required: true
+          schema:
+            type: string
+components:
+  responses:
+    trait_validate_422:
+      description: Validation errors
+      content:
+        application/json:
+          example: examples/errors.sample
+          schema:
+            $ref: "#/components/schemas/errors"
+  schemas:
+    accessionQueue:
+      $ref: schemas/accessionQueue.json
+    accessionQueues:
+      allOf:
+        - $ref: schemas/baseCollection.json
+        - type: object
+          properties:
+            accessions:
+              type: array
+              items:
+                $ref: "#/components/schemas/accessionQueue"
+    retrievalQueue:
+      $ref: schemas/retrievalQueue.json
+    retrievalQueues:
+      allOf:
+        - $ref: schemas/baseCollection.json
+        - type: object
+          properties:
+            retrievals:
+              type: array
+              items:
+                $ref: "#/components/schemas/retrievalQueue"
+    storageConfiguration:
+      $ref: schemas/storageConfiguration.json
+    storageConfigurations:
+      allOf:
+        - $ref: schemas/baseCollection.json
+        - type: object
+          properties:
+            configurations:
+              type: array
+              items:
+                $ref: "#/components/schemas/storageConfiguration"
+          required:
+            - configurations
+    extendedRemoteLocationConfigurationMapping:
+      $ref: schemas/extendedRemoteLocationConfigurationMapping.json
+    extendedRemoteLocationConfigurationMappings:
+      allOf:
+        - $ref: schemas/baseCollection.json
+        - type: object
+          properties:
+            mappings:
+              type: array
+              items:
+                $ref: "#/components/schemas/extendedRemoteLocationConfigurationMapping"
+          required:
+            - mappings
+    remoteLocationConfigurationMapping:
+      $ref: schemas/remoteLocationConfigurationMapping.json
+    remoteLocationConfigurationMappings:
+      allOf:
+        - $ref: schemas/baseCollection.json
+        - type: object
+          properties:
+            mappings:
+              type: array
+              items:
+                $ref: "#/components/schemas/remoteLocationConfigurationMapping"
+          required:
+            - mappings
+    errors:
+      $ref: schemas/errors.json
+    providers:
+      type: array
+      items:
+        $ref: schemas/provider.json
+    uuid:
+      $ref: schemas/uuid.json
+    checkInItem:
+      $ref: schemas/checkInItem.json
+    checkInItemByHoldId:
+      $ref: schemas/checkInItemByHoldId.json
+    returnItemResponse:
+      $ref: schemas/returnItemResponse.json
+    pubSubEvent:
+      $ref: schemas/pubSubEvent.json
+    accessionRequest:
+      $ref: schemas/accessionRequest.json
+    item:
+      $ref: schemas/item.json
+    instance:
+      $ref: schemas/instance.json
+    holdingsRecord:
+      $ref: schemas/holdingsRecord.json
+    itemsMove:
+      $ref: schemas/itemsMove.json
+    identifierType:
+      $ref: schemas/identifierType.json
+    contributorType:
+      $ref: schemas/contributorType.json
+    itemNoteType:
+      $ref: schemas/item-note-type.json
+  parameters:
+    trait_queryable_final_location_id:
+      name: finalLocationId
+      in: query
+      description: Final location id
+      schema:
+        type: string
+    trait_queryable_original_location_id:
+      name: originalLocationId
+      in: query
+      description: Original location id
+      schema:
+        type: string
+    trait_queryable_configuration_id:
+      name: remoteStorageConfigurationId
+      in: query
+      description: Remote storage configuration id
+      schema:
+        type: string
+    trait_queryable_storage_id:
+      name: storageId
+      in: query
+      description: Remote storage id
+      schema:
+        type: string
+    trait_queryable_accessioned:
+      name: accessioned
+      in: query
+      description: Flag to indicate, that accession queue record was accessioned and has accesion date
+      schema:
+        type: boolean
+    trait_queryable_retrieved:
+      name: retrieved
+      in: query
+      description: Flag to indicate, that retrievals queue record was retrieved and has retrievals date
+      schema:
+        type: boolean
+    trait_queryable_created_date:
+      name: createdDate
+      in: query
+      description: Date of accession queue record creation
+      schema:
+        type: string
+    trait_queryable_query:
+      name: query
+      in: query
+      description: A query string to filter rules based on matching criteria in fields.
+      schema:
+        type: string
+    trait_pageable_offset:
+      name: offset
+      in: query
+      description: Skip over a number of elements by specifying an offset value for the query
+      schema:
+        default: 0
+        minimum: 0
+        maximum: 2147483647
+        type: integer
+    trait_pageable_limit:
+      name: limit
+      in: query
+      description: Limit the number of elements returned in the response
+      schema:
+        default: 10
+        minimum: 0
+        maximum: 2147483647
+        type: integer
+

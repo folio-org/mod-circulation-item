@@ -1,0 +1,8 @@
+{
+  "id": "de17bad7-2a30-4f1c-bee5-f653ded15629",
+  "name": "RS1",
+  "providerName": "Dematic_Sample_Provider",
+  "url": "http://rs1.rs.com",
+  "accessionDelay": 2,
+  "accessionTimeUnit": "minutes"
+}
