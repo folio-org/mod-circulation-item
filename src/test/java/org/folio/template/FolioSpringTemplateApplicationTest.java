@@ -38,7 +38,7 @@ class FolioSpringTemplateApplicationTest {
 
   }
 
-  @Test
+  //@Test
   void shouldAnswerWithTrue() {
     assertTrue(true);
   }
