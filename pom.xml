@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.7.1</version>
-    <relativePath/> <!-- lookup parent from repository -->
+    <version>3.0.5</version>
+    <relativePath />
   </parent>
+
   <groupId>org.folio</groupId>
   <artifactId>mod-circulation-item</artifactId>
   <name>mod-circulation-item</name>
   <version>1.0.0-SNAPSHOT</version>
-  <description>POC for DCB.
-  </description>
   <packaging>jar</packaging>
 
   <licenses>
@@ -25,23 +24,25 @@
 
   <properties>
     <java.version>17</java.version>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <folio-spring-base.version>7.0.0</folio-spring-base.version>
+    <openapi-generator.version>6.2.1</openapi-generator.version>
+    <mapstruct.version>1.5.3.Final</mapstruct.version>
+    <wiremock.version>2.27.2</wiremock.version>
+    <embedded.db.version>2.2.0</embedded.db.version>
+    <postgresql.version>42.5.4</postgresql.version>
+    <pubsub.client.version>2.7.0</pubsub.client.version>
+    <snakeyaml.version>1.33</snakeyaml.version>
+    <hazelcast.version>5.2.1</hazelcast.version>
+    <folio-util.version>35.0.3</folio-util.version>
+
+    <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
+    <maven-resources-plugin.version>3.3.0</maven-resources-plugin.version>
+    <copy-rename-maven-plugin.version>1.0</copy-rename-maven-plugin.version>
+    <jsonschema2pojo-maven-plugin.version>1.1.2</jsonschema2pojo-maven-plugin.version>
+    <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
+    <sonar.exclusions>src/main/java/org/folio/rs/domain/**, src/main/java/org/folio/rs/client/AuthnClient.java,
+      src/main/java/org/folio/rs/config/properties/**, src/main/java/org/folio/rs/service/PubSubService.java, src/main/java/org/folio/rs/error/PubSubException.java </sonar.exclusions>
     <circulation-item.yaml.file>src/main/resources/swagger.api/circulation-item.yaml</circulation-item.yaml.file>
-    <sonar.exclusions>
-      <!-- define sonar exclusions here -->
-      src/main/java/org/folio/template/FolioSpringTemplateApplication.java
-    </sonar.exclusions>
-    <argLine/>
-
-    <!-- runtime dependencies -->
-    <folio-spring-base.version>4.1.0</folio-spring-base.version>
-    <openapi-generator.version>5.4.0</openapi-generator.version>
-    <mapstruct.version>1.5.2.Final</mapstruct.version>
-
-    <!-- test dependencies -->
-    <wiremock.version>2.33.2</wiremock.version>
-    <testcontainers.version>1.17.2</testcontainers.version>
   </properties>
 
   <dependencies>
@@ -50,6 +51,36 @@
       <artifactId>folio-spring-base</artifactId>
       <version>${folio-spring-base.version}</version>
     </dependency>
+
+    <dependency>
+      <groupId>org.springframework.kafka</groupId>
+      <artifactId>spring-kafka</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.apache.logging.log4j</groupId>
+          <artifactId>log4j-to-slf4j</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>ch.qos.logback</groupId>
+          <artifactId>logback-classic</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-validation</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-cache</artifactId>
+    </dependency>
+
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
@@ -62,20 +93,13 @@
     </dependency>
 
     <dependency>
-      <groupId>com.fasterxml.jackson.module</groupId>
-      <artifactId>jackson-module-jaxb-annotations</artifactId>
+      <groupId>com.jayway.jsonpath</groupId>
+      <artifactId>json-path</artifactId>
     </dependency>
+
     <dependency>
-      <groupId>com.fasterxml.jackson.datatype</groupId>
-      <artifactId>jackson-datatype-jdk8</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-core</artifactId>
+      <groupId>com.fasterxml.jackson.dataformat</groupId>
+      <artifactId>jackson-dataformat-xml</artifactId>
     </dependency>
 
     <dependency>
@@ -87,7 +111,6 @@
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
-      <scope>runtime</scope>
     </dependency>
 
     <dependency>
@@ -95,11 +118,25 @@
       <artifactId>mapstruct</artifactId>
       <version>${mapstruct.version}</version>
     </dependency>
+
     <dependency>
       <groupId>org.mapstruct</groupId>
       <artifactId>mapstruct-processor</artifactId>
       <version>${mapstruct.version}</version>
       <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.hazelcast</groupId>
+      <artifactId>hazelcast</artifactId>
+      <version>${hazelcast.version}</version>
+    </dependency>
+
+    <!-- needed for org.folio.HttpStatus -->
+    <dependency>
+      <groupId>org.folio</groupId>
+      <artifactId>util</artifactId>
+      <version>${folio-util.version}</version>
     </dependency>
 
     <!-- Test dependencies -->
@@ -113,34 +150,61 @@
           <artifactId>junit-vintage-engine</artifactId>
         </exclusion>
         <exclusion>
-          <groupId>org.springframework.boot</groupId>
-          <artifactId>spring-boot-starter-logging</artifactId>
+          <groupId>org.apache.logging.log4j</groupId>
+          <artifactId>log4j-to-slf4j</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>ch.qos.logback</groupId>
+          <artifactId>logback-classic</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
+
     <dependency>
-      <groupId>org.testcontainers</groupId>
-      <artifactId>postgresql</artifactId>
-      <version>${testcontainers.version}</version>
+      <groupId>io.zonky.test</groupId>
+      <artifactId>embedded-database-spring-test</artifactId>
+      <version>${embedded.db.version}</version>
       <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>ch.qos.logback</groupId>
+          <artifactId>logback-classic</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
-    <dependency>
-      <groupId>org.testcontainers</groupId>
-      <artifactId>junit-jupiter</artifactId>
-      <version>${testcontainers.version}</version>
-      <scope>test</scope>
-    </dependency>
+
     <dependency>
       <groupId>com.github.tomakehurst</groupId>
-      <artifactId>wiremock-jre8</artifactId>
+      <artifactId>wiremock-standalone</artifactId>
       <version>${wiremock.version}</version>
       <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.folio</groupId>
+      <artifactId>mod-pubsub-client</artifactId>
+      <version>${pubsub.client.version}</version>
+      <type>jar</type>
     </dependency>
 
   </dependencies>
 
   <build>
     <plugins>
+
+      <plugin>
+        <artifactId>maven-clean-plugin</artifactId>
+        <version>${maven-clean-plugin.version}</version>
+        <executions>
+          <execution>
+            <id>auto-clean</id>
+            <phase>initialize</phase>
+            <goals>
+              <goal>clean</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
 
       <plugin>
         <groupId>org.springframework.boot</groupId>
@@ -154,6 +218,7 @@
 
       <plugin>
         <artifactId>maven-resources-plugin</artifactId>
+        <version>${maven-resources-plugin.version}</version>
         <executions>
           <execution>
             <id>filter-descriptor-inputs</id>
@@ -174,10 +239,11 @@
           </execution>
         </executions>
       </plugin>
+
       <plugin>
         <groupId>com.coderplus.maven.plugins</groupId>
         <artifactId>copy-rename-maven-plugin</artifactId>
-        <version>1.0.1</version>
+        <version>${copy-rename-maven-plugin.version}</version>
         <executions>
           <execution>
             <id>rename-descriptor-outputs</id>
@@ -204,7 +270,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <version>3.3.0</version>
+        <version>${build-helper-maven-plugin.version}</version>
         <executions>
           <execution>
             <phase>generate-sources</phase>
@@ -219,81 +285,117 @@
           </execution>
         </executions>
       </plugin>
-            <plugin>
-              <groupId>org.openapitools</groupId>
-              <artifactId>openapi-generator-maven-plugin</artifactId>
-              <version>${openapi-generator.version}</version>
-              <executions>
-                <execution>
-                  <id>validator-registry</id>
-                  <goals>
-                    <goal>generate</goal>
-                  </goals>
-                  <configuration>
-                    <inputSpec>${circulation-item.yaml.file}</inputSpec>
-                    <output>${project.build.directory}/generated-sources</output>
-                    <generatorName>spring</generatorName>
-                    <modelPackage>${project.groupId}.rs.domain.dto</modelPackage>
-                    <apiPackage>${project.groupId}.rs.rest.resource</apiPackage>
-                    <generateApis>true</generateApis>
-                    <generateApiTests>true</generateApiTests>
-                    <generateApiDocumentation>true</generateApiDocumentation>
-                    <generateModels>true</generateModels>
-                    <generateModelTests>false</generateModelTests>
-                    <generateSupportingFiles>true</generateSupportingFiles>
-                    <supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
-                    <generateModelDocumentation>true</generateModelDocumentation>
-                    <configOptions>
-                      <dateLibrary>java</dateLibrary>
-                      <interfaceOnly>true</interfaceOnly>
-                      <useSpringBoot3>true</useSpringBoot3>
-                    </configOptions>
-                  </configuration>
-                </execution>
-              </executions>
-            </plugin>
+
+      <plugin>
+        <groupId>org.openapitools</groupId>
+        <artifactId>openapi-generator-maven-plugin</artifactId>
+        <version>${openapi-generator.version}</version>
+        <executions>
+          <execution>
+            <id>circulationItem</id>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <inputSpec>${circulation-item.yaml.file}</inputSpec>
+              <output>${project.build.directory}/generated-sources</output>
+              <generatorName>spring</generatorName>
+              <modelPackage>${project.groupId}.rs.domain.dto</modelPackage>
+              <apiPackage>${project.groupId}.rs.rest.resource</apiPackage>
+              <generateApis>true</generateApis>
+              <generateApiTests>true</generateApiTests>
+              <generateApiDocumentation>true</generateApiDocumentation>
+              <generateModels>true</generateModels>
+              <generateModelTests>false</generateModelTests>
+              <generateSupportingFiles>true</generateSupportingFiles>
+              <supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
+              <generateModelDocumentation>true</generateModelDocumentation>
+              <inlineSchemaNameDefaults>arrayItemSuffix=</inlineSchemaNameDefaults>
+              <configOptions>
+                <dateLibrary>java</dateLibrary>
+                <interfaceOnly>true</interfaceOnly>
+                <useSpringBoot3>true</useSpringBoot3>
+              </configOptions>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <release>${java.version}</release>
+          <annotationProcessorPaths>
+            <path>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok</artifactId>
+              <version>${lombok.version}</version>
+            </path>
+            <path>
+              <groupId>org.mapstruct</groupId>
+              <artifactId>mapstruct-processor</artifactId>
+              <version>${mapstruct.version}</version>
+            </path>
+            <path>
+              <groupId>org.hibernate.orm</groupId>
+              <artifactId>hibernate-jpamodelgen</artifactId>
+              <version>${hibernate.version}</version>
+            </path>
+          </annotationProcessorPaths>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.jsonschema2pojo</groupId>
+        <artifactId>jsonschema2pojo-maven-plugin</artifactId>
+        <version>${jsonschema2pojo-maven-plugin.version}</version>
+        <configuration>
+          <includes>
+            <include>*.json</include>
+          </includes>
+          <outputDirectory>${jsonschema2pojo_output_dir}</outputDirectory>
+          <generateBuilders>true</generateBuilders>
+        </configuration>
+        <executions>
+          <execution>
+            <id>dto</id>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <sourceDirectory>${basedir}/src/main/resources/dto</sourceDirectory>
+              <targetPackage>org.folio.rs.dto</targetPackage>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.0.0-M7</version>
+        <version>${maven-surefire-plugin.version}</version>
         <configuration>
+          <excludes>
+            <exclude>org/folio/rs/Controller/**Test.class</exclude>
+          </excludes>
+          <includes>
+            <include>org/folio/rs/TestSuite.class</include>
+          </includes>
           <useSystemClassLoader>false</useSystemClassLoader>
-          <argLine>@{argLine} -Dfile.encoding=UTF-8</argLine>
         </configuration>
       </plugin>
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
-        <version>3.0.0-M6</version>
+        <version>${maven-release-plugin.version}</version>
         <configuration>
           <preparationGoals>clean verify</preparationGoals>
           <tagNameFormat>v@{project.version}</tagNameFormat>
           <pushChanges>false</pushChanges>
           <localCheckout>true</localCheckout>
         </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.1.0</version>
-        <executions>
-          <execution>
-            <id>enforce-maven</id>
-            <goals>
-              <goal>enforce</goal>
-            </goals>
-            <configuration>
-              <rules>
-                <requireMavenVersion>
-                  <version>3.1.1</version>
-                </requireMavenVersion>
-              </rules>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
 
     </plugins>

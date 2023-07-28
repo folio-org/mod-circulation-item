@@ -2,7 +2,7 @@ package org.folio.controller;
 
 import static java.util.Objects.isNull;
 
-import javax.persistence.EntityNotFoundException;
+
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 
@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
