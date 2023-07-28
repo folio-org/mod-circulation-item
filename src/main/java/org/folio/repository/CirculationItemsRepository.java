@@ -1,11 +1,11 @@
-package org.folio.rs.repository;
-
-import org.folio.rs.domain.entity.Configuration;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+package org.folio.repository;
 
 import java.util.UUID;
 
+import org.folio.domain.entity.Item;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
 @Repository
-public interface ConfigurationsRepository extends JpaRepository<Configuration, UUID> {
+public interface CirculationItemsRepository extends JpaRepository<Item, UUID> {
 }

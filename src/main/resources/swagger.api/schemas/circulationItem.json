@@ -1,51 +1,39 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "description": "Remote storage configuration",
+  "description": "Circulation Item",
   "type": "object",
   "properties": {
     "id": {
-      "description": "configuration id",
+      "description": "item id",
       "$ref": "uuid.json"
     },
-    "name": {
-      "description": "configuration name",
+    "holdingsRecordId": {
+      "description": "holding record id",
+      "$ref": "uuid.json"
+    },
+    "status": {
+      "description": "status",
       "type": "string"
     },
-    "apiKey": {
-      "description": "remote storage apiKey",
+    "materialTypeId": {
+      "description": "material type id",
       "type": "string"
     },
-    "providerName": {
-      "description": "remote storage provider name",
+    "permanentLoanTypeId": {
+      "description": "permanent loan type id",
       "type": "string"
     },
-    "url": {
-      "description": "remote storage url",
+    "instanceTitle": {
+      "description": "instance title",
       "type": "string"
     },
-    "statusUrl": {
-      "description": "remote storage url",
+    "itemBarcode": {
+      "description": "item barcode",
       "type": "string"
     },
-    "accessionDelay": {
-      "description": "accession schedule delay",
-      "type": "integer",
-      "minimum": 1
-    },
-    "accessionTimeUnit": {
-      "description": "accession schedule time unit",
-      "type": "object",
-      "$ref": "timeUnits.json"
-    },
-    "accessionWorkflowDetails": {
-      "description": "accession workflow details",
-      "type": "object",
-      "$ref": "accessionWorkflowDetails.json"
-    },
-    "returningWorkflowDetails": {
-      "description": "return workflow details",
-      "type": "object",
-      "$ref": "returningWorkflowDetails.json"
+    "pickupLocation": {
+      "description": "pickup location",
+      "type": "string"
     },
     "metadata": {
       "description": "Entity metadata",
@@ -54,8 +42,5 @@
     }
   },
   "additionalProperties": false,
-  "required": [
-    "name",
-    "providerName"
-  ]
+  "required": []
 }

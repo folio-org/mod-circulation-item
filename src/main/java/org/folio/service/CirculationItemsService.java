@@ -1,23 +1,14 @@
-package org.folio.rs.service;
+package org.folio.service;
 
 import static java.util.Objects.isNull;
-import static org.folio.rs.domain.entity.ProviderRecord.DEMATIC_SD;
-import static org.folio.rs.util.Utils.randomIdAsString;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import org.folio.rs.domain.dto.StorageConfiguration;
-import org.folio.rs.domain.dto.StorageConfigurations;
-import org.folio.rs.domain.entity.Configuration;
-import org.folio.rs.error.IdMismatchException;
-import org.folio.rs.error.RequiredValueMissingException;
-import org.folio.rs.mapper.ConfigurationsMapper;
-import org.folio.rs.repository.ConfigurationsRepository;
-import org.folio.spring.data.OffsetRequest;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
+import org.folio.domain.entity.Item;
+import org.folio.mapper.CirculationItemsMapper;
+import org.folio.repository.CirculationItemsRepository;
+import org.folio.rs.domain.dto.CirculationItem;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -26,68 +17,64 @@ import lombok.extern.log4j.Log4j2;
 @Service
 @RequiredArgsConstructor
 @Log4j2
-public class ConfigurationsService {
+public class CirculationItemsService {
 
-  public static final String CONFIGURATIONS = "configurations";
-  private final ConfigurationsRepository configurationsRepository;
-  private final ConfigurationsMapper configurationsMapper;
+  private final CirculationItemsRepository circulationItemsRepository;
 
-  @CacheEvict(value = CONFIGURATIONS, key = "#id")
-  public void deleteConfigurationById(String id) {
-    configurationsRepository.deleteById(UUID.fromString(id));
+  private final CirculationItemsMapper circulationItemsMapper;
+
+  public void deleteCirculationItemById(String id) {
+    circulationItemsRepository.deleteById(UUID.fromString(id));
   }
 
-  @Cacheable(value = CONFIGURATIONS, key = "#id")
-  public StorageConfiguration getConfigurationById(String id) {
-    return configurationsRepository.findById(UUID.fromString(id))
-      .map(configurationsMapper::mapEntityToDto)
+  public CirculationItem getCirculationItemById(String id) {
+    return circulationItemsRepository.findById(UUID.fromString(id))
+      .map(circulationItemsMapper::mapEntityToDto)
       .orElse(null);
   }
 
-  public StorageConfigurations getConfigurations(Integer offset, Integer limit) {
-    var configurationList = configurationsRepository.findAll(new OffsetRequest(offset, limit));
-
-    return configurationsMapper.mapEntitiesToRemoteConfigCollection(configurationList);
-  }
-
-  @CachePut(value = CONFIGURATIONS, key = "#storageConfiguration.id")
-  public StorageConfiguration postConfiguration(StorageConfiguration storageConfiguration) {
-    if (isNull(storageConfiguration.getAccessionDelay()) && DEMATIC_SD.getId().equals(storageConfiguration.getProviderName())) {
-      throw new RequiredValueMissingException("accessionDelay must not be null");
+  public CirculationItem postCirculationItem(CirculationItem circulationItem) {
+    if (isNull(circulationItem.getId())) {
+      circulationItem.id(randomIdAsString());
     }
-    if (isNull(storageConfiguration.getId())) {
-      storageConfiguration.id(randomIdAsString());
-    }
-    var configuration = configurationsMapper.mapDtoToEntity(storageConfiguration);
+    var configuration = circulationItemsMapper.mapDtoToEntity(circulationItem);
     configuration.setCreatedDate(LocalDateTime.now());
 
-    return configurationsMapper.mapEntityToDto(configurationsRepository.save(configuration));
+    return circulationItemsMapper.mapEntityToDto(circulationItemsRepository.save(configuration));
   }
 
-  @CachePut(value = CONFIGURATIONS, key = "#storageConfiguration.id")
-  public StorageConfiguration updateConfiguration(String id, StorageConfiguration storageConfiguration) {
-    Configuration configuration;
-    if (id.equals(storageConfiguration.getId())) {
-      var conf = configurationsMapper.mapDtoToEntity(storageConfiguration);
-      configuration = configurationsRepository.save(copyForUpdate(configurationsRepository.getOne(conf.getId()), conf));
+  public static String randomIdAsString() {
+    return UUID.randomUUID().toString();
+  }
+
+
+  public CirculationItem updateCirculationItem(String id, CirculationItem circulationItem) {
+    Item item;
+    if (id.equals(circulationItem.getId())) {
+      var conf = circulationItemsMapper.mapDtoToEntity(circulationItem);
+      item = circulationItemsRepository.save(copyForUpdate(circulationItemsRepository.getOne(conf.getId()), conf));
     } else {
       throw new IdMismatchException();
     }
-    return configurationsMapper.mapEntityToDto(configuration);
+    return circulationItemsMapper.mapEntityToDto(item);
   }
 
-  private Configuration copyForUpdate(Configuration dest, Configuration source) {
-    dest.setProviderName(source.getProviderName());
-    dest.setName(source.getName());
-    dest.setUrl(source.getUrl());
-    dest.setStatusUrl(source.getStatusUrl());
-    dest.setApiKey(source.getApiKey());
-    dest.setAccessionDelay(source.getAccessionDelay());
-    dest.setAccessionTimeUnit(source.getAccessionTimeUnit());
+  public class IdMismatchException extends RuntimeException {
+    public IdMismatchException() {
+      super("request id and entity id are not equal");
+    }
+  }
+
+  private Item copyForUpdate(Item dest, Item source) {
+    dest.setHoldingsRecordId(source.getHoldingsRecordId());
+    dest.setStatus(source.getStatus());
+    dest.setInstanceTitle(source.getInstanceTitle());
+    dest.setItemBarcode(source.getItemBarcode());
+    dest.setMaterialTypeId(source.getMaterialTypeId());
+    dest.setPickupLocation(source.getPickupLocation());
+    dest.setPermanentLoanTypeId(source.getPermanentLoanTypeId());
     dest.setUpdatedByUserId(source.getUpdatedByUserId());
     dest.setUpdatedByUsername(source.getUpdatedByUsername());
-    dest.setAccessionWorkflowDetails(source.getAccessionWorkflowDetails());
-    dest.setReturningWorkflowDetails(source.getReturningWorkflowDetails());
     dest.setUpdatedDate(LocalDateTime.now());
     return dest;
   }

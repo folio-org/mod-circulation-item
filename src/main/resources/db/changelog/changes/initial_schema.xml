@@ -4,4 +4,11 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
+  <changeSet author="FOLIO Volaris Team" id="initial_schema">
+    <sqlFile dbms="postgresql"
+             path="changes/initial_schema.sql"
+             relativeToChangelogFile="true"
+             />
+  </changeSet>
+
 </databaseChangeLog>

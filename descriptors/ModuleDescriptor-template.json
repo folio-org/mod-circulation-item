@@ -1,44 +1,122 @@
 {
   "id": "@artifactId@-@version@",
-  "name": "The blueprint module that could be used as a template for folio spring based backend modules.",
-  "provides": [
+  "name": "Circulation Item API module",
+  "requires": [
     {
-      "id": "spring-template",
-      "version": "1.0",
-      "handlers": []
+      "id": "inventory",
+      "version": "13.0"
     },
     {
-      "id": "_tenant",
-      "version": "1.2",
-      "interfaceType": "system",
+      "id": "users",
+      "version": "15.3 16.0"
+    },
+    {
+      "id": "authtoken",
+      "version": "2.0"
+    },
+    {
+      "id": "login",
+      "version": "7.0"
+    },
+    {
+      "id": "permissions",
+      "version": "5.5"
+    },
+    {
+      "id": "locations",
+      "version": "3.0"
+    },
+    {
+      "id": "circulation",
+      "version": "13.0 14.0"
+    },
+    {
+      "id": "item-storage",
+      "version": "8.8 9.0 10.0"
+    }
+  ],
+  "provides": [
+    {
+      "id": "circulation-item",
+      "version": "1.1",
       "handlers": [
         {
           "methods": ["POST"],
-          "pathPattern": "/_/tenant"
-        }, {
+          "pathPattern": "/circulation-item/",
+          "permissionsRequired": ["circulation-item-storage.items.item.post"]
+        },
+        {
+          "methods": ["PUT"],
+          "pathPattern": "/circulation-item/{itemId}",
+          "permissionsRequired": ["circulation-item-storage.items.item.put"]
+        },
+        {
+          "methods": ["GET"],
+          "pathPattern": "/circulation-item/",
+          "permissionsRequired": ["circulation-item-storage.items.collection.get"]
+        },
+        {
+          "methods": ["GET"],
+          "pathPattern": "/circulation-item/{itemId}",
+          "permissionsRequired": ["circulation-item-storage.items.item.get"]
+        },
+        {
           "methods": ["DELETE"],
-          "pathPattern": "/_/tenant"
+          "pathPattern": "/circulation-item/{itemId}",
+          "permissionsRequired": ["circulation-item-storage.items.item.delete"]
         }
       ]
     }
   ],
-  "permissionSets" : [],
-  "requires": [],
+  "permissionSets": [
+    {
+      "permissionName": "circulation-item-storage.items.collection.get",
+      "displayName": "inventory storage - get item collection",
+      "description": "get item collection from storage"
+    },
+    {
+      "permissionName": "circulation-item-storage.items.item.post",
+      "displayName": "inventory storage - create individual item",
+      "description": "create individual item in storage"
+    },
+    {
+      "permissionName": "circulation-item-storage.items.item.put",
+      "displayName": "inventory storage - modify item",
+      "description": "modify item in storage"
+    },
+    {
+      "permissionName": "circulation-item-storage.items.item.get",
+      "displayName": "inventory storage - get individual item",
+      "description": "get individual item from storage"
+    },
+    {
+      "permissionName": "circulation-item-storage.items.item.delete",
+      "displayName": "inventory storage - delete individual item",
+      "description": "delete individual item from storage"
+    }
+  ],
   "launchDescriptor": {
     "dockerImage": "@artifactId@:@version@",
     "dockerPull": false,
     "dockerArgs": {
       "HostConfig": {
-        "Memory": 357913941,
+        "Memory": 712673984,
         "PortBindings": { "8081/tcp": [ { "HostPort": "%p" } ] }
       }
     },
     "env": [
       { "name": "JAVA_OPTIONS",
-        "value": "-XX:MaxRAMPercentage=66.0"
+        "value": "-XX:MaxRAMPercentage=75.0"
       },
       { "name": "DB_HOST", "value": "postgres" },
       { "name": "DB_PORT", "value": "5432" },
+      { "name": "KAFKA_HOST", "value": "kafka"},
+      { "name": "KAFKA_PORT", "value": "9092"},
+      { "name": "KAFKA_SECURITY_PROTOCOL", "value": "PLAINTEXT"},
+      { "name": "KAFKA_SSL_KEYSTORE_LOCATION", "value": ""},
+      { "name": "KAFKA_SSL_KEYSTORE_PASSWORD", "value": ""},
+      { "name": "KAFKA_SSL_TRUSTSTORE_LOCATION", "value": ""},
+      { "name": "KAFKA_SSL_TRUSTSTORE_PASSWORD", "value": ""},
       { "name": "DB_USERNAME", "value": "folio_admin" },
       { "name": "DB_PASSWORD", "value": "folio_admin" },
       { "name": "DB_DATABASE", "value": "okapi_modules" },

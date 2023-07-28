@@ -1,13 +1,15 @@
 {
   "configurations": [
-    {
-      "id": "de17bad7-2a30-4f1c-bee5-f653ded15629",
-      "name": "RS1",
-      "providerName": "Dematic_Sample_Provider",
-      "url": "http://rs1.rs.com",
-      "accessionDelay": 2,
-      "accessionTimeUnit": "minutes"
-    }
+   {
+     "id": "de17bad7-2a30-4f1c-bee5-f653ded15639",
+     "holdingRecordId": "de17bad7-2a30-4f1c-bee5-f753ded15620",
+     "status": "Available",
+     "materialTypeId": "123r",
+     "permanentLoanTypeId": "3456",
+     "instanceTitle": "Ins1",
+     "itemBarcode": "ABC1",
+     "pickupLocation": "LOC1"
+   }
   ],
   "totalRecords": 1
 }

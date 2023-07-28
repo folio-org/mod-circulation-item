@@ -27,6 +27,7 @@
     <java.version>17</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <circulation-item.yaml.file>src/main/resources/swagger.api/circulation-item.yaml</circulation-item.yaml.file>
     <sonar.exclusions>
       <!-- define sonar exclusions here -->
       src/main/java/org/folio/template/FolioSpringTemplateApplication.java
@@ -229,51 +230,23 @@
                     <goal>generate</goal>
                   </goals>
                   <configuration>
-                    <inputSpec>${validator-registry.yaml.file}</inputSpec>
+                    <inputSpec>${circulation-item.yaml.file}</inputSpec>
                     <output>${project.build.directory}/generated-sources</output>
                     <generatorName>spring</generatorName>
-                    <modelPackage>${project.groupId}.pv.domain.dto</modelPackage>
-                    <apiPackage>${project.groupId}.pv.rest.resource</apiPackage>
+                    <modelPackage>${project.groupId}.rs.domain.dto</modelPackage>
+                    <apiPackage>${project.groupId}.rs.rest.resource</apiPackage>
                     <generateApis>true</generateApis>
                     <generateApiTests>true</generateApiTests>
                     <generateApiDocumentation>true</generateApiDocumentation>
                     <generateModels>true</generateModels>
-                    <modelsToGenerate>error,errors,parameter,metadata,validationRule,validationRuleCollection</modelsToGenerate>
                     <generateModelTests>false</generateModelTests>
                     <generateSupportingFiles>true</generateSupportingFiles>
                     <supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
                     <generateModelDocumentation>true</generateModelDocumentation>
                     <configOptions>
-                      <java8>true</java8>
                       <dateLibrary>java</dateLibrary>
                       <interfaceOnly>true</interfaceOnly>
-                    </configOptions>
-
-                  </configuration>
-                </execution>
-                <execution>
-                  <id>validator</id>
-                  <goals>
-                    <goal>generate</goal>
-                  </goals>
-                  <configuration>
-                    <inputSpec>${password-validator.yaml.file}</inputSpec>
-                    <output>${project.build.directory}/generated-sources</output>
-                    <generatorName>spring</generatorName>
-                    <modelPackage>${project.groupId}.pv.domain.dto</modelPackage>
-                    <apiPackage>${project.groupId}.pv.rest.resource</apiPackage>
-                    <generateApis>true</generateApis>
-                    <generateApiTests>true</generateApiTests>
-                    <generateApiDocumentation>true</generateApiDocumentation>
-                    <generateModels>true</generateModels>
-                    <modelsToGenerate>password,validation_result</modelsToGenerate>
-                    <generateModelTests>false</generateModelTests>
-                    <generateSupportingFiles>false</generateSupportingFiles>
-                    <generateModelDocumentation>true</generateModelDocumentation>
-                    <configOptions>
-                      <java8>true</java8>
-                      <dateLibrary>java</dateLibrary>
-                      <interfaceOnly>true</interfaceOnly>
+                      <useSpringBoot3>true</useSpringBoot3>
                     </configOptions>
                   </configuration>
                 </execution>
