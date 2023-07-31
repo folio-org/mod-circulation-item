@@ -35,7 +35,7 @@ public class CirculationItemsService {
 
   public CirculationItem postCirculationItem(CirculationItem circulationItem) {
     if (isNull(circulationItem.getId())) {
-      circulationItem.id(randomIdAsString());
+      circulationItem.id(UUID.randomUUID());
     }
     var configuration = circulationItemsMapper.mapDtoToEntity(circulationItem);
     configuration.setCreatedDate(LocalDateTime.now());

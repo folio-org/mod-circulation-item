@@ -5,7 +5,7 @@ info:
 servers:
   - url: /circulation-item
 paths:
-  /:
+  /circulation-item:
     get:
       responses:
         '200':
@@ -28,6 +28,10 @@ paths:
         - $ref: "#/components/parameters/trait_pageable_limit"
         - $ref: "#/components/parameters/trait_queryable_query"
     post:
+      description: Add new circulation item
+      operationId: postCirculationItem
+      requestBody:
+          $ref: "#/components/requestBodies/CirculationItemBody"
       responses:
         '201':
           description: ""
@@ -36,29 +40,12 @@ paths:
               schema:
                 $ref: "#/components/schemas/circulationItem"
         '400':
-          description: Bad request
-          content:
-            text/plain:
-              schema:
-                type: string
-                example: Bad request
+          $ref: "#/components/responses/BadRequest"
         '422':
           $ref: "#/components/responses/trait_validate_422"
         '500':
-          description: Internal server error
-          content:
-            text/plain:
-              schema:
-                type: string
-                example: Internal server error
-      description: Add new circulation item
-      operationId: postCirculationItem
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/circulationItem"
-        required: true
+          $ref: '#/components/responses/InternalServerError'
+
   /{itemId}:
     get:
       responses:
@@ -161,6 +148,18 @@ components:
           example: examples/errors.sample
           schema:
             $ref: "#/components/schemas/errors"
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/errors"
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/errors"
   schemas:
     circulationItem:
       $ref: schemas/circulationItem.json
@@ -204,3 +203,11 @@ components:
         minimum: 0
         maximum: 2147483647
         type: integer
+  requestBodies:
+    CirculationItemBody:
+          description: Circulation Item object
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: "schemas/item.yaml#/CirculationItem"

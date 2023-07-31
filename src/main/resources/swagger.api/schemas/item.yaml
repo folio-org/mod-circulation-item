@@ -1,0 +1,38 @@
+CirculationItem:
+  type: "object"
+  description: "CirculationItem"
+  properties:
+    id:
+      type: "string"
+      format: "uuid"
+    holdingsRecordId:
+      type: "string"
+      format: "uuid"
+    status:
+      type: "string"
+    materialTypeId:
+      type: "string"
+    permanentLoanTypeId:
+      type: "string"
+    instanceTitle:
+      type: "string"
+    itemBarcode:
+      type: "string"
+    pickupLocation:
+      type: "string"
+  additionalProperties: false
+
+
+CirculationItemCollection:
+  type: "object"
+  description: "A JSON schema for the Circulation Item Collection"
+  properties:
+    consortia:
+      type: "array"
+      description: "The list of circulation item"
+      items:
+        type: "object"
+        $ref: "item.yaml#/CirculationItem"
+    totalRecords:
+      type: "integer"
+  additionalProperties: false

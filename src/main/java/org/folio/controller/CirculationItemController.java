@@ -48,11 +48,11 @@ public class CirculationItemController implements ItemIdApi {
     return ResponseEntity.noContent().build();
   }
 
-//  @Override
-//  public ResponseEntity<CirculationItem> postCirculationItem(@Valid CirculationItem circulationItem) {
-//    var item = circulationItemsService.postCirculationItem(circulationItem);
-//    return new ResponseEntity<>(item, HttpStatus.CREATED);
-//  }
+  //@Override
+  public ResponseEntity<CirculationItem> postCirculationItem(@Valid CirculationItem circulationItem) {
+    var item = circulationItemsService.postCirculationItem(circulationItem);
+    return new ResponseEntity<>(item, HttpStatus.CREATED);
+  }
 
   @ExceptionHandler({EmptyResultDataAccessException.class, EntityNotFoundException.class})
   public ResponseEntity<String> handleNotFoundExceptions() {

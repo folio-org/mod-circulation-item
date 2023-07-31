@@ -20,13 +20,7 @@ public interface CirculationItemsMapper {
       @Mapping(target = "permanentLoanTypeId", source = "permanentLoanTypeId"),
       @Mapping(target = "instanceTitle", source = "instanceTitle"),
       @Mapping(target = "itemBarcode", source = "itemBarcode"),
-      @Mapping(target = "pickupLocation", source = "pickupLocation"),
-      @Mapping(target = "metadata.createdDate", source = "createdDate"),
-      @Mapping(target = "metadata.updatedDate", source = "updatedDate"),
-      @Mapping(target = "metadata.createdByUserId", source = "createdByUserId"),
-      @Mapping(target = "metadata.updatedByUserId", source = "updatedByUserId"),
-      @Mapping(target = "metadata.createdByUsername", source = "createdByUsername"),
-      @Mapping(target = "metadata.updatedByUsername", source = "updatedByUsername") })
+      @Mapping(target = "pickupLocation", source = "pickupLocation")})
   CirculationItem mapEntityToDto(Item circulationItem);
 
   @Mappings({
