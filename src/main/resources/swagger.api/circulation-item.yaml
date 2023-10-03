@@ -27,11 +27,14 @@ paths:
         - $ref: "#/components/parameters/trait_pageable_offset"
         - $ref: "#/components/parameters/trait_pageable_limit"
         - $ref: "#/components/parameters/trait_queryable_query"
+
+
+  /{circulationItemId}:
     post:
       description: Add new circulation item
-      operationId: postCirculationItem
+      operationId: createCirculationItem
       requestBody:
-          $ref: "#/components/requestBodies/CirculationItemBody"
+        $ref: "#/components/requestBodies/CirculationItemBody"
       responses:
         '201':
           description: ""
@@ -40,13 +43,19 @@ paths:
               schema:
                 $ref: "#/components/schemas/circulationItem"
         '400':
-          $ref: "#/components/responses/BadRequest"
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "schemas/common.yaml#/Error"
         '422':
           $ref: "#/components/responses/trait_validate_422"
         '500':
-          $ref: '#/components/responses/InternalServerError'
-
-  /{itemId}:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "schemas/common.yaml#/Error"
     get:
       responses:
         '200':
@@ -56,19 +65,17 @@ paths:
               schema:
                 $ref: "#/components/schemas/circulationItem"
         '404':
-          description: Circulation Item not found
+          description: Resource not found
           content:
-            text/plain:
+            application/json:
               schema:
-                type: string
-                example: Circulation Item not found
+                $ref: "schemas/common.yaml#/Error"
         '500':
           description: Internal server error
           content:
-            text/plain:
+            application/json:
               schema:
-                type: string
-                example: Internal server error
+                $ref: "schemas/common.yaml#/Error"
       operationId: getCirculationItemById
     put:
       responses:
@@ -133,7 +140,7 @@ paths:
                 example: Internal server error
       operationId: deleteCirculationItemById
     parameters:
-      - name: itemId
+      - name: circulationItemId
         in: path
         required: true
         schema:
@@ -148,13 +155,13 @@ components:
           example: examples/errors.sample
           schema:
             $ref: "#/components/schemas/errors"
-    BadRequest:
+    '400':
       description: Bad request
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/errors"
-    InternalServerError:
+    '500':
       description: Internal server error
       content:
         application/json:

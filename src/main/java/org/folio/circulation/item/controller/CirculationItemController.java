@@ -1,4 +1,4 @@
-package org.folio.controller;
+package org.folio.circulation.item.controller;
 
 import static java.util.Objects.isNull;
 
@@ -6,9 +6,9 @@ import static java.util.Objects.isNull;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 
+import org.folio.circulation.item.service.CirculationItemsService;
 import org.folio.rs.domain.dto.CirculationItem;
-import org.folio.rs.rest.resource.ItemIdApi;
-import org.folio.service.CirculationItemsService;
+import org.folio.rs.rest.resource.CirculationItemIdApi;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +24,7 @@ import lombok.extern.log4j.Log4j2;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/circulation-item/")
-public class CirculationItemController implements ItemIdApi {
+public class CirculationItemController implements CirculationItemIdApi {
   private static final String CONFIGURATION_NOT_FOUND = "Configuration not found";
 
   private final CirculationItemsService circulationItemsService;
@@ -48,10 +48,11 @@ public class CirculationItemController implements ItemIdApi {
     return ResponseEntity.noContent().build();
   }
 
-  //@Override
-  public ResponseEntity<CirculationItem> postCirculationItem(@Valid CirculationItem circulationItem) {
-    var item = circulationItemsService.postCirculationItem(circulationItem);
-    return new ResponseEntity<>(item, HttpStatus.CREATED);
+  @Override
+  public ResponseEntity<CirculationItem> createCirculationItem(@Pattern(regexp = "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[1-5][a-fA-F0-9]{3}-[89abAB][a-fA-F0-9]{3}-[a-fA-F0-9]{12}$") String circulationItemId,
+                                                             @Valid CirculationItem circulationItem) {
+    return ResponseEntity.status(HttpStatus.CREATED)
+      .body(circulationItemsService.createCirculationItem(circulationItemId, circulationItem));
   }
 
   @ExceptionHandler({EmptyResultDataAccessException.class, EntityNotFoundException.class})

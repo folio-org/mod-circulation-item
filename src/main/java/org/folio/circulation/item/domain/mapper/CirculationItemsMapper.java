@@ -1,8 +1,8 @@
-package org.folio.mapper;
+package org.folio.circulation.item.domain.mapper;
 
 import java.util.List;
 
-import org.folio.domain.entity.Item;
+import org.folio.circulation.item.domain.entity.Item;
 import org.folio.rs.domain.dto.CirculationItem;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
