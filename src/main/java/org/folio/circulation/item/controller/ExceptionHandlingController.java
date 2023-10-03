@@ -2,6 +2,7 @@ package org.folio.circulation.item.controller;
 
 import feign.FeignException;
 import lombok.extern.log4j.Log4j2;
+import org.folio.circulation.item.exception.IdMismatchException;
 import org.folio.rs.domain.dto.Errors;
 import org.folio.circulation.item.exception.ResourceAlreadyExistException;
 import org.folio.spring.exception.NotFoundException;
@@ -30,6 +31,13 @@ public class ExceptionHandlingController {
   public Errors handleGlobalException(Exception ex) {
     logExceptionMessage(ex);
     return createExternalError(ex.getMessage(), INTERNAL_SERVER_ERROR);
+  }
+
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ExceptionHandler(IdMismatchException.class)
+  public Errors handleBadRequestIdMismatchException(IdMismatchException ex) {
+    logExceptionMessage(ex);
+    return createExternalError(ex.getMessage(), VALIDATION_ERROR);
   }
 
   @ResponseStatus(HttpStatus.NOT_FOUND)

@@ -1,62 +1,55 @@
 package org.folio.circulation.item.controller;
 
-import static java.util.Objects.isNull;
-
-
-import javax.validation.Valid;
-import javax.validation.constraints.Pattern;
-
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.folio.circulation.item.service.CirculationItemsService;
 import org.folio.rs.domain.dto.CirculationItem;
 import org.folio.rs.rest.resource.CirculationItemIdApi;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.persistence.EntityNotFoundException;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import static java.util.Objects.isNull;
 
 @Log4j2
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/circulation-item/")
 public class CirculationItemController implements CirculationItemIdApi {
-  private static final String CONFIGURATION_NOT_FOUND = "Configuration not found";
 
   private final CirculationItemsService circulationItemsService;
 
   @Override
-  public ResponseEntity<String> deleteCirculationItemById(String configId) {
-    circulationItemsService.deleteCirculationItemById(configId);
-    return ResponseEntity.noContent().build();
-  }
-
-  @Override
-  public ResponseEntity<CirculationItem> getCirculationItemById(String itemId) {
-    var circulationItem = circulationItemsService.getCirculationItemById(itemId);
-    return isNull(circulationItem) ? ResponseEntity.notFound().build() : new ResponseEntity<>(circulationItem, HttpStatus.OK);
-  }
-
-  @Override
-  public ResponseEntity<String> putCirculationItem(@Pattern(regexp = "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[1-5][a-fA-F0-9]{3}-[89abAB][a-fA-F0-9]{3}-[a-fA-F0-9]{12}$") String itemId,
-    @Valid CirculationItem storageConfiguration) {
-    circulationItemsService.updateCirculationItem(itemId, storageConfiguration);
-    return ResponseEntity.noContent().build();
-  }
-
-  @Override
-  public ResponseEntity<CirculationItem> createCirculationItem(@Pattern(regexp = "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[1-5][a-fA-F0-9]{3}-[89abAB][a-fA-F0-9]{3}-[a-fA-F0-9]{12}$") String circulationItemId,
-                                                             @Valid CirculationItem circulationItem) {
+  public ResponseEntity<CirculationItem> createCirculationItem(String circulationItemId, CirculationItem circulationItem) {
+    log.info("createCirculationItem:: {}", circulationItem);
     return ResponseEntity.status(HttpStatus.CREATED)
-      .body(circulationItemsService.createCirculationItem(circulationItemId, circulationItem));
+            .body(circulationItemsService.createCirculationItem(circulationItemId, circulationItem));
   }
 
-  @ExceptionHandler({EmptyResultDataAccessException.class, EntityNotFoundException.class})
-  public ResponseEntity<String> handleNotFoundExceptions() {
-    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(CONFIGURATION_NOT_FOUND);
+  @Override
+  public ResponseEntity<CirculationItem> retrieveCirculationItemById(String circulationItemId) {
+    log.info("getCirculationItemById:: by id= {}", circulationItemId);
+    var circulationItem = circulationItemsService.getCirculationItemById(circulationItemId);
+    return isNull(circulationItem) ?
+            ResponseEntity.notFound().build() :
+            ResponseEntity.status(HttpStatus.OK)
+                    .body(circulationItem);
   }
+
+  @Override
+  public ResponseEntity<CirculationItem> updateCirculationItem(String circulationItemId, CirculationItem circulationItem) {
+    log.info("updateCirculationItem:: updating circulationItem by Request id= {} with entity id= {}", circulationItemId, circulationItem.getId());
+    return ResponseEntity.status(HttpStatus.OK)
+            .body(circulationItemsService.updateCirculationItem(circulationItemId, circulationItem));
+  }
+
+  @Override
+  public ResponseEntity<String> deleteCirculationItemById(String circulationItemId) {
+    log.info("deleteCirculationItemById:: by id= {}", circulationItemId);
+    circulationItemsService.deleteCirculationItemById(circulationItemId);
+    log.info("deleteCirculationItemById:: by id= {} with success.", circulationItemId);
+    return ResponseEntity.noContent().build();
+  }
+
 }

@@ -2,13 +2,15 @@ package org.folio.circulation.item.service;
 
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
-import org.folio.circulation.item.domain.entity.Item;
 import org.folio.circulation.item.domain.mapper.CirculationItemsMapper;
+import org.folio.circulation.item.exception.IdMismatchException;
 import org.folio.circulation.item.exception.ResourceAlreadyExistException;
 import org.folio.circulation.item.repository.CirculationItemsRepository;
 import org.folio.rs.domain.dto.CirculationItem;
+import org.folio.spring.exception.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -34,54 +36,48 @@ public class CirculationItemsService {
   }
 
   public CirculationItem createCirculationItem(String circulationItemId, CirculationItem circulationItem) {
-    if(checkIfItemExists(circulationItemId)){
-      throw new ResourceAlreadyExistException(
-        String.format("unable to create circulation item with id %s as it already exists", circulationItemId));
+    if(Objects.nonNull(circulationItem.getId()) &&
+            !Objects.equals(circulationItemId, String.valueOf(circulationItem.getId()))) {
+      throw new IdMismatchException(
+              String.format("Request id= %s and entity id= %s are not equal", circulationItemId, circulationItem.getId())
+      );
     }
 
-    var configuration = circulationItemsMapper.mapDtoToEntity(circulationItem);
-//    configuration.setCreatedDate(LocalDateTime.now());
+    if(Objects.isNull(circulationItem.getId())){
+      circulationItem.setId(UUID.fromString(circulationItemId));
+    }
 
-    return circulationItemsMapper.mapEntityToDto(circulationItemsRepository.save(configuration));
+    if(checkIfItemExists(circulationItemId)){
+      throw new ResourceAlreadyExistException(
+        String.format("Unable to create circulation item with id %s as it already exists", circulationItemId));
+    }
+
+    var circulationItemEntity = circulationItemsMapper.mapDtoToEntity(circulationItem);
+    circulationItemEntity.setCreatedDate(LocalDateTime.now());
+
+    return circulationItemsMapper.mapEntityToDto(circulationItemsRepository.save(circulationItemEntity));
+  }
+
+  public CirculationItem updateCirculationItem(String circulationItemId, CirculationItem circulationItem) {
+    if (!Objects.equals(circulationItemId, String.valueOf(circulationItem.getId()))) {
+      throw new IdMismatchException(
+              String.format("Request id= %s and entity id= %s are not equal", circulationItemId, circulationItem.getId())
+      );
+    }
+
+    if(!checkIfItemExists(circulationItemId)){
+      throw new NotFoundException(
+              String.format("Circulation item with id %s doesn't exist", circulationItemId));
+    }
+
+    var circulationItemEntity = circulationItemsMapper.mapDtoToEntity(circulationItem);
+    circulationItemEntity.setUpdatedDate(LocalDateTime.now());
+
+    var updated = circulationItemsRepository.save(circulationItemEntity);
+    return circulationItemsMapper.mapEntityToDto(updated);
   }
 
   private boolean checkIfItemExists(String circulationItemId) {
     return circulationItemsRepository.existsById(UUID.fromString(circulationItemId));
-  }
-
-  public static String randomIdAsString() {
-    return UUID.randomUUID().toString();
-  }
-
-
-  public CirculationItem updateCirculationItem(String id, CirculationItem circulationItem) {
-    Item item;
-    if (id.equals(String.valueOf(circulationItem.getId()))) {
-      var conf = circulationItemsMapper.mapDtoToEntity(circulationItem);
-      item = circulationItemsRepository.save(copyForUpdate(circulationItemsRepository.getOne(conf.getId()), conf));
-    } else {
-      throw new IdMismatchException();
-    }
-    return circulationItemsMapper.mapEntityToDto(item);
-  }
-
-  public static class IdMismatchException extends RuntimeException {
-    public IdMismatchException() {
-      super("request id and entity id are not equal");
-    }
-  }
-
-  private Item copyForUpdate(Item dest, Item source) {
-    dest.setHoldingsRecordId(source.getHoldingsRecordId());
-    dest.setStatus(source.getStatus());
-    dest.setInstanceTitle(source.getInstanceTitle());
-    dest.setItemBarcode(source.getItemBarcode());
-    dest.setMaterialTypeId(source.getMaterialTypeId());
-    dest.setPickupLocation(source.getPickupLocation());
-    dest.setPermanentLoanTypeId(source.getPermanentLoanTypeId());
-//    dest.setUpdatedByUserId(source.getUpdatedByUserId());
-//    dest.setUpdatedByUsername(source.getUpdatedByUsername());
-    dest.setUpdatedDate(LocalDateTime.now());
-    return dest;
   }
 }

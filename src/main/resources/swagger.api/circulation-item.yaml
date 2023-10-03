@@ -5,30 +5,6 @@ info:
 servers:
   - url: /circulation-item
 paths:
-  /circulation-item:
-    get:
-      responses:
-        '200':
-          description: ""
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/circulationItems"
-        '500':
-          description: Internal server error
-          content:
-            text/plain:
-              schema:
-                type: string
-                example: Internal server error
-      description: Get a list of circulation items
-      operationId: getCirculationItems
-      parameters:
-        - $ref: "#/components/parameters/trait_pageable_offset"
-        - $ref: "#/components/parameters/trait_pageable_limit"
-        - $ref: "#/components/parameters/trait_queryable_query"
-
-
   /{circulationItemId}:
     post:
       description: Add new circulation item
@@ -76,16 +52,15 @@ paths:
             application/json:
               schema:
                 $ref: "schemas/common.yaml#/Error"
-      operationId: getCirculationItemById
+      operationId: retrieveCirculationItemById
     put:
       responses:
-        '204':
-          description: No content
+        '200':
+          description: ""
           content:
-            text/plain:
+            application/json:
               schema:
-                type: string
-                example: No content
+                $ref: "#/components/schemas/circulationItem"
         '400':
           description: Bad request
           content:
@@ -108,7 +83,7 @@ paths:
                 type: string
                 example: Internal server error
       description: Change the circulation item
-      operationId: putCirculationItem
+      operationId: updateCirculationItem
       requestBody:
         content:
           application/json:
