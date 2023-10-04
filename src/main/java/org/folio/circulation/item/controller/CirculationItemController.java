@@ -43,13 +43,4 @@ public class CirculationItemController implements CirculationItemIdApi {
     return ResponseEntity.status(HttpStatus.OK)
             .body(circulationItemsService.updateCirculationItem(circulationItemId, circulationItem));
   }
-
-  @Override
-  public ResponseEntity<String> deleteCirculationItemById(String circulationItemId) {
-    log.info("deleteCirculationItemById:: by id= {}", circulationItemId);
-    circulationItemsService.deleteCirculationItemById(circulationItemId);
-    log.info("deleteCirculationItemById:: by id= {} with success.", circulationItemId);
-    return ResponseEntity.noContent().build();
-  }
-
 }

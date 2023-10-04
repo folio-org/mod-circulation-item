@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
+import org.folio.circulation.item.domain.entity.Item;
 import org.folio.circulation.item.domain.mapper.CirculationItemsMapper;
 import org.folio.circulation.item.exception.IdMismatchException;
 import org.folio.circulation.item.exception.ResourceAlreadyExistException;
@@ -25,17 +26,18 @@ public class CirculationItemsService {
 
   private final CirculationItemsMapper circulationItemsMapper;
 
-  public void deleteCirculationItemById(String id) {
-    circulationItemsRepository.deleteById(UUID.fromString(id));
-  }
-
   public CirculationItem getCirculationItemById(String id) {
-    return circulationItemsRepository.findById(UUID.fromString(id))
-      .map(circulationItemsMapper::mapEntityToDto)
-      .orElse(null);
+    var item = getCirculationItemEntityOrThrow(id);
+    return circulationItemsMapper.mapEntityToDto(item);
   }
 
-  public CirculationItem createCirculationItem(String circulationItemId, CirculationItem circulationItem) {
+  private Item getCirculationItemEntityOrThrow(String id) {
+    return circulationItemsRepository.findById(UUID.fromString(id))
+           .orElseThrow(() -> new NotFoundException(String.format("Circulation Item was not found by id= %s ", id)));
+  }
+
+
+    public CirculationItem createCirculationItem(String circulationItemId, CirculationItem circulationItem) {
     if(Objects.nonNull(circulationItem.getId()) &&
             !Objects.equals(circulationItemId, String.valueOf(circulationItem.getId()))) {
       throw new IdMismatchException(
