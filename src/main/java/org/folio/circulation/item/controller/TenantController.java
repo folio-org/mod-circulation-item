@@ -38,7 +38,6 @@ public class TenantController implements TenantApi {
 
       folioSpringLiquibase.setDefaultSchema(schemaName);
       try {
-        log.info("performLiquibase");
         folioSpringLiquibase.performLiquibaseUpdate();
 
       } catch (LiquibaseException e) {
