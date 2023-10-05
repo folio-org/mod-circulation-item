@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import lombok.SneakyThrows;
-//import org.folio.spring.config.properties.FolioEnvironment;
 import org.folio.spring.integration.XOkapiHeaders;
 import org.folio.tenant.domain.dto.TenantAttributes;
 import org.jetbrains.annotations.NotNull;
@@ -53,11 +52,10 @@ public class BaseIT {
   }
 
   @BeforeAll
-  static void beforeAll(@Autowired MockMvc mockMvc/*, @Autowired FolioEnvironment folioEnvironment*/) {
+  static void beforeAll(@Autowired MockMvc mockMvc) {
     wireMockServer = new WireMockServer(WIRE_MOCK_PORT);
     wireMockServer.start();
     setUpTenant(mockMvc);
-//    folioEnvironment.setOkapiUrl(getOkapiUrl());
   }
 
   public static String getOkapiUrl() {

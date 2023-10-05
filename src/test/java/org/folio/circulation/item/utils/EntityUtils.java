@@ -58,42 +58,4 @@ public class EntityUtils {
             .build();
   }
 
-
-  /*public static TransactionStatus createTransactionStatus(TransactionStatus.StatusEnum statusEnum){
-    return TransactionStatus.builder().status(statusEnum).build();
-  }*/
-
-/*  public static TransactionEntity createTransactionEntity() {
-    return TransactionEntity.builder()
-      .id(DCB_TRANSACTION_ID)
-      .itemId(ITEM_ID)
-      .itemTitle("ITEM TITLE")
-      .itemBarcode("DCB_ITEM")
-      .patronId(PATRON_ID)
-      .patronBarcode("DCB_PATRON")
-      .patronGroup("staff")
-      .pickupLocation("PICKUP LOCATION")
-      .materialType("book")
-      .lendingLibraryCode("LEN")
-      .borrowingLibraryCode("BOR")
-      .build();
-  }*/
-
-
-/*  @SneakyThrows
-  public static String getMockDataAsString(String path) {
-
-    try (InputStream resourceAsStream = DcbApplication.class.getClassLoader().getResourceAsStream(path)) {
-      if (resourceAsStream != null) {
-        return IOUtils.toString(resourceAsStream, StandardCharsets.UTF_8);
-      } else {
-        StringBuilder sb = new StringBuilder();
-        try (Stream<String> lines = Files.lines(Paths.get(path))) {
-          lines.forEach(sb::append);
-        }
-        return sb.toString();
-      }
-    }
-  }*/
-
 }
