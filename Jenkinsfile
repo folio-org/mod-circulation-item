@@ -7,7 +7,7 @@ buildMvn {
   doDocker = {
     buildJavaDocker {
       publishMaster = true
-// no healthChk because Docker container requires postgresql on startup
+      // no healthChk because Docker container requires postgresql on startup
     }
   }
 }
