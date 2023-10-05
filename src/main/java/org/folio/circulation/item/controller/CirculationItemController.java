@@ -22,7 +22,7 @@ public class CirculationItemController implements CirculationItemIdApi {
 
   @Override
   public ResponseEntity<CirculationItem> createCirculationItem(String circulationItemId, CirculationItem circulationItem) {
-    log.info("createCirculationItem:: {}", circulationItem);
+    log.info("createCirculationItem:: creating CirculationItem with Id {}", circulationItemId);
     return ResponseEntity.status(HttpStatus.CREATED)
             .body(circulationItemsService.createCirculationItem(circulationItemId, circulationItem));
   }
