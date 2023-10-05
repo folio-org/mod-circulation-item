@@ -82,13 +82,14 @@ public class CirculationItemsServiceTest {
     }
 
     @Test
-    void getTransactionStatusByIdNotFoundExceptionTest(){
+    void getCirculationItemNotFoundExceptionTest(){
         var ciIdUnique = UUID.randomUUID();
         when(circulationItemsRepository.findById(ciIdUnique))
                 .thenReturn(Optional.empty());
 
+        var ciIdUniqueString = String.valueOf(ciIdUnique);
         Throwable exception = assertThrows(
-                NotFoundException.class, () -> circulationItemsService.getCirculationItemById(String.valueOf(ciIdUnique))
+                NotFoundException.class, () -> circulationItemsService.getCirculationItemById(ciIdUniqueString)
         );
 
         Assertions.assertEquals(String.format("Circulation Item was not found by id= %s ", ciIdUnique), exception.getMessage());

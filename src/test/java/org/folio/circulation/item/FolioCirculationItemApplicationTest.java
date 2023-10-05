@@ -16,7 +16,7 @@ import javax.validation.Valid;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class FolioCirculationItemApplicationTest {
+class FolioCirculationItemApplicationTest {
 
     @EnableAutoConfiguration(exclude = {FolioLiquibaseConfiguration.class})
     @RestController("folioTenantController")
