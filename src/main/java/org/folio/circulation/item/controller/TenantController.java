@@ -5,7 +5,6 @@ import liquibase.exception.LiquibaseException;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
-import org.folio.circulation.item.service.CirculationItemsService;
 import org.folio.spring.FolioExecutionContext;
 import org.folio.spring.liquibase.FolioSpringLiquibase;
 import org.folio.spring.service.TenantService;
@@ -31,7 +30,6 @@ public class TenantController implements TenantApi {
   public ResponseEntity<Void> postTenant(@Valid TenantAttributes tenantAttributes) {
     var tenantId = context.getTenantId();
 
-    log.info("Here came..");
     if (folioSpringLiquibase != null) {
       log.info("folioSpringLiquibase is not null");
 
