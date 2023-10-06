@@ -2,10 +2,8 @@ openapi: 3.0.0
 info:
   title: Circulation item API
   version: v1
-servers:
-  - url: /circulation-item
 paths:
-  /{circulationItemId}:
+  /circulation-item/{circulationItemId}:
     post:
       description: Add new circulation item
       operationId: createCirculationItem

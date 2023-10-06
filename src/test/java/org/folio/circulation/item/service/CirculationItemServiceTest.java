@@ -1,8 +1,8 @@
 package org.folio.circulation.item.service;
 
-import org.folio.circulation.item.domain.mapper.CirculationItemsMapper;
+import org.folio.circulation.item.domain.mapper.CirculationItemMapper;
 import org.folio.circulation.item.exception.IdMismatchException;
-import org.folio.circulation.item.repository.CirculationItemsRepository;
+import org.folio.circulation.item.repository.CirculationItemRepository;
 import org.folio.spring.exception.NotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -26,25 +26,25 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class CirculationItemsServiceTest {
+class CirculationItemServiceTest {
 
     @InjectMocks
-    private CirculationItemsService circulationItemsService;
+    private CirculationItemService circulationItemService;
     @Mock
-    private CirculationItemsRepository circulationItemsRepository;
+    private CirculationItemRepository circulationItemRepository;
 
     @Mock
-    private CirculationItemsMapper circulationItemsMapper;
+    private CirculationItemMapper circulationItemMapper;
 
     @Test
     void shouldCreateCirculationItemTest(){
         var ciIdUnique = UUID.randomUUID();
-        when(circulationItemsMapper.mapDtoToEntity(any())).thenReturn(createCirculationEntityItem(ciIdUnique));
-        when(circulationItemsMapper.mapEntityToDto(any())).thenReturn(createCirculationItem(ciIdUnique));
-        when(circulationItemsRepository.save(any()))
+        when(circulationItemMapper.mapDtoToEntity(any())).thenReturn(createCirculationEntityItem(ciIdUnique));
+        when(circulationItemMapper.mapEntityToDto(any())).thenReturn(createCirculationItem(ciIdUnique));
+        when(circulationItemRepository.save(any()))
                 .thenReturn(createCirculationEntityItem(ciIdUnique));
 
-        var ciInstance = circulationItemsService.createCirculationItem(String.valueOf(ciIdUnique), createCirculationItem(ciIdUnique));
+        var ciInstance = circulationItemService.createCirculationItem(String.valueOf(ciIdUnique), createCirculationItem(ciIdUnique));
         assertNotNull(ciInstance);
         assertEquals("TEST", ciInstance.getStatus());
     }
@@ -56,15 +56,15 @@ class CirculationItemsServiceTest {
         var updCiDto = createCirculationItemForUpdate(ciIdUnique);
         var updCiEntity = createCirculationEntityItemForUpdate(ciIdUnique);
 
-        when(circulationItemsMapper.mapDtoToEntity(any()))
+        when(circulationItemMapper.mapDtoToEntity(any()))
                 .thenReturn(updCiEntity);
-        when(circulationItemsMapper.mapEntityToDto(any()))
+        when(circulationItemMapper.mapEntityToDto(any()))
                 .thenReturn(updCiDto);
 
-        when(circulationItemsRepository.existsById(ciIdUnique)).thenReturn(true);
-        when(circulationItemsRepository.save(updCiEntity))
+        when(circulationItemRepository.existsById(ciIdUnique)).thenReturn(true);
+        when(circulationItemRepository.save(updCiEntity))
                 .thenReturn(updCiEntity);
-        var ciInstanceUpdated = circulationItemsService.updateCirculationItem(String.valueOf(ciIdUnique), createCirculationItem(ciIdUnique));
+        var ciInstanceUpdated = circulationItemService.updateCirculationItem(String.valueOf(ciIdUnique), createCirculationItem(ciIdUnique));
 
         assertNotNull(ciInstanceUpdated);
         assertEquals("TEST_UPD", ciInstanceUpdated.getStatus());
@@ -73,12 +73,12 @@ class CirculationItemsServiceTest {
     @Test
     void shouldReturnAnyCirculationItemByIdTest(){
         var ciIdUnique = UUID.randomUUID();
-        when(circulationItemsRepository.findById(ciIdUnique))
+        when(circulationItemRepository.findById(ciIdUnique))
                 .thenReturn(Optional.ofNullable(createCirculationEntityItem(ciIdUnique)));
-        when(circulationItemsMapper.mapEntityToDto(any())).thenReturn(createCirculationItem(ciIdUnique));
+        when(circulationItemMapper.mapEntityToDto(any())).thenReturn(createCirculationItem(ciIdUnique));
 
 
-        var ciInstance = circulationItemsService.getCirculationItemById(String.valueOf(ciIdUnique));
+        var ciInstance = circulationItemService.getCirculationItemById(String.valueOf(ciIdUnique));
         assertNotNull(ciInstance);
         assertEquals("TEST", ciInstance.getStatus());
     }
@@ -86,11 +86,11 @@ class CirculationItemsServiceTest {
     @Test
     void getCirculationItemEmptyResultTest(){
         var ciIdUnique = UUID.randomUUID();
-        when(circulationItemsRepository.findById(ciIdUnique))
+        when(circulationItemRepository.findById(ciIdUnique))
                 .thenReturn(Optional.empty());
 
         var ciIdUniqueString = String.valueOf(ciIdUnique);
-        var ciInstance = circulationItemsService.getCirculationItemById(ciIdUniqueString);
+        var ciInstance = circulationItemService.getCirculationItemById(ciIdUniqueString);
         assertNull(ciInstance);
     }
 
@@ -101,7 +101,7 @@ class CirculationItemsServiceTest {
         var circulationItem = createCirculationItem(ciIdUnique_2);
 
         Throwable exception = assertThrows(
-                IdMismatchException.class, () -> circulationItemsService.createCirculationItem(ciIdUnique_1, circulationItem)
+                IdMismatchException.class, () -> circulationItemService.createCirculationItem(ciIdUnique_1, circulationItem)
         );
 
         Assertions.assertEquals(String.format("Request id= %s and entity id= %s are not equal", ciIdUnique_1, ciIdUnique_2), exception.getMessage());
@@ -113,11 +113,11 @@ class CirculationItemsServiceTest {
         var ciIdUniqueString = String.valueOf(ciIdUnique);
         var circulationItem = createCirculationItem(ciIdUnique);
 
-        when(circulationItemsRepository.existsById(ciIdUnique)).thenReturn(false);
+        when(circulationItemRepository.existsById(ciIdUnique)).thenReturn(false);
 
 
         Throwable exception = assertThrows(
-                NotFoundException.class, () -> circulationItemsService.updateCirculationItem(ciIdUniqueString, circulationItem)
+                NotFoundException.class, () -> circulationItemService.updateCirculationItem(ciIdUniqueString, circulationItem)
         );
 
         Assertions.assertEquals(String.format("Circulation item with id %s doesn't exist", ciIdUnique), exception.getMessage());

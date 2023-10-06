@@ -2,12 +2,11 @@ package org.folio.circulation.item.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.folio.circulation.item.service.CirculationItemsService;
+import org.folio.circulation.item.service.CirculationItemService;
 import org.folio.rs.domain.dto.CirculationItem;
-import org.folio.rs.rest.resource.CirculationItemIdApi;
+import org.folio.rs.rest.resource.CirculationItemApi;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import static java.util.Objects.isNull;
@@ -15,22 +14,21 @@ import static java.util.Objects.isNull;
 @Log4j2
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/circulation-item/")
-public class CirculationItemController implements CirculationItemIdApi {
+public class CirculationItemController implements CirculationItemApi {
 
-  private final CirculationItemsService circulationItemsService;
+  private final CirculationItemService circulationItemService;
 
   @Override
   public ResponseEntity<CirculationItem> createCirculationItem(String circulationItemId, CirculationItem circulationItem) {
     log.info("createCirculationItem:: creating CirculationItem with Id {}", circulationItemId);
     return ResponseEntity.status(HttpStatus.CREATED)
-            .body(circulationItemsService.createCirculationItem(circulationItemId, circulationItem));
+            .body(circulationItemService.createCirculationItem(circulationItemId, circulationItem));
   }
 
   @Override
   public ResponseEntity<CirculationItem> retrieveCirculationItemById(String circulationItemId) {
     log.info("getCirculationItemById:: by id= {}", circulationItemId);
-    var circulationItem = circulationItemsService.getCirculationItemById(circulationItemId);
+    var circulationItem = circulationItemService.getCirculationItemById(circulationItemId);
     return isNull(circulationItem) ?
             ResponseEntity.notFound().build() :
             ResponseEntity.status(HttpStatus.OK)
@@ -41,6 +39,6 @@ public class CirculationItemController implements CirculationItemIdApi {
   public ResponseEntity<CirculationItem> updateCirculationItem(String circulationItemId, CirculationItem circulationItem) {
     log.info("updateCirculationItem:: updating circulationItem by Request id= {} with entity id= {}", circulationItemId, circulationItem.getId());
     return ResponseEntity.status(HttpStatus.OK)
-            .body(circulationItemsService.updateCirculationItem(circulationItemId, circulationItem));
+            .body(circulationItemService.updateCirculationItem(circulationItemId, circulationItem));
   }
 }
