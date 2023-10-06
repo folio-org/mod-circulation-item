@@ -16,19 +16,19 @@ import static java.util.Objects.isNull;
 @RequiredArgsConstructor
 public class CirculationItemController implements CirculationItemApi {
 
-  private final CirculationItemService circulationItemService;
+  private final CirculationItemService circulationItemServiceImpl;
 
   @Override
   public ResponseEntity<CirculationItem> createCirculationItem(String circulationItemId, CirculationItem circulationItem) {
     log.info("createCirculationItem:: creating CirculationItem with Id {}", circulationItemId);
     return ResponseEntity.status(HttpStatus.CREATED)
-            .body(circulationItemService.createCirculationItem(circulationItemId, circulationItem));
+            .body(circulationItemServiceImpl.createCirculationItem(circulationItemId, circulationItem));
   }
 
   @Override
   public ResponseEntity<CirculationItem> retrieveCirculationItemById(String circulationItemId) {
     log.info("getCirculationItemById:: by id= {}", circulationItemId);
-    var circulationItem = circulationItemService.getCirculationItemById(circulationItemId);
+    var circulationItem = circulationItemServiceImpl.getCirculationItemById(circulationItemId);
     return isNull(circulationItem) ?
             ResponseEntity.notFound().build() :
             ResponseEntity.status(HttpStatus.OK)
@@ -39,6 +39,6 @@ public class CirculationItemController implements CirculationItemApi {
   public ResponseEntity<CirculationItem> updateCirculationItem(String circulationItemId, CirculationItem circulationItem) {
     log.info("updateCirculationItem:: updating circulationItem by Request id= {} with entity id= {}", circulationItemId, circulationItem.getId());
     return ResponseEntity.status(HttpStatus.OK)
-            .body(circulationItemService.updateCirculationItem(circulationItemId, circulationItem));
+            .body(circulationItemServiceImpl.updateCirculationItem(circulationItemId, circulationItem));
   }
 }

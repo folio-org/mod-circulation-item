@@ -11,7 +11,7 @@ paths:
         $ref: "#/components/requestBodies/CirculationItemBody"
       responses:
         '201':
-          description: ""
+          description: Circulation Item created successfully
           content:
             application/json:
               schema:
@@ -35,13 +35,13 @@ paths:
       operationId: retrieveCirculationItemById
       responses:
         '200':
-          description: ""
+          description: Circulation Item updated successfully
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/circulationItem"
         '404':
-          description: Resource not found
+          description: Circulation Item not found
           content:
             application/json:
               schema:
@@ -55,7 +55,7 @@ paths:
     put:
       responses:
         '200':
-          description: ""
+          description: Circulation Item updated successfully
           content:
             application/json:
               schema:
