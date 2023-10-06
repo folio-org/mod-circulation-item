@@ -43,7 +43,7 @@ class CirculationItemControllerTest extends BaseIT {
     }
 
     @Test
-    void retrieveCirculationItemTest() throws Exception {
+    void retrieveCirculationItemSuccessTest() throws Exception {
         var id = UUID.randomUUID();
         this.mockMvc.perform(
                         post(URI_TEMPLATE_CIRCULATION_ITEM + id)

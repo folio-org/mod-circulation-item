@@ -27,13 +27,13 @@ public class CirculationItemsService {
   private final CirculationItemsMapper circulationItemsMapper;
 
   public CirculationItem getCirculationItemById(String id) {
-    var item = getCirculationItemEntityOrThrow(id);
+    var item = getCirculationItemEntityOrNull(id);
     return circulationItemsMapper.mapEntityToDto(item);
   }
 
-  private Item getCirculationItemEntityOrThrow(String id) {
+  private Item getCirculationItemEntityOrNull(String id) {
     return circulationItemsRepository.findById(UUID.fromString(id))
-           .orElseThrow(() -> new NotFoundException(String.format("Circulation Item was not found by id= %s ", id)));
+           .orElse(null);
   }
 
 
