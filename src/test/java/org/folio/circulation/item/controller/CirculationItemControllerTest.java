@@ -100,7 +100,7 @@ class CirculationItemControllerTest extends BaseIT {
                 .andExpect(jsonPath("$.materialTypeId").value("materialTypeId_TEST_UPD"))
                 .andExpect(jsonPath("$.itemBarcode").value("itemBarcode_TEST_UPD"));
 
-        //Update existed circulation item with IdMismatchException.
+        //Update existed circulation item with different ids provided by request. IdMismatchException expected.
         this.mockMvc.perform(
                         put(URI_TEMPLATE_CIRCULATION_ITEM + id)
                                 .content(asJsonString(createCirculationItemForUpdate(UUID.randomUUID())))
@@ -109,6 +109,17 @@ class CirculationItemControllerTest extends BaseIT {
                                 .accept(MediaType.APPLICATION_JSON))
                 .andExpectAll(status().is4xxClientError(),
                         jsonPath("$.errors[0].code", is("VALIDATION_ERROR")));
+
+        //Update not existed circulation item. NotFoundException expected.
+        var notExistedItemId = UUID.randomUUID();
+        this.mockMvc.perform(
+                        put(URI_TEMPLATE_CIRCULATION_ITEM + notExistedItemId)
+                                .content(asJsonString(createCirculationItemForUpdate(notExistedItemId)))
+                                .headers(defaultHeaders())
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON))
+                .andExpectAll(status().is4xxClientError(),
+                        jsonPath("$.errors[0].code", is("NOT_FOUND_ERROR")));
     }
 
 }

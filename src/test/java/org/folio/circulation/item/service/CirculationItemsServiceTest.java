@@ -98,9 +98,10 @@ class CirculationItemsServiceTest {
     void idMismatchExceptionWhileCirculationItemCreationTest(){
         var ciIdUnique_1 = UUID.randomUUID().toString();
         var ciIdUnique_2 = UUID.randomUUID();
+        var circulationItem = createCirculationItem(ciIdUnique_2);
 
         Throwable exception = assertThrows(
-                IdMismatchException.class, () -> circulationItemsService.createCirculationItem(ciIdUnique_1, createCirculationItem(ciIdUnique_2))
+                IdMismatchException.class, () -> circulationItemsService.createCirculationItem(ciIdUnique_1, circulationItem)
         );
 
         Assertions.assertEquals(String.format("Request id= %s and entity id= %s are not equal", ciIdUnique_1, ciIdUnique_2), exception.getMessage());
@@ -110,11 +111,13 @@ class CirculationItemsServiceTest {
     void circulationItemDoesntExistDuringUpdateNotFoundExceptionTest(){
         var ciIdUnique = UUID.randomUUID();
         var ciIdUniqueString = String.valueOf(ciIdUnique);
+        var circulationItem = createCirculationItem(ciIdUnique);
 
         when(circulationItemsRepository.existsById(ciIdUnique)).thenReturn(false);
 
+
         Throwable exception = assertThrows(
-                NotFoundException.class, () -> circulationItemsService.updateCirculationItem(ciIdUniqueString, createCirculationItem(ciIdUnique))
+                NotFoundException.class, () -> circulationItemsService.updateCirculationItem(ciIdUniqueString, circulationItem)
         );
 
         Assertions.assertEquals(String.format("Circulation item with id %s doesn't exist", ciIdUnique), exception.getMessage());
