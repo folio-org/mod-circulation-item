@@ -2,55 +2,40 @@ openapi: 3.0.0
 info:
   title: Circulation item API
   version: v1
-servers:
-  - url: /circulation-item
 paths:
-  /circulation-item:
-    get:
-      responses:
-        '200':
-          description: ""
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/circulationItems"
-        '500':
-          description: Internal server error
-          content:
-            text/plain:
-              schema:
-                type: string
-                example: Internal server error
-      description: Get a list of circulation items
-      operationId: getCirculationItems
-      parameters:
-        - $ref: "#/components/parameters/trait_pageable_offset"
-        - $ref: "#/components/parameters/trait_pageable_limit"
-        - $ref: "#/components/parameters/trait_queryable_query"
+  /circulation-item/{circulationItemId}:
     post:
       description: Add new circulation item
-      operationId: postCirculationItem
+      operationId: createCirculationItem
       requestBody:
-          $ref: "#/components/requestBodies/CirculationItemBody"
+        $ref: "#/components/requestBodies/CirculationItemBody"
       responses:
         '201':
-          description: ""
+          description: Circulation Item created successfully
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/circulationItem"
         '400':
-          $ref: "#/components/responses/BadRequest"
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "schemas/common.yaml#/Error"
         '422':
           $ref: "#/components/responses/trait_validate_422"
         '500':
-          $ref: '#/components/responses/InternalServerError'
-
-  /{itemId}:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "schemas/common.yaml#/Error"
     get:
+      description: Retrieve circulation item
+      operationId: retrieveCirculationItemById
       responses:
         '200':
-          description: ""
+          description: Circulation Item retrieved successfully
           content:
             application/json:
               schema:
@@ -58,27 +43,23 @@ paths:
         '404':
           description: Circulation Item not found
           content:
-            text/plain:
+            application/json:
               schema:
-                type: string
-                example: Circulation Item not found
+                $ref: "schemas/common.yaml#/Error"
         '500':
           description: Internal server error
           content:
-            text/plain:
+            application/json:
               schema:
-                type: string
-                example: Internal server error
-      operationId: getCirculationItemById
+                $ref: "schemas/common.yaml#/Error"
     put:
       responses:
-        '204':
-          description: No content
+        '200':
+          description: Circulation Item updated successfully
           content:
-            text/plain:
+            application/json:
               schema:
-                type: string
-                example: No content
+                $ref: "#/components/schemas/circulationItem"
         '400':
           description: Bad request
           content:
@@ -101,39 +82,15 @@ paths:
                 type: string
                 example: Internal server error
       description: Change the circulation item
-      operationId: putCirculationItem
+      operationId: updateCirculationItem
       requestBody:
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/circulationItem"
         required: true
-    delete:
-      responses:
-        '204':
-          description: No content
-          content:
-            text/plain:
-              schema:
-                type: string
-                example: No content
-        '404':
-          description: Circulation Item not found
-          content:
-            text/plain:
-              schema:
-                type: string
-                example: Circulation Item not found
-        '500':
-          description: Internal server error
-          content:
-            text/plain:
-              schema:
-                type: string
-                example: Internal server error
-      operationId: deleteCirculationItemById
     parameters:
-      - name: itemId
+      - name: circulationItemId
         in: path
         required: true
         schema:
@@ -148,13 +105,13 @@ components:
           example: examples/errors.sample
           schema:
             $ref: "#/components/schemas/errors"
-    BadRequest:
+    '400':
       description: Bad request
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/errors"
-    InternalServerError:
+    '500':
       description: Internal server error
       content:
         application/json:
