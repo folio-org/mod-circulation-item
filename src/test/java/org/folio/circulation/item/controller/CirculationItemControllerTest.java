@@ -79,7 +79,7 @@ class CirculationItemControllerTest extends BaseIT {
       .andExpect(jsonPath("$.itemBarcode").value("itemBarcode_TEST"));
 
     mockMvc.perform(
-        get(URI_TEMPLATE_CIRCULATION_ITEM + "barcode/" + "itemBarcode_TEST")
+        get(URI_TEMPLATE_CIRCULATION_ITEM + "barcode/" + circulationItem.getItemBarcode())
           .headers(defaultHeaders())
           .contentType(MediaType.APPLICATION_JSON))
       .andExpect(status().isOk());
@@ -89,11 +89,21 @@ class CirculationItemControllerTest extends BaseIT {
     void retrieveCirculationItemNotFoundTest() throws Exception {
         var id = UUID.randomUUID();
         mockMvc.perform(
-                        get(URI_TEMPLATE_CIRCULATION_ITEM + id)
+                        get(URI_TEMPLATE_CIRCULATION_ITEM + "barcode/" + id)
                                 .headers(defaultHeaders())
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
+
+  @Test
+  void getCirculationItemByBarcodeNotFoundTest() throws Exception {
+    var barcode = UUID.randomUUID();
+    mockMvc.perform(
+        get(URI_TEMPLATE_CIRCULATION_ITEM + "barcode/" + barcode)
+          .headers(defaultHeaders())
+          .contentType(MediaType.APPLICATION_JSON))
+      .andExpect(status().isNotFound());
+  }
 
     @Test
     void updateCirculationItemTest() throws Exception {
