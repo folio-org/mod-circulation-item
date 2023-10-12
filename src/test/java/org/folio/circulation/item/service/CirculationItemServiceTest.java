@@ -96,7 +96,7 @@ class CirculationItemServiceTest {
 
     var ciInstance = circulationItemServiceImpl.getCirculationItemByBarcode(item.getItemBarcode());
     assertNotNull(ciInstance);
-    assertEquals("TEST", ciInstance.getStatus());
+    assertEquals(barcode, ciInstance.getItemBarcode());
   }
 
     @Test
