@@ -63,6 +63,28 @@ class CirculationItemControllerTest extends BaseIT {
                 .andExpect(status().isOk());
     }
 
+  @Test
+  void getCirculationItemByBarcode() throws Exception {
+    var id = UUID.randomUUID();
+    org.folio.circulation.item.domain.dto.CirculationItem circulationItem = createCirculationItem(id);
+    this.mockMvc.perform(
+        post(URI_TEMPLATE_CIRCULATION_ITEM + id)
+          .content(asJsonString(circulationItem))
+          .headers(defaultHeaders())
+          .contentType(MediaType.APPLICATION_JSON)
+          .accept(MediaType.APPLICATION_JSON))
+      .andExpect(status().isCreated())
+      .andExpect(jsonPath("$.status").value("TEST"))
+      .andExpect(jsonPath("$.materialTypeId").value("materialTypeId_TEST"))
+      .andExpect(jsonPath("$.itemBarcode").value("itemBarcode_TEST"));
+
+    mockMvc.perform(
+        get(URI_TEMPLATE_CIRCULATION_ITEM + "barcode/" + "itemBarcode_TEST")
+          .headers(defaultHeaders())
+          .contentType(MediaType.APPLICATION_JSON))
+      .andExpect(status().isOk());
+  }
+
     @Test
     void retrieveCirculationItemNotFoundTest() throws Exception {
         var id = UUID.randomUUID();

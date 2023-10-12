@@ -8,10 +8,10 @@ import java.util.UUID;
 import org.folio.circulation.item.domain.entity.Item;
 import org.folio.circulation.item.domain.mapper.CirculationItemMapper;
 import org.folio.circulation.item.exception.IdMismatchException;
-import org.folio.circulation.item.exception.ResourceAlreadyExistException;
 import org.folio.circulation.item.repository.CirculationItemRepository;
 import org.folio.circulation.item.service.CirculationItemService;
-import org.folio.rs.domain.dto.CirculationItem;
+import org.folio.circulation.item.exception.ResourceAlreadyExistException;
+import org.folio.circulation.item.domain.dto.CirculationItem;
 import org.folio.spring.exception.NotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -33,9 +33,20 @@ public class CirculationItemServiceImpl implements CirculationItemService {
     return circulationItemMapper.mapEntityToDto(item);
   }
 
+  @Override
+  public CirculationItem getCirculationItemByBarcode(String barcode) {
+    var item = getCirculationItemEntityByBarcodeOrNull(barcode);
+    return circulationItemMapper.mapEntityToDto(item);
+  }
+
   private Item getCirculationItemEntityOrNull(String id) {
     return circulationItemRepository.findById(UUID.fromString(id))
            .orElse(null);
+  }
+
+  private Item getCirculationItemEntityByBarcodeOrNull(String barcode) {
+    return circulationItemRepository.findByItemBarcode(barcode)
+      .orElse(null);
   }
 
 

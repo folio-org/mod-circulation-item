@@ -3,6 +3,35 @@ info:
   title: Circulation item API
   version: v1
 paths:
+  /circulation-item/barcode/{barcode}:
+    get:
+      description: Get circulation item by barcode
+      operationId: getCirculationItemByBarcode
+      responses:
+        '200':
+          description: Circulation Item retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/circulationItem"
+        '404':
+          description: Circulation Item not found
+          content:
+            application/json:
+              schema:
+                $ref: "schemas/common.yaml#/Error"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "schemas/common.yaml#/Error"
+    parameters:
+      - name: barcode
+        in: path
+        required: true
+        schema:
+          type: string
   /circulation-item/{circulationItemId}:
     post:
       description: Add new circulation item

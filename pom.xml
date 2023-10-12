@@ -298,8 +298,8 @@
               <inputSpec>${circulation-item.yaml.file}</inputSpec>
               <output>${project.build.directory}/generated-sources</output>
               <generatorName>spring</generatorName>
-              <modelPackage>${project.groupId}.rs.domain.dto</modelPackage>
-              <apiPackage>${project.groupId}.rs.rest.resource</apiPackage>
+              <modelPackage>${project.groupId}.circulation.item.domain.dto</modelPackage>
+              <apiPackage>${project.groupId}.circulation.item.rest.resource</apiPackage>
               <generateApis>true</generateApis>
               <generateApiTests>true</generateApiTests>
               <generateApiDocumentation>true</generateApiDocumentation>
@@ -364,7 +364,7 @@
             </goals>
             <configuration>
               <sourceDirectory>${basedir}/src/main/resources/dto</sourceDirectory>
-              <targetPackage>org.folio.rs.dto</targetPackage>
+              <targetPackage>org.folio.circulation.item.dto</targetPackage>
             </configuration>
           </execution>
         </executions>

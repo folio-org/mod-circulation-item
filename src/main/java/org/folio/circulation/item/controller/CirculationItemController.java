@@ -3,8 +3,8 @@ package org.folio.circulation.item.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.folio.circulation.item.service.CirculationItemService;
-import org.folio.rs.domain.dto.CirculationItem;
-import org.folio.rs.rest.resource.CirculationItemApi;
+import org.folio.circulation.item.domain.dto.CirculationItem;
+import org.folio.circulation.item.rest.resource.CirculationItemApi;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,6 +33,16 @@ public class CirculationItemController implements CirculationItemApi {
             ResponseEntity.notFound().build() :
             ResponseEntity.status(HttpStatus.OK)
                     .body(circulationItem);
+  }
+
+  @Override
+  public ResponseEntity<CirculationItem> getCirculationItemByBarcode(String barcode) {
+    log.info("getCirculationItemByBarcode:: get circulationItem by barcode = {}", barcode);
+    var circulationItem = circulationItemServiceImpl.getCirculationItemByBarcode(barcode);
+    return isNull(circulationItem) ?
+      ResponseEntity.notFound().build() :
+      ResponseEntity.status(HttpStatus.OK)
+        .body(circulationItem);
   }
 
   @Override
