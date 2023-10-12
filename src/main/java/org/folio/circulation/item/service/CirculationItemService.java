@@ -7,9 +7,9 @@ public interface CirculationItemService {
 
     CirculationItem getCirculationItemByBarcode(String barcode);
 
-    CirculationItem createCirculationItem(String circulationItemId, org.folio.circulation.item.domain.dto.CirculationItem circulationItem);
+    CirculationItem createCirculationItem(String circulationItemId, CirculationItem circulationItem);
 
-    CirculationItem updateCirculationItem(String circulationItemId, org.folio.circulation.item.domain.dto.CirculationItem circulationItem);
+    CirculationItem updateCirculationItem(String circulationItemId, CirculationItem circulationItem);
 
 
 }
