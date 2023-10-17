@@ -2,8 +2,8 @@ package org.folio.circulation.item.utils;
 
 import lombok.Getter;
 import lombok.experimental.UtilityClass;
-import org.folio.rs.domain.dto.Error;
-import org.folio.rs.domain.dto.Errors;
+import org.folio.circulation.item.domain.dto.Error;
+import org.folio.circulation.item.domain.dto.Errors;
 
 import java.util.List;
 

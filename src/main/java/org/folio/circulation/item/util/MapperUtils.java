@@ -1,4 +1,4 @@
-package org.folio.util;
+package org.folio.circulation.item.util;
 
 import java.util.UUID;
 

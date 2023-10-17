@@ -1,5 +1,6 @@
 package org.folio.circulation.item.service;
 
+import org.folio.circulation.item.domain.entity.Item;
 import org.folio.circulation.item.domain.mapper.CirculationItemMapper;
 import org.folio.circulation.item.exception.IdMismatchException;
 import org.folio.circulation.item.repository.CirculationItemRepository;
@@ -83,6 +84,20 @@ class CirculationItemServiceTest {
         assertNotNull(ciInstance);
         assertEquals("TEST", ciInstance.getStatus());
     }
+
+  @Test
+  void shouldReturnCirculationItemByBarcodeTest(){
+    var ciIdUnique = UUID.randomUUID();
+    Item item = createCirculationEntityItem(ciIdUnique);
+    String barcode = item.getItemBarcode();
+    Optional<Item> itemOptional = Optional.ofNullable(item);
+    when(circulationItemRepository.findByItemBarcode(barcode)).thenReturn(itemOptional);
+    when(circulationItemMapper.mapEntityToDto(any())).thenReturn(createCirculationItem(ciIdUnique));
+
+    var ciInstance = circulationItemServiceImpl.getCirculationItemByBarcode(item.getItemBarcode());
+    assertNotNull(ciInstance);
+    assertEquals(barcode, ciInstance.getItemBarcode());
+  }
 
     @Test
     void getCirculationItemEmptyResultTest(){

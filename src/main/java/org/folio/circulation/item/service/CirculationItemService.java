@@ -1,11 +1,15 @@
 package org.folio.circulation.item.service;
 
-import org.folio.rs.domain.dto.CirculationItem;
+import org.folio.circulation.item.domain.dto.CirculationItem;
 
 public interface CirculationItemService {
     CirculationItem getCirculationItemById(String id);
 
-    CirculationItem createCirculationItem(String circulationItemId, org.folio.rs.domain.dto.CirculationItem circulationItem);
+    CirculationItem getCirculationItemByBarcode(String barcode);
 
-    CirculationItem updateCirculationItem(String circulationItemId, org.folio.rs.domain.dto.CirculationItem circulationItem);
+    CirculationItem createCirculationItem(String circulationItemId, CirculationItem circulationItem);
+
+    CirculationItem updateCirculationItem(String circulationItemId, CirculationItem circulationItem);
+
+
 }

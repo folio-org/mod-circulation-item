@@ -1,7 +1,7 @@
 package org.folio.circulation.item.utils;
 
 import org.folio.circulation.item.domain.entity.Item;
-import org.folio.rs.domain.dto.CirculationItem;
+import org.folio.circulation.item.domain.dto.CirculationItem;
 
 import java.util.UUID;
 

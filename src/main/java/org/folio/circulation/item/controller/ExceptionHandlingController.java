@@ -3,7 +3,7 @@ package org.folio.circulation.item.controller;
 import feign.FeignException;
 import lombok.extern.log4j.Log4j2;
 import org.folio.circulation.item.exception.IdMismatchException;
-import org.folio.rs.domain.dto.Errors;
+import org.folio.circulation.item.domain.dto.Errors;
 import org.folio.circulation.item.exception.ResourceAlreadyExistException;
 import org.folio.spring.exception.NotFoundException;
 import org.springframework.http.HttpStatus;
