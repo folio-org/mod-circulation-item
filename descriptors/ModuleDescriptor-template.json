@@ -42,7 +42,7 @@
       "handlers": [
         {
           "methods": ["POST"],
-          "pathPattern": "/circulation-item",
+          "pathPattern": "/circulation-item/{itemId}",
           "permissionsRequired": ["circulation-item-storage.items.item.post"]
         },
         {
