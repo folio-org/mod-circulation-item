@@ -13,7 +13,16 @@
     },
     "status": {
       "description": "status",
-      "type": "string"
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "date": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
     },
     "materialTypeId": {
       "description": "material type id",
@@ -27,7 +36,7 @@
       "description": "instance title",
       "type": "string"
     },
-    "itemBarcode": {
+    "barcode": {
       "description": "item barcode",
       "type": "string"
     },

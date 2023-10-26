@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CirculationItemRepository extends JpaRepository<Item, UUID> {
-  Optional<Item> findByItemBarcode(String barcode);
+  Optional<Item> findByBarcode(String barcode);
 
 }

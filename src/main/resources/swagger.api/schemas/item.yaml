@@ -9,14 +9,14 @@ CirculationItem:
       type: "string"
       format: "uuid"
     status:
-      type: "string"
+      $ref: "itemStatus.yaml#/ItemStatus"
     materialTypeId:
       type: "string"
     permanentLoanTypeId:
       type: "string"
     instanceTitle:
       type: "string"
-    itemBarcode:
+    barcode:
       type: "string"
     pickupLocation:
       type: "string"
@@ -35,4 +35,15 @@ CirculationItemCollection:
         $ref: "item.yaml#/CirculationItem"
     totalRecords:
       type: "integer"
+  additionalProperties: false
+
+Status:
+  type: "object"
+  description: "Status"
+  properties:
+    name:
+      type: "string"
+    date:
+      type: "string"
+      format: "date-time"
   additionalProperties: false

@@ -3,7 +3,7 @@ info:
   title: Circulation item API
   version: v1
 paths:
-  /circulation-item/barcode/{barcode}:
+  /circulation-item:
     get:
       description: Get circulation item by barcode
       operationId: getCirculationItemByBarcode
@@ -28,7 +28,7 @@ paths:
                 $ref: "schemas/common.yaml#/Error"
     parameters:
       - name: barcode
-        in: path
+        in: query
         required: true
         schema:
           type: string

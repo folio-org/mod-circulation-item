@@ -1,5 +1,6 @@
 package org.folio.circulation.item.service;
 
+import org.folio.circulation.item.domain.dto.ItemStatus;
 import org.folio.circulation.item.domain.entity.Item;
 import org.folio.circulation.item.domain.mapper.CirculationItemMapper;
 import org.folio.circulation.item.exception.IdMismatchException;
@@ -48,7 +49,7 @@ class CirculationItemServiceTest {
 
         var ciInstance = circulationItemServiceImpl.createCirculationItem(String.valueOf(ciIdUnique), createCirculationItem(ciIdUnique));
         assertNotNull(ciInstance);
-        assertEquals("TEST", ciInstance.getStatus());
+        assertEquals(ItemStatus.NameEnum.AVAILABLE, ciInstance.getStatus().getName());
     }
 
     @Test
@@ -69,7 +70,7 @@ class CirculationItemServiceTest {
         var ciInstanceUpdated = circulationItemServiceImpl.updateCirculationItem(String.valueOf(ciIdUnique), createCirculationItem(ciIdUnique));
 
         assertNotNull(ciInstanceUpdated);
-        assertEquals("TEST_UPD", ciInstanceUpdated.getStatus());
+        assertEquals(ItemStatus.NameEnum.IN_TRANSIT, ciInstanceUpdated.getStatus().getName());
     }
 
     @Test
@@ -82,21 +83,21 @@ class CirculationItemServiceTest {
 
         var ciInstance = circulationItemServiceImpl.getCirculationItemById(String.valueOf(ciIdUnique));
         assertNotNull(ciInstance);
-        assertEquals("TEST", ciInstance.getStatus());
+        assertEquals(ItemStatus.NameEnum.AVAILABLE, ciInstance.getStatus().getName());
     }
 
   @Test
   void shouldReturnCirculationItemByBarcodeTest(){
     var ciIdUnique = UUID.randomUUID();
     Item item = createCirculationEntityItem(ciIdUnique);
-    String barcode = item.getItemBarcode();
+    String barcode = item.getBarcode();
     Optional<Item> itemOptional = Optional.ofNullable(item);
-    when(circulationItemRepository.findByItemBarcode(barcode)).thenReturn(itemOptional);
+    when(circulationItemRepository.findByBarcode(barcode)).thenReturn(itemOptional);
     when(circulationItemMapper.mapEntityToDto(any())).thenReturn(createCirculationItem(ciIdUnique));
 
-    var ciInstance = circulationItemServiceImpl.getCirculationItemByBarcode(item.getItemBarcode());
+    var ciInstance = circulationItemServiceImpl.getCirculationItemByBarcode(item.getBarcode());
     assertNotNull(ciInstance);
-    assertEquals(barcode, ciInstance.getItemBarcode());
+    assertEquals(barcode, ciInstance.getBarcode());
   }
 
     @Test

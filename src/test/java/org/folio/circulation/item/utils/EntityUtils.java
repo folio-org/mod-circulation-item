@@ -1,8 +1,10 @@
 package org.folio.circulation.item.utils;
 
+import org.folio.circulation.item.domain.dto.ItemStatus;
 import org.folio.circulation.item.domain.entity.Item;
 import org.folio.circulation.item.domain.dto.CirculationItem;
 
+import java.util.Date;
 import java.util.UUID;
 
 public class EntityUtils {
@@ -12,11 +14,11 @@ public class EntityUtils {
     return CirculationItem.builder()
             .id(id)
             .holdingsRecordId(HOLDINGS_RECORD_ID)
-            .status("TEST")
+            .status(org.folio.circulation.item.domain.dto.ItemStatus.builder().name(ItemStatus.NameEnum.AVAILABLE).date(new Date()).build())
             .materialTypeId("materialTypeId_TEST")
             .permanentLoanTypeId("permanentLoanTypeId_TEST")
             .instanceTitle("instanceTitle_TEST")
-            .itemBarcode("itemBarcode_TEST")
+            .barcode("itemBarcode_TEST")
             .pickupLocation("pickupLocation_TEST")
             .build();
   }
@@ -25,11 +27,11 @@ public class EntityUtils {
     return CirculationItem.builder()
             .id(id)
             .holdingsRecordId(HOLDINGS_RECORD_ID)
-            .status("TEST_UPD")
+            .status(org.folio.circulation.item.domain.dto.ItemStatus.builder().name(ItemStatus.NameEnum.IN_TRANSIT).date(new Date()).build())
             .materialTypeId("materialTypeId_TEST_UPD")
             .permanentLoanTypeId("permanentLoanTypeId_TEST_UPD")
             .instanceTitle("instanceTitle_TEST_UPD")
-            .itemBarcode("itemBarcode_TEST_UPD")
+            .barcode("itemBarcode_TEST_UPD")
             .pickupLocation("pickupLocation_TEST_UPD")
             .build();
   }
@@ -38,11 +40,11 @@ public class EntityUtils {
     return Item.builder()
             .id(id)
             .holdingsRecordId(HOLDINGS_RECORD_ID)
-            .status("TEST_UPD")
+            .status(ItemStatus.NameEnum.AVAILABLE.name())
             .materialTypeId("materialTypeId_TEST_UPD")
             .permanentLoanTypeId("permanentLoanTypeId_TEST_UPD")
             .instanceTitle("instanceTitle_TEST_UPD")
-            .itemBarcode("itemBarcode_TEST_UPD")
+            .barcode("itemBarcode_TEST_UPD")
             .pickupLocation("pickupLocation_TEST_UPD")
             .build();
   }  public static Item createCirculationEntityItem(UUID id) {
@@ -53,7 +55,7 @@ public class EntityUtils {
             .materialTypeId("materialTypeId_TEST")
             .permanentLoanTypeId("permanentLoanTypeId_TEST")
             .instanceTitle("instanceTitle_TEST")
-            .itemBarcode("itemBarcode_TEST")
+            .barcode("itemBarcode_TEST")
             .pickupLocation("pickupLocation_TEST")
             .build();
   }

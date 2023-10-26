@@ -1,5 +1,6 @@
 package org.folio.circulation.item.controller;
 
+import org.folio.circulation.item.domain.dto.ItemStatus;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 
@@ -27,9 +28,9 @@ class CirculationItemControllerTest extends BaseIT {
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.status").value("TEST"))
+                .andExpect(jsonPath("$.status.name").value(ItemStatus.NameEnum.AVAILABLE.getValue()))
                 .andExpect(jsonPath("$.materialTypeId").value("materialTypeId_TEST"))
-                .andExpect(jsonPath("$.itemBarcode").value("itemBarcode_TEST"));
+                .andExpect(jsonPath("$.barcode").value("itemBarcode_TEST"));
 
         //Trying to create another circulation item with same circulation item id
         this.mockMvc.perform(
@@ -52,9 +53,9 @@ class CirculationItemControllerTest extends BaseIT {
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.status").value("TEST"))
+                .andExpect(jsonPath("$.status.name").value(ItemStatus.NameEnum.AVAILABLE.getValue()))
                 .andExpect(jsonPath("$.materialTypeId").value("materialTypeId_TEST"))
-                .andExpect(jsonPath("$.itemBarcode").value("itemBarcode_TEST"));
+                .andExpect(jsonPath("$.barcode").value("itemBarcode_TEST"));
 
         mockMvc.perform(
                         get(URI_TEMPLATE_CIRCULATION_ITEM + id)
@@ -74,12 +75,12 @@ class CirculationItemControllerTest extends BaseIT {
           .contentType(MediaType.APPLICATION_JSON)
           .accept(MediaType.APPLICATION_JSON))
       .andExpect(status().isCreated())
-      .andExpect(jsonPath("$.status").value("TEST"))
+      .andExpect(jsonPath("$.status.name").value(ItemStatus.NameEnum.AVAILABLE.getValue()))
       .andExpect(jsonPath("$.materialTypeId").value("materialTypeId_TEST"))
-      .andExpect(jsonPath("$.itemBarcode").value("itemBarcode_TEST"));
+      .andExpect(jsonPath("$.barcode").value("itemBarcode_TEST"));
 
     mockMvc.perform(
-        get(URI_TEMPLATE_CIRCULATION_ITEM + "barcode/" + circulationItem.getItemBarcode())
+        get( "/circulation-item?barcode=" + circulationItem.getBarcode())
           .headers(defaultHeaders())
           .contentType(MediaType.APPLICATION_JSON))
       .andExpect(status().isOk());
@@ -116,9 +117,9 @@ class CirculationItemControllerTest extends BaseIT {
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.status").value("TEST"))
+                .andExpect(jsonPath("$.status.name").value(ItemStatus.NameEnum.AVAILABLE.getValue()))
                 .andExpect(jsonPath("$.materialTypeId").value("materialTypeId_TEST"))
-                .andExpect(jsonPath("$.itemBarcode").value("itemBarcode_TEST"));
+                .andExpect(jsonPath("$.barcode").value("itemBarcode_TEST"));
 
         //Update existed circulation item with success.
         this.mockMvc.perform(
@@ -128,9 +129,9 @@ class CirculationItemControllerTest extends BaseIT {
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.status").value("TEST_UPD"))
+                .andExpect(jsonPath("$.status.name").value(ItemStatus.NameEnum.IN_TRANSIT.getValue()))
                 .andExpect(jsonPath("$.materialTypeId").value("materialTypeId_TEST_UPD"))
-                .andExpect(jsonPath("$.itemBarcode").value("itemBarcode_TEST_UPD"));
+                .andExpect(jsonPath("$.barcode").value("itemBarcode_TEST_UPD"));
 
         //Update existed circulation item with different ids provided by request. IdMismatchException expected.
         this.mockMvc.perform(
