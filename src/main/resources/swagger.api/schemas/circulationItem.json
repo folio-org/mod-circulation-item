@@ -16,9 +16,11 @@
       "type": "object",
       "properties": {
         "name": {
+          "description": "Enum name of status",
           "type": "string"
         },
         "date": {
+          "description": "Date status",
           "type": "string",
           "format": "date-time"
         }
