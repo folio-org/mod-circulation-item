@@ -2,14 +2,43 @@ package org.folio.circulation.item.domain.mapper;
 
 import org.folio.circulation.item.domain.entity.Item;
 import org.folio.circulation.item.domain.dto.CirculationItem;
-import org.mapstruct.Mapper;
-import org.mapstruct.NullValueCheckStrategy;
+import org.folio.circulation.item.utils.DCBConstants;
+import org.springframework.stereotype.Component;
+import org.folio.circulation.item.domain.dto.ItemStatus;
 
-@Mapper(componentModel = "spring", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
-public interface CirculationItemMapper {
+import java.util.Date;
 
-  CirculationItem mapEntityToDto(Item circulationItem);
+@Component
+public class CirculationItemMapper {
 
-  Item mapDtoToEntity(CirculationItem circulationItem);
+  public CirculationItem mapEntityToDto(Item circulationItem) {
 
+    if(circulationItem == null) return null;
+
+    return CirculationItem.builder()
+      .id(circulationItem.getId())
+      .holdingsRecordId(circulationItem.getHoldingsRecordId())
+      .status(ItemStatus.builder().name(ItemStatus.NameEnum.fromValue(circulationItem.getStatus())).date(new Date()).build())
+      .materialTypeId(circulationItem.getMaterialTypeId())
+      .permanentLoanTypeId(circulationItem.getPermanentLoanTypeId())
+      .instanceTitle(circulationItem.getInstanceTitle())
+      .barcode(circulationItem.getBarcode())
+      .pickupLocation(circulationItem.getPickupLocation())
+      .dcbItem(true)
+      .effectiveLocationId(DCBConstants.LOCATION_ID)
+      .build();
+  }
+
+  public Item mapDtoToEntity(CirculationItem circulationItem){
+    return Item.builder()
+      .id(circulationItem.getId())
+      .holdingsRecordId(circulationItem.getHoldingsRecordId())
+      .status(circulationItem.getStatus().getName().getValue())
+      .materialTypeId(circulationItem.getMaterialTypeId())
+      .permanentLoanTypeId(circulationItem.getPermanentLoanTypeId())
+      .instanceTitle(circulationItem.getInstanceTitle())
+      .barcode(circulationItem.getBarcode())
+      .pickupLocation(circulationItem.getPickupLocation())
+      .build();
+  }
 }

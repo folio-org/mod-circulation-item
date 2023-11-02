@@ -27,7 +27,7 @@
       <column name="instance_title" type="text">
         <constraints nullable="false"/>
       </column>
-      <column name="item_barcode" type="text">
+      <column name="barcode" type="text">
         <constraints nullable="false"/>
       </column>
       <column name="pickup_location" type="text">

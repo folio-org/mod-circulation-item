@@ -7,7 +7,7 @@
      "materialTypeId": "123r",
      "permanentLoanTypeId": "3456",
      "instanceTitle": "Ins1",
-     "itemBarcode": "ABC1",
+     "barcode": "ABC1",
      "pickupLocation": "LOC1"
    }
   ],

@@ -45,7 +45,7 @@ public class CirculationItemServiceImpl implements CirculationItemService {
   }
 
   private Item getCirculationItemEntityByBarcodeOrNull(String barcode) {
-    return circulationItemRepository.findByItemBarcode(barcode)
+    return circulationItemRepository.findByBarcode(barcode)
       .orElse(null);
   }
 

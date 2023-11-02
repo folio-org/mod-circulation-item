@@ -13,7 +13,18 @@
     },
     "status": {
       "description": "status",
-      "type": "string"
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "Enum name of status",
+          "type": "string"
+        },
+        "date": {
+          "description": "Date status",
+          "type": "string",
+          "format": "date-time"
+        }
+      }
     },
     "materialTypeId": {
       "description": "material type id",
@@ -27,7 +38,7 @@
       "description": "instance title",
       "type": "string"
     },
-    "itemBarcode": {
+    "barcode": {
       "description": "item barcode",
       "type": "string"
     },
