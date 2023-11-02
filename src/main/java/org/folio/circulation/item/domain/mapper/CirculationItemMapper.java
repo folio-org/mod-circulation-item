@@ -2,6 +2,7 @@ package org.folio.circulation.item.domain.mapper;
 
 import org.folio.circulation.item.domain.entity.Item;
 import org.folio.circulation.item.domain.dto.CirculationItem;
+import org.folio.circulation.item.utils.DCBConstants;
 import org.springframework.stereotype.Component;
 import org.folio.circulation.item.domain.dto.ItemStatus;
 
@@ -23,6 +24,8 @@ public class CirculationItemMapper {
       .instanceTitle(circulationItem.getInstanceTitle())
       .barcode(circulationItem.getBarcode())
       .pickupLocation(circulationItem.getPickupLocation())
+      .dcbItem(true)
+      .effectiveLocationId(DCBConstants.LOCATION_ID)
       .build();
   }
 

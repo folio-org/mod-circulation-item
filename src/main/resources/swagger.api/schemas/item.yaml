@@ -10,6 +10,8 @@ CirculationItem:
       format: "uuid"
     status:
       $ref: "itemStatus.yaml#/ItemStatus"
+    dcbItem:
+      type: "boolean"
     materialTypeId:
       type: "string"
     permanentLoanTypeId:
@@ -19,6 +21,8 @@ CirculationItem:
     barcode:
       type: "string"
     pickupLocation:
+      type: "string"
+    effectiveLocationId:
       type: "string"
   additionalProperties: false
 
