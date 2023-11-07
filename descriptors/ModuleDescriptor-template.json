@@ -3,42 +3,18 @@
   "name": "Circulation Item API module",
   "requires": [
     {
-      "id": "inventory",
-      "version": "13.0"
-    },
-    {
-      "id": "users",
-      "version": "15.3 16.0"
-    },
-    {
-      "id": "authtoken",
-      "version": "2.0"
-    },
-    {
       "id": "login",
-      "version": "7.0"
+      "version": "7.3"
     },
     {
       "id": "permissions",
-      "version": "5.5"
-    },
-    {
-      "id": "locations",
-      "version": "3.0"
-    },
-    {
-      "id": "circulation",
-      "version": "13.0 14.0"
-    },
-    {
-      "id": "item-storage",
-      "version": "8.8 9.0 10.0"
+      "version": "5.6"
     }
   ],
   "provides": [
     {
       "id": "circulation-item",
-      "version": "1.1",
+      "version": "1.0",
       "handlers": [
         {
           "methods": ["POST"],
@@ -76,18 +52,7 @@
         {
           "methods": ["POST"],
           "pathPattern": "/_/tenant",
-          "modulePermissions": [
-            "users.collection.get",
-            "users.item.post",
-            "users.item.put",
-            "login.item.post",
-            "login.item.delete",
-            "perms.users.item.post",
-            "perms.users.assign.immutable",
-            "pubsub.event-types.post",
-            "pubsub.subscribers.post",
-            "pubsub.publishers.post"
-          ]
+          "modulePermissions": [ ]
         }, {
           "methods": ["GET", "DELETE"],
           "pathPattern": "/_/tenant/{id}"
