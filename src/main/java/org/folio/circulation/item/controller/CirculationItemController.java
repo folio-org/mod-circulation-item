@@ -2,6 +2,7 @@ package org.folio.circulation.item.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.folio.circulation.item.domain.dto.CirculationItems;
 import org.folio.circulation.item.service.CirculationItemService;
 import org.folio.circulation.item.domain.dto.CirculationItem;
 import org.folio.circulation.item.rest.resource.CirculationItemApi;
@@ -33,6 +34,12 @@ public class CirculationItemController implements CirculationItemApi {
             ResponseEntity.notFound().build() :
             ResponseEntity.status(HttpStatus.OK)
                     .body(circulationItem);
+  }
+
+  @Override
+  public ResponseEntity<CirculationItems> getCirculationItemsByQuery(String query, Integer offset, Integer limit) {
+    return ResponseEntity.status(HttpStatus.OK)
+      .body(circulationItemServiceImpl.getCirculationItems(query, offset, limit));
   }
 
   @Override

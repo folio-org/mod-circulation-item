@@ -2,9 +2,11 @@ package org.folio.circulation.item.service.impl;
 
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+import org.folio.circulation.item.domain.dto.CirculationItems;
 import org.folio.circulation.item.domain.entity.Item;
 import org.folio.circulation.item.domain.mapper.CirculationItemMapper;
 import org.folio.circulation.item.exception.IdMismatchException;
@@ -12,6 +14,7 @@ import org.folio.circulation.item.repository.CirculationItemRepository;
 import org.folio.circulation.item.service.CirculationItemService;
 import org.folio.circulation.item.exception.ResourceAlreadyExistException;
 import org.folio.circulation.item.domain.dto.CirculationItem;
+import org.folio.spring.data.OffsetRequest;
 import org.folio.spring.exception.NotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +40,15 @@ public class CirculationItemServiceImpl implements CirculationItemService {
   public CirculationItem getCirculationItemByBarcode(String barcode) {
     var item = getCirculationItemEntityByBarcodeOrNull(barcode);
     return circulationItemMapper.mapEntityToDto(item);
+  }
+
+  @Override
+  public CirculationItems getCirculationItems(String query, Integer offset, Integer limit) {
+    var result = new CirculationItems();
+    List<CirculationItem> circulationItems = circulationItemRepository.findByCql(query, OffsetRequest.of(offset, limit)).stream().map(circulationItemMapper::mapEntityToDto).toList();
+    result.setItems(circulationItems);
+    result.setTotalRecords(circulationItems.size());
+    return result;
   }
 
   private Item getCirculationItemEntityOrNull(String id) {
