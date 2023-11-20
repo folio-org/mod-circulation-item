@@ -18,7 +18,7 @@ public class EntityUtils {
             .materialTypeId("materialTypeId_TEST")
             .permanentLoanTypeId("permanentLoanTypeId_TEST")
             .instanceTitle("instanceTitle_TEST")
-            .barcode(UUID.randomUUID().toString())
+            .barcode("itemBarcode_TEST")
             .pickupLocation("pickupLocation_TEST")
             .build();
   }

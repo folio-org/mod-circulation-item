@@ -1,5 +1,6 @@
 package org.folio.circulation.item.controller;
 
+import org.folio.circulation.item.domain.dto.CirculationItem;
 import org.folio.circulation.item.domain.dto.ItemStatus;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
@@ -67,19 +68,21 @@ class CirculationItemControllerTest extends BaseIT {
   @Test
   void retrieveCirculationItemSuccessByQueryTest() throws Exception {
     var id = UUID.randomUUID();
+    CirculationItem item = createCirculationItem(id);
+    item.setBarcode("0000");
     this.mockMvc.perform(
         post(URI_TEMPLATE_CIRCULATION_ITEM + id)
-          .content(asJsonString(createCirculationItem(id)))
+          .content(asJsonString(item))
           .headers(defaultHeaders())
           .contentType(MediaType.APPLICATION_JSON)
           .accept(MediaType.APPLICATION_JSON))
       .andExpect(status().isCreated())
       .andExpect(jsonPath("$.status.name").value(ItemStatus.NameEnum.AVAILABLE.getValue()))
       .andExpect(jsonPath("$.materialTypeId").value("materialTypeId_TEST"))
-      .andExpect(jsonPath("$.barcode").value("itemBarcode_TEST"));
+      .andExpect(jsonPath("$.barcode").value("0000"));
 
     mockMvc.perform(
-        get(URI_TEMPLATE_CIRCULATION_ITEM + "/items??query=id=="+id)
+        get(URI_TEMPLATE_CIRCULATION_ITEM + "/items?query=id=="+id)
           .headers(defaultHeaders())
           .contentType(MediaType.APPLICATION_JSON))
       .andExpect(status().isOk());
