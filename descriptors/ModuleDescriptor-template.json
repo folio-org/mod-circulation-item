@@ -33,6 +33,11 @@
         },
         {
           "methods": ["GET"],
+          "pathPattern": "/circulation-item/items",
+          "permissionsRequired": ["circulation-items-storage.items.collection.get"]
+        },
+        {
+          "methods": ["GET"],
           "pathPattern": "/circulation-item/{itemId}",
           "permissionsRequired": ["circulation-item-storage.items.item.get"]
         },
@@ -63,6 +68,11 @@
   "permissionSets": [
     {
       "permissionName": "circulation-item-storage.items.collection.get",
+      "displayName": "inventory storage - get item collection",
+      "description": "get item collection from storage"
+    },
+    {
+      "permissionName": "circulation-items-storage.items.collection.get",
       "displayName": "inventory storage - get item collection",
       "description": "get item collection from storage"
     },

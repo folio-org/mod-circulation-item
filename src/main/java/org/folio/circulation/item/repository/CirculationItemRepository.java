@@ -4,11 +4,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.folio.circulation.item.domain.entity.Item;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.folio.spring.cql.JpaCqlRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CirculationItemRepository extends JpaRepository<Item, UUID> {
+public interface CirculationItemRepository extends JpaCqlRepository<Item, UUID> {
   Optional<Item> findByBarcode(String barcode);
-
 }

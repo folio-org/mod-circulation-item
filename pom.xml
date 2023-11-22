@@ -35,6 +35,7 @@
     <snakeyaml.version>1.33</snakeyaml.version>
     <hazelcast.version>5.2.1</hazelcast.version>
     <folio-util.version>35.0.3</folio-util.version>
+    <folio-spring-support.version>7.2.0</folio-spring-support.version>
 
     <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
     <maven-resources-plugin.version>3.3.0</maven-resources-plugin.version>
@@ -70,6 +71,12 @@
           <artifactId>logback-classic</artifactId>
         </exclusion>
       </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>org.folio</groupId>
+      <artifactId>folio-spring-cql</artifactId>
+      <version>${folio-spring-support.version}</version>
     </dependency>
 
     <dependency>
