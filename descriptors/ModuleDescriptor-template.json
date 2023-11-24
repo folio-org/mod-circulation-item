@@ -29,12 +29,12 @@
         {
           "methods": ["GET"],
           "pathPattern": "/circulation-item",
-          "permissionsRequired": ["circulation-item-storage.items.collection.get"]
+          "permissionsRequired": ["circulation-item-storage.item.collection.get"]
         },
         {
           "methods": ["GET"],
           "pathPattern": "/circulation-item/items",
-          "permissionsRequired": ["circulation-items-storage.items.collection.get"]
+          "permissionsRequired": ["circulation-item-storage.items.collection.get"]
         },
         {
           "methods": ["GET"],
