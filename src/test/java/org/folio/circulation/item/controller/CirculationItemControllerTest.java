@@ -45,6 +45,30 @@ class CirculationItemControllerTest extends BaseIT {
   }
 
   @Test
+  void createCirculationItemWithSameBarcodeTest() throws Exception {
+    var id = UUID.randomUUID();
+    this.mockMvc.perform(
+        post(URI_TEMPLATE_CIRCULATION_ITEM + id)
+          .content(asJsonString(createCirculationItem(id)))
+          .headers(defaultHeaders())
+          .contentType(MediaType.APPLICATION_JSON)
+          .accept(MediaType.APPLICATION_JSON))
+      .andExpect(status().isCreated())
+      .andExpect(jsonPath("$.status.name").value(ItemStatus.NameEnum.AVAILABLE.getValue()))
+      .andExpect(jsonPath("$.materialTypeId").value("materialTypeId_TEST"))
+      .andExpect(jsonPath("$.barcode").value("itemBarcode_TEST"));
+
+    //Trying to create another circulation item with same barcode and different item id
+    this.mockMvc.perform(
+        post(URI_TEMPLATE_CIRCULATION_ITEM + UUID.randomUUID())
+          .content(asJsonString(createCirculationItem(id)))
+          .headers(defaultHeaders())
+          .contentType(MediaType.APPLICATION_JSON)
+          .accept(MediaType.APPLICATION_JSON))
+      .andExpectAll(status().isBadRequest());
+  }
+
+  @Test
   void retrieveCirculationItemSuccessTest() throws Exception {
       var id = UUID.randomUUID();
       this.mockMvc.perform(

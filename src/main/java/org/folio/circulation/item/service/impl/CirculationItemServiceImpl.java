@@ -75,6 +75,11 @@ public class CirculationItemServiceImpl implements CirculationItemService {
         String.format("Unable to create circulation item with id %s as it already exists", circulationItemId));
     }
 
+    if(checkIfItemExistsByBarcode(circulationItem.getBarcode())){
+      throw new ResourceAlreadyExistException(
+        String.format("Unable to create circulation item with barcode %s as it already exists", circulationItem.getBarcode()));
+    }
+
     var circulationItemEntity = circulationItemMapper.mapDtoToEntity(circulationItem);
     circulationItemEntity.setCreatedDate(LocalDateTime.now());
 
@@ -99,6 +104,10 @@ public class CirculationItemServiceImpl implements CirculationItemService {
 
   private boolean checkIfItemExists(String circulationItemId) {
     return circulationItemRepository.existsById(UUID.fromString(circulationItemId));
+  }
+
+  private boolean checkIfItemExistsByBarcode(String barcode) {
+    return circulationItemRepository.findByBarcode(barcode).isPresent();
   }
 
   private static void checkForIdMismatch(String circulationItemId, CirculationItem circulationItem) {
