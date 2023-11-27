@@ -1,5 +1,6 @@
 package org.folio.circulation.item.controller;
 
+import org.apache.commons.lang.RandomStringUtils;
 import org.folio.circulation.item.domain.dto.CirculationItem;
 import org.folio.circulation.item.domain.dto.ItemStatus;
 import org.junit.jupiter.api.Test;
@@ -22,16 +23,19 @@ class CirculationItemControllerTest extends BaseIT {
   @Test
   void createCirculationItemTest() throws Exception {
       var id = UUID.randomUUID();
+      var barcode = RandomStringUtils.randomAlphabetic(10).toUpperCase();
+      var circulationItemRequest = createCirculationItem(id);
+      circulationItemRequest.setBarcode(barcode);
       this.mockMvc.perform(
                       post(URI_TEMPLATE_CIRCULATION_ITEM + id)
-                              .content(asJsonString(createCirculationItem(id)))
+                              .content(asJsonString(circulationItemRequest))
                               .headers(defaultHeaders())
                               .contentType(MediaType.APPLICATION_JSON)
                               .accept(MediaType.APPLICATION_JSON))
               .andExpect(status().isCreated())
               .andExpect(jsonPath("$.status.name").value(ItemStatus.NameEnum.AVAILABLE.getValue()))
               .andExpect(jsonPath("$.materialTypeId").value("materialTypeId_TEST"))
-              .andExpect(jsonPath("$.barcode").value("itemBarcode_TEST"));
+              .andExpect(jsonPath("$.barcode").value(barcode));
 
       //Trying to create another circulation item with same circulation item id
       this.mockMvc.perform(
@@ -45,18 +49,51 @@ class CirculationItemControllerTest extends BaseIT {
   }
 
   @Test
+  void createCirculationItemWithSameBarcodeTest() throws Exception {
+    var id = UUID.randomUUID();
+    var barcode = RandomStringUtils.randomAlphabetic(10).toUpperCase();
+    var circulationItemRequest = createCirculationItem(id);
+    circulationItemRequest.setBarcode(barcode);
+    this.mockMvc.perform(
+        post(URI_TEMPLATE_CIRCULATION_ITEM + id)
+          .content(asJsonString(circulationItemRequest))
+          .headers(defaultHeaders())
+          .contentType(MediaType.APPLICATION_JSON)
+          .accept(MediaType.APPLICATION_JSON))
+      .andExpect(status().isCreated())
+      .andExpect(jsonPath("$.status.name").value(ItemStatus.NameEnum.AVAILABLE.getValue()))
+      .andExpect(jsonPath("$.materialTypeId").value("materialTypeId_TEST"))
+      .andExpect(jsonPath("$.barcode").value(barcode));
+
+    //Trying to create another circulation item with same barcode and different item id
+    id = UUID.randomUUID();
+    circulationItemRequest.setId(id);
+    this.mockMvc.perform(
+        post(URI_TEMPLATE_CIRCULATION_ITEM + id)
+          .content(asJsonString(circulationItemRequest))
+          .headers(defaultHeaders())
+          .contentType(MediaType.APPLICATION_JSON)
+          .accept(MediaType.APPLICATION_JSON))
+      .andExpectAll(status().is4xxClientError(),
+        jsonPath("$.errors[0].code", is("DUPLICATE_ERROR")));
+  }
+
+  @Test
   void retrieveCirculationItemSuccessTest() throws Exception {
-      var id = UUID.randomUUID();
+    var id = UUID.randomUUID();
+    var barcode = RandomStringUtils.randomAlphabetic(10).toUpperCase();
+    var circulationItemRequest = createCirculationItem(id);
+    circulationItemRequest.setBarcode(barcode);
       this.mockMvc.perform(
                       post(URI_TEMPLATE_CIRCULATION_ITEM + id)
-                              .content(asJsonString(createCirculationItem(id)))
+                              .content(asJsonString(circulationItemRequest))
                               .headers(defaultHeaders())
                               .contentType(MediaType.APPLICATION_JSON)
                               .accept(MediaType.APPLICATION_JSON))
               .andExpect(status().isCreated())
               .andExpect(jsonPath("$.status.name").value(ItemStatus.NameEnum.AVAILABLE.getValue()))
               .andExpect(jsonPath("$.materialTypeId").value("materialTypeId_TEST"))
-              .andExpect(jsonPath("$.barcode").value("itemBarcode_TEST"));
+              .andExpect(jsonPath("$.barcode").value(barcode));
 
       mockMvc.perform(
                       get(URI_TEMPLATE_CIRCULATION_ITEM + id)
@@ -91,20 +128,22 @@ class CirculationItemControllerTest extends BaseIT {
   @Test
   void getCirculationItemByBarcode() throws Exception {
     var id = UUID.randomUUID();
-    org.folio.circulation.item.domain.dto.CirculationItem circulationItem = createCirculationItem(id);
+    var barcode = RandomStringUtils.randomAlphabetic(10).toUpperCase();
+    var circulationItemRequest = createCirculationItem(id);
+    circulationItemRequest.setBarcode(barcode);
     this.mockMvc.perform(
         post(URI_TEMPLATE_CIRCULATION_ITEM + id)
-          .content(asJsonString(circulationItem))
+          .content(asJsonString(circulationItemRequest))
           .headers(defaultHeaders())
           .contentType(MediaType.APPLICATION_JSON)
           .accept(MediaType.APPLICATION_JSON))
       .andExpect(status().isCreated())
       .andExpect(jsonPath("$.status.name").value(ItemStatus.NameEnum.AVAILABLE.getValue()))
       .andExpect(jsonPath("$.materialTypeId").value("materialTypeId_TEST"))
-      .andExpect(jsonPath("$.barcode").value("itemBarcode_TEST"));
+      .andExpect(jsonPath("$.barcode").value(barcode));
 
     mockMvc.perform(
-        get( "/circulation-item?barcode=" + circulationItem.getBarcode())
+        get( "/circulation-item?barcode=" + circulationItemRequest.getBarcode())
           .headers(defaultHeaders())
           .contentType(MediaType.APPLICATION_JSON))
       .andExpect(status().isOk());
@@ -133,17 +172,20 @@ class CirculationItemControllerTest extends BaseIT {
     @Test
     void updateCirculationItemTest() throws Exception {
         var id = UUID.randomUUID();
+        var barcode = RandomStringUtils.randomAlphabetic(10).toUpperCase();
+        var circulationItemRequest = createCirculationItem(id);
+        circulationItemRequest.setBarcode(barcode);
         //Set up brand-new circulation item.
         this.mockMvc.perform(
                         post(URI_TEMPLATE_CIRCULATION_ITEM + id)
-                                .content(asJsonString(createCirculationItem(id)))
+                                .content(asJsonString(circulationItemRequest))
                                 .headers(defaultHeaders())
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.status.name").value(ItemStatus.NameEnum.AVAILABLE.getValue()))
                 .andExpect(jsonPath("$.materialTypeId").value("materialTypeId_TEST"))
-                .andExpect(jsonPath("$.barcode").value("itemBarcode_TEST"));
+                .andExpect(jsonPath("$.barcode").value(barcode));
 
         //Update existed circulation item with success.
         this.mockMvc.perform(
