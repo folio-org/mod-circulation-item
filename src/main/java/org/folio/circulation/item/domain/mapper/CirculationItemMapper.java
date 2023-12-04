@@ -26,6 +26,7 @@ public class CirculationItemMapper {
       .pickupLocation(circulationItem.getPickupLocation())
       .dcbItem(true)
       .effectiveLocationId(DCBConstants.LOCATION_ID)
+      .lendingLibraryCode(circulationItem.getLendingLibraryCode())
       .build();
   }
 
@@ -39,6 +40,7 @@ public class CirculationItemMapper {
       .instanceTitle(circulationItem.getInstanceTitle())
       .barcode(circulationItem.getBarcode())
       .pickupLocation(circulationItem.getPickupLocation())
+      .lendingLibraryCode(circulationItem.getLendingLibraryCode())
       .build();
   }
 }

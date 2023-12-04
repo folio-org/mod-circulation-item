@@ -46,6 +46,10 @@
       "description": "pickup location",
       "type": "string"
     },
+    "lendingLibraryCode": {
+      "description": "5 digit agency code which identifies the lending library",
+      "type": "string"
+    },
     "metadata": {
       "description": "Entity metadata",
       "type": "object",
