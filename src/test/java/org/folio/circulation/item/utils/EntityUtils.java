@@ -34,6 +34,7 @@ public class EntityUtils {
             .instanceTitle("instanceTitle_TEST_UPD")
             .barcode("itemBarcode_TEST_UPD")
             .pickupLocation("pickupLocation_TEST_UPD")
+            .lendingLibraryCode("123456")
             .build();
   }
 
