@@ -19,33 +19,27 @@
         {
           "methods": ["POST"],
           "pathPattern": "/circulation-item/{itemId}",
-          "permissionsRequired": ["circulation-item-storage.items.item.post"]
+          "permissionsRequired": ["circulation-item.item.post"]
         },
         {
           "methods": ["PUT"],
           "pathPattern": "/circulation-item/{itemId}",
-          "permissionsRequired": ["circulation-item-storage.items.item.put"]
+          "permissionsRequired": ["circulation-item.item.put"]
         },
         {
           "methods": ["GET"],
           "pathPattern": "/circulation-item",
-          "permissionsRequired": ["circulation-item-storage.item.collection.get"]
+          "permissionsRequired": ["circulation-item.fetch-by-barcode.get"]
         },
         {
           "methods": ["GET"],
           "pathPattern": "/circulation-item/items",
-          "permissionsRequired": ["circulation-item-storage.items.collection.get"]
+          "permissionsRequired": ["circulation-item.items.collection.get"]
         },
         {
           "methods": ["GET"],
           "pathPattern": "/circulation-item/{itemId}",
-          "permissionsRequired": ["circulation-item-storage.items.item.get"]
-        },
-        {
-          "methods": ["DELETE"],
-          "pathPattern": "/circulation-item/{itemId}",
-          "permissionsRequired": ["circulation-item-storage.items.item.delete"],
-          "modulePermissions": []
+          "permissionsRequired": ["circulation-item.fetch-by-id.get"]
         }
       ]
     },
@@ -67,34 +61,29 @@
   ],
   "permissionSets": [
     {
-      "permissionName": "circulation-item-storage.items.collection.get",
-      "displayName": "inventory storage - get item collection",
-      "description": "get item collection from storage"
+      "permissionName": "circulation-item.items.collection.get",
+      "displayName": "circulation item - fetch circulation item collection",
+      "description": "fetch circulation item collection"
     },
     {
-      "permissionName": "circulation-items-storage.items.collection.get",
-      "displayName": "inventory storage - get item collection",
-      "description": "get item collection from storage"
+      "permissionName": "circulation-item.fetch-by-id.get",
+      "displayName": "circulation item - fetch circulation item by id",
+      "description": "fetch circulation item by id"
     },
     {
-      "permissionName": "circulation-item-storage.items.item.post",
-      "displayName": "inventory storage - create individual item",
-      "description": "create individual item in storage"
+      "permissionName": "circulation-item.item.post",
+      "displayName": "create circulation item",
+      "description": "create circulation item"
     },
     {
-      "permissionName": "circulation-item-storage.items.item.put",
-      "displayName": "inventory storage - modify item",
-      "description": "modify item in storage"
+      "permissionName": "circulation-item.item.put",
+      "displayName": "update circulation item",
+      "description": "update circulation item"
     },
     {
-      "permissionName": "circulation-item-storage.items.item.get",
-      "displayName": "inventory storage - get individual item",
-      "description": "get individual item from storage"
-    },
-    {
-      "permissionName": "circulation-item-storage.items.item.delete",
-      "displayName": "inventory storage - delete individual item",
-      "description": "delete individual item from storage"
+      "permissionName": "circulation-item.fetch-by-barcode.get",
+      "displayName": "circulation item - fetch circulation item by barcode",
+      "description": "fetch circulation item by barcode"
     }
   ],
   "launchDescriptor": {
@@ -112,19 +101,9 @@
       },
       { "name": "DB_HOST", "value": "postgres" },
       { "name": "DB_PORT", "value": "5432" },
-      { "name": "KAFKA_HOST", "value": "kafka"},
-      { "name": "KAFKA_PORT", "value": "9092"},
-      { "name": "KAFKA_SECURITY_PROTOCOL", "value": "PLAINTEXT"},
-      { "name": "KAFKA_SSL_KEYSTORE_LOCATION", "value": ""},
-      { "name": "KAFKA_SSL_KEYSTORE_PASSWORD", "value": ""},
-      { "name": "KAFKA_SSL_TRUSTSTORE_LOCATION", "value": ""},
-      { "name": "KAFKA_SSL_TRUSTSTORE_PASSWORD", "value": ""},
       { "name": "DB_USERNAME", "value": "folio_admin" },
       { "name": "DB_PASSWORD", "value": "folio_admin" },
       { "name": "DB_DATABASE", "value": "okapi_modules" },
-      { "name": "DB_QUERYTIMEOUT", "value": "60000" },
-      { "name": "DB_CHARSET", "value": "UTF-8" },
-      { "name": "DB_MAXPOOLSIZE", "value": "5" },
       {
         "name": "OKAPI_URL",
         "value": "http://okapi:9130"
