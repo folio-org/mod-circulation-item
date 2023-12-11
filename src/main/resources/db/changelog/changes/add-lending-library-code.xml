@@ -8,7 +8,7 @@
   <changeSet id="addLendingLibraryCodeColumn" author="magzhanArtykov">
     <addColumn tableName="circulation_item">
       <column name="lending_library_code" type="text">
-        <constraints nullable="false"/>
+        <constraints nullable="true"/>
       </column>
     </addColumn>
   </changeSet>
