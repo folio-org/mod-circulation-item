@@ -4,6 +4,13 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
-  <include file="changes/create-circulation-item-table.xml" relativeToChangelogFile="true"/>
-  <include file="changes/add-lending-library-code.xml" relativeToChangelogFile="true"/>
+  <!-- Add agencyCode column -->
+  <changeSet id="addLendingLibraryCodeColumn" author="magzhanArtykov">
+    <addColumn tableName="circulation_item">
+      <column name="lending_library_code" type="text">
+        <constraints nullable="true"/>
+      </column>
+    </addColumn>
+  </changeSet>
+
 </databaseChangeLog>

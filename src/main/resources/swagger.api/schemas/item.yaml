@@ -24,6 +24,8 @@ CirculationItem:
       type: "string"
     effectiveLocationId:
       type: "string"
+    lendingLibraryCode:
+      type: "string"
   additionalProperties: false
 
 
