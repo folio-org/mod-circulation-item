@@ -29,17 +29,12 @@
         {
           "methods": ["GET"],
           "pathPattern": "/circulation-item",
-          "permissionsRequired": ["circulation-item.fetch-by-barcode.get"]
-        },
-        {
-          "methods": ["GET"],
-          "pathPattern": "/circulation-item/items",
-          "permissionsRequired": ["circulation-item.items.collection.get"]
+          "permissionsRequired": ["circulation-item.collection.get"]
         },
         {
           "methods": ["GET"],
           "pathPattern": "/circulation-item/{itemId}",
-          "permissionsRequired": ["circulation-item.fetch-by-id.get"]
+          "permissionsRequired": ["circulation-item.item.get"]
         }
       ]
     },
@@ -61,14 +56,25 @@
   ],
   "permissionSets": [
     {
-      "permissionName": "circulation-item.items.collection.get",
-      "displayName": "circulation item - fetch circulation item collection",
-      "description": "fetch circulation item collection"
+      "permissionName": "circulation-item.all",
+      "displayName": "circulation item - all permissions",
+      "description": "All permissions for circulation item module",
+      "subPermissions": [
+        "circulation-item.collection.get",
+        "circulation-item.item.get",
+        "circulation-item.item.post",
+        "circulation-item.item.put"
+      ]
     },
     {
-      "permissionName": "circulation-item.fetch-by-id.get",
-      "displayName": "circulation item - fetch circulation item by id",
-      "description": "fetch circulation item by id"
+      "permissionName": "circulation-item.collection.get",
+      "displayName": "circulation item - get item collection",
+      "description": "get circulation item collection"
+    },
+    {
+      "permissionName": "circulation-item.item.get",
+      "displayName": "circulation item - get individual circulation item",
+      "description": "get individual circulation item"
     },
     {
       "permissionName": "circulation-item.item.post",
@@ -79,11 +85,6 @@
       "permissionName": "circulation-item.item.put",
       "displayName": "update circulation item",
       "description": "update circulation item"
-    },
-    {
-      "permissionName": "circulation-item.fetch-by-barcode.get",
-      "displayName": "circulation item - fetch circulation item by barcode",
-      "description": "fetch circulation item by barcode"
     }
   ],
   "launchDescriptor": {
