@@ -119,7 +119,7 @@ class CirculationItemControllerTest extends BaseIT {
       .andExpect(jsonPath("$.barcode").value("0000"));
 
     mockMvc.perform(
-        get(URI_TEMPLATE_CIRCULATION_ITEM + "/items?query=id=="+id)
+        get("/circulation-item?query=id=="+id)
           .headers(defaultHeaders())
           .contentType(MediaType.APPLICATION_JSON))
       .andExpect(status().isOk());
