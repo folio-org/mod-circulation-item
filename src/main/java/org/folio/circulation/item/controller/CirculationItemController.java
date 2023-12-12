@@ -43,16 +43,6 @@ public class CirculationItemController implements CirculationItemApi {
   }
 
   @Override
-  public ResponseEntity<CirculationItem> getCirculationItemByBarcode(String barcode) {
-    log.info("getCirculationItemByBarcode:: get circulationItem by barcode = {}", barcode);
-    var circulationItem = circulationItemServiceImpl.getCirculationItemByBarcode(barcode);
-    return isNull(circulationItem) ?
-      ResponseEntity.notFound().build() :
-      ResponseEntity.status(HttpStatus.OK)
-        .body(circulationItem);
-  }
-
-  @Override
   public ResponseEntity<CirculationItem> updateCirculationItem(String circulationItemId, CirculationItem circulationItem) {
     log.info("updateCirculationItem:: updating circulationItem by Request id= {} with entity id= {}", circulationItemId, circulationItem.getId());
     return ResponseEntity.status(HttpStatus.OK)
