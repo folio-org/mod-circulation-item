@@ -61,17 +61,19 @@ requires and provides, the permissions, and the additional module metadata.
 
 ### Environment variables
 
-| Name                   |    Default value    | Description                                                                                                                                                                |
-|:-----------------------|:-------------------:|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| DB_HOST                |      postgres       | Postgres hostname                                                                                                                                                          |
-| DB_PORT                |        5432         | Postgres port                                                                                                                                                              |
-| DB_USERNAME            |     folio_admin     | Postgres username                                                                                                                                                          |
-| DB_PASSWORD            |          -          | Postgres username password                                                                                                                                                 |
-| DB_DATABASE            |    okapi_modules    | Postgres database name                                                                                                                                                     |
-| ENV                    |        folio        | Environment. Logical name of the deployment, must be set if Kafka/Elasticsearch are shared for environments, `a-z (any case)`, `0-9`, `-`, `_` symbols only allowed        |
-| DB_QUERYTIMEOUT        |        60000        | Username of the system user                                                                                                                                                |
-| SYSTEM\_USER\_PASSWORD |          -          | Password of the system user                                                                                                                                                |
-| ACTUATOR\_EXPOSURE     | health,info,loggers | Back End Module Health Check Protocol                                                                                                                                      |
+| Name                        | Default value | Description                                                                                                                                                         |
+|:----------------------------|:-------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| DB_HOST                     |   postgres    | Postgres hostname                                                                                                                                                   |
+| DB_PORT                     |     5432      | Postgres port                                                                                                                                                       |
+| DB_USERNAME                 |  folio_admin  | Postgres username                                                                                                                                                   |
+| DB_PASSWORD                 |       -       | Postgres username password                                                                                                                                          |
+| DB_DATABASE                 | okapi_modules | Postgres database name                                                                                                                                              |
+| DB_QUERYTIMEOUT             |     60000     | Database query timeout.                                                                                                                                             |
+| DB_CHARSET                  |     UTF-8     | Database charset                                                                                                                                                    |
+| DB_MAXPOOLSIZE              |       5       | This property controls the maximum size that the pool is allowed to reach, including both idle and in-use connections                                               |
+| ENV                         |     folio     | Environment. Logical name of the deployment, must be set if Kafka/Elasticsearch are shared for environments, `a-z (any case)`, `0-9`, `-`, `_` symbols only allowed |
+| OKAPI_URL                   |       -       | Okapi URL                                                                                                                                                           |
+## Additional information
 
 ### Issue tracker
 
