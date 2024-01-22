@@ -30,15 +30,10 @@
     <wiremock.version>2.27.2</wiremock.version>
     <testcontainers.version>1.17.6</testcontainers.version>
     <embedded.db.version>2.2.0</embedded.db.version>
-    <postgresql.version>42.5.4</postgresql.version>
     <pubsub.client.version>2.7.0</pubsub.client.version>
-    <snakeyaml.version>1.33</snakeyaml.version>
-    <hazelcast.version>5.2.1</hazelcast.version>
     <folio-util.version>35.0.3</folio-util.version>
     <folio-spring-support.version>7.2.0</folio-spring-support.version>
 
-    <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
-    <maven-resources-plugin.version>3.3.0</maven-resources-plugin.version>
     <copy-rename-maven-plugin.version>1.0</copy-rename-maven-plugin.version>
     <jsonschema2pojo-maven-plugin.version>1.1.2</jsonschema2pojo-maven-plugin.version>
     <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
