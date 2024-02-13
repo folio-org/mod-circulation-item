@@ -1,6 +1,6 @@
 package org.folio.circulation.item.controller;
 
-import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.folio.circulation.item.domain.dto.CirculationItem;
 import org.folio.circulation.item.domain.dto.ItemStatus;
 import org.junit.jupiter.api.Test;

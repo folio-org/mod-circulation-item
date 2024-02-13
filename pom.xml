@@ -30,7 +30,6 @@
     <wiremock.version>2.27.2</wiremock.version>
     <testcontainers.version>1.17.6</testcontainers.version>
     <embedded.db.version>2.2.0</embedded.db.version>
-    <pubsub.client.version>2.7.0</pubsub.client.version>
     <folio-util.version>35.0.3</folio-util.version>
     <folio-spring-support.version>7.2.0</folio-spring-support.version>
 
@@ -86,6 +85,12 @@
           <artifactId>spring-boot-starter-logging</artifactId>
         </exclusion>
       </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>3.12.0</version>
     </dependency>
 
     <dependency>
