@@ -37,8 +37,6 @@
     <copy-rename-maven-plugin.version>1.0</copy-rename-maven-plugin.version>
     <jsonschema2pojo-maven-plugin.version>1.1.2</jsonschema2pojo-maven-plugin.version>
     <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
-    <sonar.exclusions>src/main/java/org/folio/rs/domain/**, src/main/java/org/folio/rs/client/AuthnClient.java,
-      src/main/java/org/folio/rs/config/properties/**, src/main/java/org/folio/rs/service/PubSubService.java, src/main/java/org/folio/rs/error/PubSubException.java </sonar.exclusions>
     <circulation-item.yaml.file>src/main/resources/swagger.api/circulation-item.yaml</circulation-item.yaml.file>
   </properties>
 
@@ -47,10 +45,6 @@
       <groupId>org.folio</groupId>
       <artifactId>folio-spring-base</artifactId>
       <version>${folio-spring-base.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.kafka</groupId>
-      <artifactId>spring-kafka</artifactId>
     </dependency>
 
     <dependency>
@@ -192,14 +186,6 @@
       <artifactId>wiremock-standalone</artifactId>
       <version>${wiremock.version}</version>
       <scope>test</scope>
-    </dependency>
-
-
-    <dependency>
-      <groupId>org.folio</groupId>
-      <artifactId>mod-pubsub-client</artifactId>
-      <version>${pubsub.client.version}</version>
-      <type>jar</type>
     </dependency>
 
   </dependencies>
