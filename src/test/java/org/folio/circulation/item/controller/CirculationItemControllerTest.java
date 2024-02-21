@@ -126,7 +126,7 @@ class CirculationItemControllerTest extends BaseIT {
   }
 
   @Test
-  void getCirculationItemByBarcode() throws Exception {
+  void getCirculationItemByBarcodeUsingCqlQuery() throws Exception {
     var id = UUID.randomUUID();
     var barcode = RandomStringUtils.randomAlphabetic(10).toUpperCase();
     var circulationItemRequest = createCirculationItem(id);
@@ -143,7 +143,7 @@ class CirculationItemControllerTest extends BaseIT {
       .andExpect(jsonPath("$.barcode").value(barcode));
 
     mockMvc.perform(
-        get( "/circulation-item?barcode=" + circulationItemRequest.getBarcode())
+        get( "/circulation-item?query=barcode==" + circulationItemRequest.getBarcode())
           .headers(defaultHeaders())
           .contentType(MediaType.APPLICATION_JSON))
       .andExpect(status().isOk());
@@ -153,7 +153,7 @@ class CirculationItemControllerTest extends BaseIT {
     void retrieveCirculationItemNotFoundTest() throws Exception {
         var id = UUID.randomUUID();
         mockMvc.perform(
-                        get(URI_TEMPLATE_CIRCULATION_ITEM + "barcode/" + id)
+                        get(URI_TEMPLATE_CIRCULATION_ITEM  + id)
                                 .headers(defaultHeaders())
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
@@ -163,10 +163,12 @@ class CirculationItemControllerTest extends BaseIT {
   void getCirculationItemByBarcodeNotFoundTest() throws Exception {
     var barcode = UUID.randomUUID();
     mockMvc.perform(
-        get(URI_TEMPLATE_CIRCULATION_ITEM + "barcode/" + barcode)
+        get("/circulation-item?query=barcode==" + barcode)
           .headers(defaultHeaders())
           .contentType(MediaType.APPLICATION_JSON))
-      .andExpect(status().isNotFound());
+      .andExpect(status().isOk())
+      .andExpect(jsonPath("$.totalRecords").value(0))
+      .andExpect(jsonPath("$.items").isEmpty());
   }
 
     @Test
