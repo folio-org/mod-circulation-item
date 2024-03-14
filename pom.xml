@@ -28,7 +28,6 @@
     <openapi-generator.version>7.3.0</openapi-generator.version>
     <mapstruct.version>1.5.3.Final</mapstruct.version>
     <wiremock.version>3.4.2</wiremock.version>
-    <testcontainers.version>1.19.3</testcontainers.version>
     <embedded.db.version>2.2.0</embedded.db.version>
     <folio-util.version>35.0.3</folio-util.version>
     <commons-lang3.version>3.14.0</commons-lang3.version>
