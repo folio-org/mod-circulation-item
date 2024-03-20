@@ -12,7 +12,7 @@
   <groupId>org.folio</groupId>
   <artifactId>mod-circulation-item</artifactId>
   <name>mod-circulation-item</name>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <licenses>
