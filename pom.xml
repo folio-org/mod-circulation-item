@@ -29,7 +29,7 @@
     <mapstruct.version>1.6.2</mapstruct.version>
     <wiremock.version>3.4.2</wiremock.version>
     <folio-util.version>35.0.3</folio-util.version>
-    <commons-lang3.version>3.14.0</commons-lang3.version>
+    <commons-lang3.version>3.17.0</commons-lang3.version>
     <validation-api.version>2.0.1.Final</validation-api.version>
 
     <copy-rename-maven-plugin.version>1.0.1</copy-rename-maven-plugin.version>
