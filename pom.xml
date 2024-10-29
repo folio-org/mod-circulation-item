@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.3.4</version>
+    <version>3.3.5</version>
     <relativePath />
   </parent>
 
@@ -28,7 +28,6 @@
     <openapi-generator.version>7.3.0</openapi-generator.version>
     <mapstruct.version>1.6.2</mapstruct.version>
     <wiremock.version>3.4.2</wiremock.version>
-    <embedded.db.version>2.5.0</embedded.db.version>
     <folio-util.version>35.0.3</folio-util.version>
     <commons-lang3.version>3.14.0</commons-lang3.version>
     <validation-api.version>2.0.1.Final</validation-api.version>
@@ -160,19 +159,6 @@
           <groupId>org.apache.logging.log4j</groupId>
           <artifactId>log4j-to-slf4j</artifactId>
         </exclusion>
-        <exclusion>
-          <groupId>ch.qos.logback</groupId>
-          <artifactId>logback-classic</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-
-    <dependency>
-      <groupId>io.zonky.test</groupId>
-      <artifactId>embedded-database-spring-test</artifactId>
-      <version>${embedded.db.version}</version>
-      <scope>test</scope>
-      <exclusions>
         <exclusion>
           <groupId>ch.qos.logback</groupId>
           <artifactId>logback-classic</artifactId>
