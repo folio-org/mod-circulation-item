@@ -28,7 +28,6 @@
     <openapi-generator.version>7.3.0</openapi-generator.version>
     <mapstruct.version>1.6.2</mapstruct.version>
     <wiremock.version>3.4.2</wiremock.version>
-    <folio-util.version>35.0.3</folio-util.version>
     <commons-lang3.version>3.17.0</commons-lang3.version>
     <validation-api.version>2.0.1.Final</validation-api.version>
 
@@ -136,13 +135,6 @@
       <groupId>com.hazelcast</groupId>
       <artifactId>hazelcast</artifactId>
       <version>${hazelcast.version}</version>
-    </dependency>
-
-    <!-- needed for org.folio.HttpStatus -->
-    <dependency>
-      <groupId>org.folio</groupId>
-      <artifactId>util</artifactId>
-      <version>${folio-util.version}</version>
     </dependency>
 
     <!-- Test dependencies -->
