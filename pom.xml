@@ -26,7 +26,7 @@
     <java.version>17</java.version>
     <folio-spring.version>8.2.0</folio-spring.version>
     <openapi-generator.version>7.3.0</openapi-generator.version>
-    <mapstruct.version>1.5.3.Final</mapstruct.version>
+    <mapstruct.version>1.6.2</mapstruct.version>
     <wiremock.version>3.4.2</wiremock.version>
     <embedded.db.version>2.2.0</embedded.db.version>
     <folio-util.version>35.0.3</folio-util.version>
@@ -35,7 +35,7 @@
 
     <copy-rename-maven-plugin.version>1.0.1</copy-rename-maven-plugin.version>
     <jsonschema2pojo-maven-plugin.version>1.1.2</jsonschema2pojo-maven-plugin.version>
-    <maven-release-plugin.version>3.0.1</maven-release-plugin.version>
+    <maven-release-plugin.version>3.1.1</maven-release-plugin.version>
     <circulation-item.yaml.file>src/main/resources/swagger.api/circulation-item.yaml</circulation-item.yaml.file>
   </properties>
 
