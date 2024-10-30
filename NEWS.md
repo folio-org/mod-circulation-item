@@ -1,3 +1,8 @@
+## v1.1.0 2024-10-30
+
+* MODCITEM-30 Update Spring support version for Ramsons
+* MODCITEM-32 Upgrade versions for Ramsons.
+
 ## v1.0.0 2024-03-20
 
 * MODCITEM-4 Upgraded version for spring-boot-starter-parent and folio-spring-base.version
