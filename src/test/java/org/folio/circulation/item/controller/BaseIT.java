@@ -23,7 +23,7 @@ import org.springframework.test.util.TestSocketUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Testcontainers;
-
+import java.util.Objects;
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -41,7 +41,8 @@ public class BaseIT {
   public static WireMockServer wireMockServer;
   protected static final String TOKEN = "test_token";
   public static final String TENANT = "diku";
-  protected static PostgreSQLContainer<?> postgreDBContainer = new PostgreSQLContainer<>("postgres:12-alpine");
+  protected static PostgreSQLContainer<?> postgreDBContainer = new PostgreSQLContainer<>(
+    Objects.toString(System.getenv("TESTCONTAINERS_POSTGRES_IMAGE"), "postgres:16-alpine"));
   public final static int WIRE_MOCK_PORT = TestSocketUtils.findAvailableTcpPort();
   protected static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().setSerializationInclusion(JsonInclude.Include.NON_NULL)
     .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
