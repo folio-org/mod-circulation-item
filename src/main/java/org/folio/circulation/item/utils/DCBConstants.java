@@ -4,6 +4,6 @@ public class DCBConstants {
 
   private DCBConstants() {}
 
-  public static final String LOCATION_ID = "53cf956f-c1df-410b-8bea-27f712cca7c0";
+  public static final String LOCATION_ID = "bdafb452-8e86-4417-84e6-721984bcc968";
 
 }
