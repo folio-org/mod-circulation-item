@@ -35,6 +35,8 @@
     <jsonschema2pojo-maven-plugin.version>1.1.2</jsonschema2pojo-maven-plugin.version>
     <maven-release-plugin.version>3.1.1</maven-release-plugin.version>
     <circulation-item.yaml.file>src/main/resources/swagger.api/circulation-item.yaml</circulation-item.yaml.file>
+    <maven.compiler.source>21</maven.compiler.source>
+    <maven.compiler.target>21</maven.compiler.target>
   </properties>
 
   <dependencies>
