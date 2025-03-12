@@ -1,3 +1,7 @@
+## v1.2.0 2025-03-XX
+
+* FOLIO-4232 Update Spring support version for Sunflower
+
 ## v1.1.0 2024-10-30
 
 * MODCITEM-30 Update Spring support version for Ramsons
@@ -23,11 +27,3 @@
 * MODCITEM-25 Upgrading dependencies for Quesnelia release
 * TCR-37 Changes made as per TC review comments
 * MODCITEM-25 Upgrading dependencies for Quesnelia release
-
-
-
-
-
-
-
-
