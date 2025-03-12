@@ -1,4 +1,4 @@
-## v1.2.0 2025-03-XX
+## v1.2.0 2025-03-XXXX
 
 * FOLIO-4232 Update Spring support version for Sunflower
 
