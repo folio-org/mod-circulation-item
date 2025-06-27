@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.4.3</version>
+    <version>3.5.3</version>
     <relativePath />
   </parent>
 
@@ -24,8 +24,8 @@
 
   <properties>
     <java.version>21</java.version>
-    <folio-spring.version>9.0.0</folio-spring.version>
-    <openapi-generator.version>7.3.0</openapi-generator.version>
+    <folio-spring.version>9.1.0</folio-spring.version>
+    <openapi-generator.version>7.14.0</openapi-generator.version>
     <mapstruct.version>1.6.3</mapstruct.version>
     <wiremock.version>3.12.1</wiremock.version>
     <commons-lang3.version>3.17.0</commons-lang3.version>
