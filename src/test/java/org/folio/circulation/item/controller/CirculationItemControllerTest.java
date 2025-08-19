@@ -1,5 +1,6 @@
 package org.folio.circulation.item.controller;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.folio.circulation.item.domain.dto.CirculationItem;
@@ -24,6 +25,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class CirculationItemControllerTest extends BaseIT {
 
   private static final String URI_TEMPLATE_CIRCULATION_ITEM = "/circulation-item/";
+
+  ObjectMapper mapper = new ObjectMapper();
+  {
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+  }
+
   @Test
   void createCirculationItemTest() throws Exception {
       var id = UUID.randomUUID();
@@ -132,7 +139,7 @@ class CirculationItemControllerTest extends BaseIT {
           .contentType(MediaType.APPLICATION_JSON))
       .andExpect(status().isOk()).andReturn();
     String response = result.getResponse().getContentAsString();
-    CirculationItems circulationItems = new ObjectMapper().readValue(response, CirculationItems.class);
+    CirculationItems circulationItems = mapper.readValue(response, CirculationItems.class);
 
     assertEquals(item.getEffectiveLocationId(), circulationItems.getItems().get(0).getEffectiveLocationId());
   }
@@ -162,7 +169,7 @@ class CirculationItemControllerTest extends BaseIT {
       .andExpect(status().isOk()).andReturn();
 
     String response = result.getResponse().getContentAsString();
-    CirculationItems circulationItems = new ObjectMapper().readValue(response, CirculationItems.class);
+    CirculationItems circulationItems = mapper.readValue(response, CirculationItems.class);
 
     assertEquals(circulationItemRequest.getEffectiveLocationId(), circulationItems.getItems().get(0).getEffectiveLocationId());
   }
