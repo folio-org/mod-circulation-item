@@ -1,16 +1,20 @@
 package org.folio.circulation.item.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.folio.circulation.item.domain.dto.CirculationItem;
+import org.folio.circulation.item.domain.dto.CirculationItems;
 import org.folio.circulation.item.domain.dto.ItemStatus;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.UUID;
 
 import static org.folio.circulation.item.utils.EntityUtils.createCirculationItem;
 import static org.folio.circulation.item.utils.EntityUtils.createCirculationItemForUpdate;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -35,7 +39,8 @@ class CirculationItemControllerTest extends BaseIT {
               .andExpect(status().isCreated())
               .andExpect(jsonPath("$.status.name").value(ItemStatus.NameEnum.AVAILABLE.getValue()))
               .andExpect(jsonPath("$.materialTypeId").value("materialTypeId_TEST"))
-              .andExpect(jsonPath("$.barcode").value(barcode));
+              .andExpect(jsonPath("$.barcode").value(barcode))
+              .andExpect(jsonPath("$.effectiveLocationId").value(circulationItemRequest.getEffectiveLocationId()));
 
       //Trying to create another circulation item with same circulation item id
       this.mockMvc.perform(
@@ -63,7 +68,8 @@ class CirculationItemControllerTest extends BaseIT {
       .andExpect(status().isCreated())
       .andExpect(jsonPath("$.status.name").value(ItemStatus.NameEnum.AVAILABLE.getValue()))
       .andExpect(jsonPath("$.materialTypeId").value("materialTypeId_TEST"))
-      .andExpect(jsonPath("$.barcode").value(barcode));
+      .andExpect(jsonPath("$.barcode").value(barcode))
+      .andExpect(jsonPath("$.effectiveLocationId").value(circulationItemRequest.getEffectiveLocationId()));
 
     //Trying to create another circulation item with same barcode and different item id
     id = UUID.randomUUID();
@@ -93,7 +99,8 @@ class CirculationItemControllerTest extends BaseIT {
               .andExpect(status().isCreated())
               .andExpect(jsonPath("$.status.name").value(ItemStatus.NameEnum.AVAILABLE.getValue()))
               .andExpect(jsonPath("$.materialTypeId").value("materialTypeId_TEST"))
-              .andExpect(jsonPath("$.barcode").value(barcode));
+              .andExpect(jsonPath("$.barcode").value(barcode))
+              .andExpect(jsonPath("$.effectiveLocationId").value(circulationItemRequest.getEffectiveLocationId()));
 
       mockMvc.perform(
                       get(URI_TEMPLATE_CIRCULATION_ITEM + id)
@@ -116,13 +123,18 @@ class CirculationItemControllerTest extends BaseIT {
       .andExpect(status().isCreated())
       .andExpect(jsonPath("$.status.name").value(ItemStatus.NameEnum.AVAILABLE.getValue()))
       .andExpect(jsonPath("$.materialTypeId").value("materialTypeId_TEST"))
-      .andExpect(jsonPath("$.barcode").value("0000"));
+      .andExpect(jsonPath("$.barcode").value("0000"))
+      .andExpect(jsonPath("$.effectiveLocationId").value(item.getEffectiveLocationId()));
 
-    mockMvc.perform(
+    MvcResult result = mockMvc.perform(
         get("/circulation-item?query=id=="+id)
           .headers(defaultHeaders())
           .contentType(MediaType.APPLICATION_JSON))
-      .andExpect(status().isOk());
+      .andExpect(status().isOk()).andReturn();
+    String response = result.getResponse().getContentAsString();
+    CirculationItems circulationItems = new ObjectMapper().readValue(response, CirculationItems.class);
+
+    assertEquals(item.getEffectiveLocationId(), circulationItems.getItems().get(0).getEffectiveLocationId());
   }
 
   @Test
@@ -140,13 +152,19 @@ class CirculationItemControllerTest extends BaseIT {
       .andExpect(status().isCreated())
       .andExpect(jsonPath("$.status.name").value(ItemStatus.NameEnum.AVAILABLE.getValue()))
       .andExpect(jsonPath("$.materialTypeId").value("materialTypeId_TEST"))
-      .andExpect(jsonPath("$.barcode").value(barcode));
+      .andExpect(jsonPath("$.barcode").value(barcode))
+      .andExpect(jsonPath("$.effectiveLocationId").value(circulationItemRequest.getEffectiveLocationId()));
 
-    mockMvc.perform(
+    MvcResult result = mockMvc.perform(
         get( "/circulation-item?query=barcode==" + circulationItemRequest.getBarcode())
           .headers(defaultHeaders())
           .contentType(MediaType.APPLICATION_JSON))
-      .andExpect(status().isOk());
+      .andExpect(status().isOk()).andReturn();
+
+    String response = result.getResponse().getContentAsString();
+    CirculationItems circulationItems = new ObjectMapper().readValue(response, CirculationItems.class);
+
+    assertEquals(circulationItemRequest.getEffectiveLocationId(), circulationItems.getItems().get(0).getEffectiveLocationId());
   }
 
     @Test
@@ -187,19 +205,22 @@ class CirculationItemControllerTest extends BaseIT {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.status.name").value(ItemStatus.NameEnum.AVAILABLE.getValue()))
                 .andExpect(jsonPath("$.materialTypeId").value("materialTypeId_TEST"))
-                .andExpect(jsonPath("$.barcode").value(barcode));
+                .andExpect(jsonPath("$.barcode").value(barcode))
+                .andExpect(jsonPath("$.effectiveLocationId").value(circulationItemRequest.getEffectiveLocationId()));
 
         //Update existed circulation item with success.
+        var updatedCirculationItemRequest = createCirculationItemForUpdate(id);
         this.mockMvc.perform(
                         put(URI_TEMPLATE_CIRCULATION_ITEM + id)
-                                .content(asJsonString(createCirculationItemForUpdate(id)))
+                                .content(asJsonString(updatedCirculationItemRequest))
                                 .headers(defaultHeaders())
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status.name").value(ItemStatus.NameEnum.IN_TRANSIT.getValue()))
                 .andExpect(jsonPath("$.materialTypeId").value("materialTypeId_TEST_UPD"))
-                .andExpect(jsonPath("$.barcode").value("itemBarcode_TEST_UPD"));
+                .andExpect(jsonPath("$.barcode").value("itemBarcode_TEST_UPD"))
+                .andExpect(jsonPath("$.effectiveLocationId").value(updatedCirculationItemRequest.getEffectiveLocationId()));
 
         //Update existed circulation item with different ids provided by request. IdMismatchException expected.
         this.mockMvc.perform(

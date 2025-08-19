@@ -38,5 +38,6 @@ public class Item extends AuditableEntity {
   private String barcode;
   private String pickupLocation;
   private String lendingLibraryCode;
+  private String effectiveLocationId;
 
 }

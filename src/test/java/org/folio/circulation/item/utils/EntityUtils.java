@@ -21,6 +21,7 @@ public class EntityUtils {
             .barcode("itemBarcode_TEST")
             .pickupLocation("pickupLocation_TEST")
             .lendingLibraryCode("123456")
+            .effectiveLocationId("effectiveLocationId_TEST")
             .build();
   }
 
@@ -35,6 +36,7 @@ public class EntityUtils {
             .barcode("itemBarcode_TEST_UPD")
             .pickupLocation("pickupLocation_TEST_UPD")
             .lendingLibraryCode("123456")
+            .effectiveLocationId("effectiveLocationId_TEST_UPD")
             .build();
   }
 
@@ -48,8 +50,11 @@ public class EntityUtils {
             .instanceTitle("instanceTitle_TEST_UPD")
             .barcode("itemBarcode_TEST_UPD")
             .pickupLocation("pickupLocation_TEST_UPD")
+            .effectiveLocationId("effectiveLocationId_TEST_UPD")
             .build();
-  }  public static Item createCirculationEntityItem(UUID id) {
+  }
+
+  public static Item createCirculationEntityItem(UUID id) {
     return Item.builder()
             .id(id)
             .holdingsRecordId(HOLDINGS_RECORD_ID)
@@ -59,6 +64,7 @@ public class EntityUtils {
             .instanceTitle("instanceTitle_TEST")
             .barcode("itemBarcode_TEST")
             .pickupLocation("pickupLocation_TEST")
+            .effectiveLocationId("effectiveLocationId_TEST")
             .build();
   }
 
