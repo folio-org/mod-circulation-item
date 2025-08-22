@@ -50,6 +50,7 @@ class CirculationItemServiceTest {
         var ciInstance = circulationItemServiceImpl.createCirculationItem(String.valueOf(ciIdUnique), createCirculationItem(ciIdUnique));
         assertNotNull(ciInstance);
         assertEquals(ItemStatus.NameEnum.AVAILABLE, ciInstance.getStatus().getName());
+        assertEquals("effectiveLocationId_TEST", ciInstance.getEffectiveLocationId());
     }
 
     @Test
@@ -71,6 +72,7 @@ class CirculationItemServiceTest {
 
         assertNotNull(ciInstanceUpdated);
         assertEquals(ItemStatus.NameEnum.IN_TRANSIT, ciInstanceUpdated.getStatus().getName());
+        assertEquals("effectiveLocationId_TEST_UPD", ciInstanceUpdated.getEffectiveLocationId());
     }
 
     @Test
@@ -84,6 +86,7 @@ class CirculationItemServiceTest {
         var ciInstance = circulationItemServiceImpl.getCirculationItemById(String.valueOf(ciIdUnique));
         assertNotNull(ciInstance);
         assertEquals(ItemStatus.NameEnum.AVAILABLE, ciInstance.getStatus().getName());
+        assertEquals("effectiveLocationId_TEST", ciInstance.getEffectiveLocationId());
     }
 
   @Test
@@ -98,6 +101,7 @@ class CirculationItemServiceTest {
     var ciInstance = circulationItemServiceImpl.getCirculationItemByBarcode(item.getBarcode());
     assertNotNull(ciInstance);
     assertEquals(barcode, ciInstance.getBarcode());
+    assertEquals("effectiveLocationId_TEST", ciInstance.getEffectiveLocationId());
   }
 
     @Test

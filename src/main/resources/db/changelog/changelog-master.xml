@@ -6,4 +6,5 @@
 
   <include file="changes/create-circulation-item-table.xml" relativeToChangelogFile="true"/>
   <include file="changes/add-lending-library-code.xml" relativeToChangelogFile="true"/>
+  <include file="changes/add-effectiveLocationId-column-into-circulation_item.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

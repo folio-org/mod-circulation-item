@@ -1,3 +1,7 @@
+## v1.3.0 ((in progress))
+
+* [MODCITEM-41](https://folio-org.atlassian.net/browse/MODCITEM-41) Accept and store effectiveLocationId from mod-dcb
+
 ## v1.2.0 2025-03-14
 
 * FOLIO-4232 Update Spring support version for Sunflower
