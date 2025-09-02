@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.folio.circulation.item.domain.dto.ItemStatus;
 
 import java.util.Date;
+import java.util.Optional;
 
 @Component
 public class CirculationItemMapper {
@@ -41,7 +42,7 @@ public class CirculationItemMapper {
       .barcode(circulationItem.getBarcode())
       .pickupLocation(circulationItem.getPickupLocation())
       .lendingLibraryCode(circulationItem.getLendingLibraryCode())
-      .effectiveLocationId(circulationItem.getEffectiveLocationId())
+      .effectiveLocationId(Optional.ofNullable(circulationItem.getEffectiveLocationId()).orElse(DCBConstants.LOCATION_ID))
       .build();
   }
 }
