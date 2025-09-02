@@ -3,6 +3,7 @@ package org.folio.circulation.item.controller;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.folio.circulation.item.domain.dto.CirculationItem;
 import org.folio.circulation.item.domain.dto.ItemStatus;
+import org.folio.circulation.item.utils.DCBConstants;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
@@ -51,6 +52,32 @@ class CirculationItemControllerTest extends BaseIT {
                               .accept(MediaType.APPLICATION_JSON))
               .andExpectAll(status().is4xxClientError(),
                       jsonPath("$.errors[0].code", is("DUPLICATE_ERROR")));
+  }
+
+  @Test
+  void createCirculationItemTest_ShouldReturnDefaultWhenEffectiveLocationIdNull() throws Exception {
+    var id = UUID.randomUUID();
+    var circulationItemRequest = createCirculationItem(id);
+    circulationItemRequest.setEffectiveLocationId(null);
+    this.mockMvc.perform(
+        post(URI_TEMPLATE_CIRCULATION_ITEM + id)
+          .content(asJsonString(circulationItemRequest))
+          .headers(defaultHeaders())
+          .contentType(MediaType.APPLICATION_JSON)
+          .accept(MediaType.APPLICATION_JSON))
+      .andExpect(status().isCreated())
+      .andExpect(jsonPath("$.status.name").value(ItemStatus.NameEnum.AVAILABLE.getValue()))
+      .andExpect(jsonPath("$.effectiveLocationId").value(DCBConstants.LOCATION_ID));
+
+    //Trying to create another circulation item with same circulation item id
+    this.mockMvc.perform(
+        post(URI_TEMPLATE_CIRCULATION_ITEM + id)
+          .content(asJsonString(createCirculationItem(id)))
+          .headers(defaultHeaders())
+          .contentType(MediaType.APPLICATION_JSON)
+          .accept(MediaType.APPLICATION_JSON))
+      .andExpectAll(status().is4xxClientError(),
+        jsonPath("$.errors[0].code", is("DUPLICATE_ERROR")));
   }
 
   @Test
