@@ -1,5 +1,7 @@
 package org.folio.circulation.item.service;
 
+import org.folio.circulation.item.client.feign.LocationsClient;
+import org.folio.circulation.item.domain.dto.CirculationItem;
 import org.folio.circulation.item.domain.dto.ItemStatus;
 import org.folio.circulation.item.domain.entity.Item;
 import org.folio.circulation.item.domain.mapper.CirculationItemMapper;
@@ -14,9 +16,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.folio.circulation.item.utils.EntityUtils.MOCK_INVALID_EFFECTIVE_LOCATION_ID;
+import static org.folio.circulation.item.utils.EntityUtils.MOCK_VALID_EFFECTIVE_LOCATION_ID;
 import static org.folio.circulation.item.utils.EntityUtils.createCirculationEntityItem;
 import static org.folio.circulation.item.utils.EntityUtils.createCirculationEntityItemForUpdate;
 import static org.folio.circulation.item.utils.EntityUtils.createCirculationItem;
@@ -27,6 +32,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+
+import feign.FeignException;
+import feign.Response;
 
 @ExtendWith(MockitoExtension.class)
 class CirculationItemServiceTest {
@@ -39,6 +47,9 @@ class CirculationItemServiceTest {
     @Mock
     private CirculationItemMapper circulationItemMapper;
 
+    @Mock
+    private LocationsClient locationsClient;
+
     @Test
     void shouldCreateCirculationItemTest(){
         var ciIdUnique = UUID.randomUUID();
@@ -50,8 +61,28 @@ class CirculationItemServiceTest {
         var ciInstance = circulationItemServiceImpl.createCirculationItem(String.valueOf(ciIdUnique), createCirculationItem(ciIdUnique));
         assertNotNull(ciInstance);
         assertEquals(ItemStatus.NameEnum.AVAILABLE, ciInstance.getStatus().getName());
-        assertEquals("effectiveLocationId_TEST", ciInstance.getEffectiveLocationId());
+        assertEquals(MOCK_VALID_EFFECTIVE_LOCATION_ID, ciInstance.getEffectiveLocationId());
     }
+
+  @Test
+  void shouldCreateCirculation_404WhenLocationIdNotExist_negative(){
+    var ciIdUnique = UUID.randomUUID();
+    CirculationItem circulationItem = createCirculationItem(ciIdUnique);
+    circulationItem.setEffectiveLocationId(MOCK_INVALID_EFFECTIVE_LOCATION_ID);
+    when(locationsClient.findLocationById(MOCK_INVALID_EFFECTIVE_LOCATION_ID))
+      .thenThrow(FeignException.errorStatus("FeignException",
+        Response.builder()
+          .status(400)
+          .body("Not Found".getBytes())
+          .request(feign.Request.create(feign.Request.HttpMethod.GET, "/", Map.of(), null, null, null))
+          .build()));
+
+    var ciIdUniqueStr = ciIdUnique.toString();
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
+      circulationItemServiceImpl.createCirculationItem(ciIdUniqueStr, circulationItem)
+    );
+    assertEquals("EffectiveLocationId does not exist: b6d8eec5-94a3-4be2-b817-471b8c41dcb6", exception.getMessage());
+  }
 
     @Test
     void shouldUpdateCirculationItemTest(){
@@ -72,7 +103,7 @@ class CirculationItemServiceTest {
 
         assertNotNull(ciInstanceUpdated);
         assertEquals(ItemStatus.NameEnum.IN_TRANSIT, ciInstanceUpdated.getStatus().getName());
-        assertEquals("effectiveLocationId_TEST_UPD", ciInstanceUpdated.getEffectiveLocationId());
+        assertEquals(MOCK_VALID_EFFECTIVE_LOCATION_ID, ciInstanceUpdated.getEffectiveLocationId());
     }
 
     @Test
@@ -86,7 +117,7 @@ class CirculationItemServiceTest {
         var ciInstance = circulationItemServiceImpl.getCirculationItemById(String.valueOf(ciIdUnique));
         assertNotNull(ciInstance);
         assertEquals(ItemStatus.NameEnum.AVAILABLE, ciInstance.getStatus().getName());
-        assertEquals("effectiveLocationId_TEST", ciInstance.getEffectiveLocationId());
+        assertEquals(MOCK_VALID_EFFECTIVE_LOCATION_ID, ciInstance.getEffectiveLocationId());
     }
 
   @Test
@@ -101,7 +132,7 @@ class CirculationItemServiceTest {
     var ciInstance = circulationItemServiceImpl.getCirculationItemByBarcode(item.getBarcode());
     assertNotNull(ciInstance);
     assertEquals(barcode, ciInstance.getBarcode());
-    assertEquals("effectiveLocationId_TEST", ciInstance.getEffectiveLocationId());
+    assertEquals(MOCK_VALID_EFFECTIVE_LOCATION_ID, ciInstance.getEffectiveLocationId());
   }
 
     @Test

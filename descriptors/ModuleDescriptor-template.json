@@ -9,6 +9,10 @@
     {
       "id": "permissions",
       "version": "5.8"
+    },
+    {
+      "id": "locations",
+      "version": "3.2"
     }
   ],
   "provides": [
