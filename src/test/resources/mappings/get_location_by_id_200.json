@@ -25,19 +25,6 @@
           "isShadow": true
         }
       }
-    },
-    {
-      "request": {
-        "method": "GET",
-        "url": "/locations/b6d8eec5-94a3-4be2-b817-471b8c41dcb6"
-      },
-      "response": {
-        "status": 404,
-        "body": "Not found",
-        "headers": {
-          "Content-Type": "text/plain"
-        }
-      }
     }
   ]
 }

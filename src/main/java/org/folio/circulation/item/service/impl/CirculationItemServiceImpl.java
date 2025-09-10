@@ -68,7 +68,7 @@ public class CirculationItemServiceImpl implements CirculationItemService {
   @Override
   public CirculationItem createCirculationItem(String circulationItemId, CirculationItem circulationItem) {
     checkForIdMismatch(circulationItemId, circulationItem);
-    validateEffectiveLocationId(circulationItem);
+    validateEffectiveLocationId(circulationItem.getEffectiveLocationId());
 
     if(Objects.isNull(circulationItem.getId())){
       circulationItem.setId(UUID.fromString(circulationItemId));
@@ -93,7 +93,7 @@ public class CirculationItemServiceImpl implements CirculationItemService {
   @Override
   public CirculationItem updateCirculationItem(String circulationItemId, CirculationItem circulationItem) {
     checkForIdMismatch(circulationItemId, circulationItem);
-    validateEffectiveLocationId(circulationItem);
+    validateEffectiveLocationId(circulationItem.getEffectiveLocationId());
 
     if(!checkIfItemExists(circulationItemId)){
       throw new NotFoundException(
@@ -111,21 +111,14 @@ public class CirculationItemServiceImpl implements CirculationItemService {
     return circulationItemRepository.existsById(UUID.fromString(circulationItemId));
   }
 
-  private void validateEffectiveLocationId(CirculationItem circulationItem) {
-    if(Objects.nonNull(circulationItem.getEffectiveLocationId()) &&
-       isEffectiveLocationIdNotExist(circulationItem.getEffectiveLocationId())) {
-      throw new IllegalArgumentException(
-        String.format("EffectiveLocationId does not exist: %s", circulationItem.getEffectiveLocationId()));
-    }
-  }
-
-  private boolean isEffectiveLocationIdNotExist(String effectiveLocationId) {
-    try {
-      locationsClient.findLocationById(effectiveLocationId);
-      return false;
-    } catch (FeignException e) {
-      log.error("isEffectiveLocationIdNotExist:: Location Id does not exist: {}", effectiveLocationId, e);
-      return true;
+  private void validateEffectiveLocationId(String effectiveLocationId) {
+    if(Objects.nonNull(effectiveLocationId)) {
+      try {
+        locationsClient.findLocationById(effectiveLocationId);
+      } catch (FeignException e) {
+        throw new IllegalArgumentException(
+          String.format("EffectiveLocationId does not exist: %s", effectiveLocationId));
+      }
     }
   }
 
