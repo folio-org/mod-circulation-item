@@ -116,6 +116,7 @@ public class CirculationItemServiceImpl implements CirculationItemService {
       try {
         locationsClient.findLocationById(effectiveLocationId);
       } catch (FeignException e) {
+        log.error("isEffectiveLocationIdNotExist:: Location Id does not exist: {}", effectiveLocationId, e);
         throw new IllegalArgumentException(
           String.format("EffectiveLocationId does not exist: %s", effectiveLocationId));
       }
