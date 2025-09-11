@@ -23,12 +23,18 @@
         {
           "methods": ["POST"],
           "pathPattern": "/circulation-item/{itemId}",
-          "permissionsRequired": ["circulation-item.item.post"]
+          "permissionsRequired": ["circulation-item.item.post"],
+          "modulePermissions": [
+            "inventory-storage.locations.item.get"
+          ]
         },
         {
           "methods": ["PUT"],
           "pathPattern": "/circulation-item/{itemId}",
-          "permissionsRequired": ["circulation-item.item.put"]
+          "permissionsRequired": ["circulation-item.item.put"],
+          "modulePermissions": [
+            "inventory-storage.locations.item.get"
+          ]
         },
         {
           "methods": ["GET"],
