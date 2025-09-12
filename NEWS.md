@@ -1,6 +1,7 @@
 ## v1.3.0 ((in progress))
 
 * [MODCITEM-41](https://folio-org.atlassian.net/browse/MODCITEM-41) Accept and store effectiveLocationId from mod-dcb
+* [MODCITEM-44](https://folio-org.atlassian.net/browse/MODCITEM-44) Validate that effectiveLocationId exists
 
 ## v1.2.0 2025-03-14
 

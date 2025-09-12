@@ -1,0 +1,30 @@
+{
+  "mappings": [
+    {
+      "request": {
+        "method": "GET",
+        "url": "/locations/42dfd3d0-072d-4e85-a285-f80151dbd8d6"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "id": "42dfd3d0-072d-4e85-a285-f80151dbd8d6",
+          "name": "Loc-Name-Test",
+          "code": "Loc-Code-Test",
+          "institutionId": "42dfd3d0-072d-4e85-a285-f80151dbd8d6",
+          "campusId": "42dfd3d0-072d-4e85-a285-f80151dbd8d6",
+          "libraryId": "42dfd3d0-072d-4e85-a285-f80151dbd8d6",
+          "primaryServicePoint": "42dfd3d0-072d-4e85-a285-f80151dbd8d6",
+          "servicePointIds": [
+            "42dfd3d0-072d-4e85-a285-f80151dbd8d6"
+          ],
+          "servicePoints": [],
+          "isShadow": true
+        }
+      }
+    }
+  ]
+}

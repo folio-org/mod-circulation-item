@@ -12,6 +12,10 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.UUID;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching;
+import static org.folio.circulation.item.utils.EntityUtils.MOCK_INVALID_EFFECTIVE_LOCATION_ID;
+import static org.folio.circulation.item.utils.EntityUtils.MOCK_VALID_EFFECTIVE_LOCATION_ID;
 import static org.folio.circulation.item.utils.EntityUtils.createCirculationItem;
 import static org.folio.circulation.item.utils.EntityUtils.createCirculationItemForUpdate;
 import static org.hamcrest.Matchers.is;
@@ -27,6 +31,7 @@ class CirculationItemControllerTest extends BaseIT {
   private static final String URI_TEMPLATE_CIRCULATION_ITEM = "/circulation-item/";
   @Test
   void createCirculationItemTest() throws Exception {
+      wireMockServer.resetRequests();
       var id = UUID.randomUUID();
       var barcode = RandomStringUtils.randomAlphabetic(10).toUpperCase();
       var circulationItemRequest = createCirculationItem(id);
@@ -52,6 +57,27 @@ class CirculationItemControllerTest extends BaseIT {
                               .accept(MediaType.APPLICATION_JSON))
               .andExpectAll(status().is4xxClientError(),
                       jsonPath("$.errors[0].code", is("DUPLICATE_ERROR")));
+    wireMockServer.verify(2, getRequestedFor(urlPathMatching("/locations/" + MOCK_VALID_EFFECTIVE_LOCATION_ID)));
+    wireMockServer.resetRequests();
+  }
+
+  @Test
+  void createCirculationItem_validate404WhenEffectiveLocationIdNotFound_negative() throws Exception {
+    wireMockServer.resetRequests();
+    var id = UUID.randomUUID();
+    var circulationItemRequest = createCirculationItem(id);
+    circulationItemRequest.setEffectiveLocationId(MOCK_INVALID_EFFECTIVE_LOCATION_ID);
+
+    this.mockMvc.perform(
+        post(URI_TEMPLATE_CIRCULATION_ITEM + id)
+          .content(asJsonString(circulationItemRequest))
+          .headers(defaultHeaders())
+          .contentType(MediaType.APPLICATION_JSON))
+      .andExpectAll(status().isBadRequest(),
+        jsonPath("$.errors[0].code", is("VALIDATION_ERROR")),
+        jsonPath("$.errors[0].message", is("EffectiveLocationId does not exist: b6d8eec5-94a3-4be2-b817-471b8c41dcb6")));
+    wireMockServer.verify(1, getRequestedFor(urlPathMatching("/locations/" + MOCK_INVALID_EFFECTIVE_LOCATION_ID)));
+    wireMockServer.resetRequests();
   }
 
   @Test
