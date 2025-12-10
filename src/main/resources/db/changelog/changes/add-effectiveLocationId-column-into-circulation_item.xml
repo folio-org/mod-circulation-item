@@ -1,0 +1,19 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+  <!-- Add effective_location_id column -->
+  <changeSet id="addEffectiveLocationIdColumn" author="Kapil Verma1">
+    <preConditions>
+      <tableExists tableName="circulation_item"/>
+    </preConditions>
+    <addColumn tableName="circulation_item">
+      <column name="effective_location_id" type="text">
+        <constraints nullable="true"/>
+      </column>
+    </addColumn>
+  </changeSet>
+
+</databaseChangeLog>

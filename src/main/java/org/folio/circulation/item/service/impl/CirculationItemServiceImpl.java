@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+import org.folio.circulation.item.client.feign.LocationsClient;
 import org.folio.circulation.item.domain.dto.CirculationItems;
 import org.folio.circulation.item.domain.entity.Item;
 import org.folio.circulation.item.domain.mapper.CirculationItemMapper;
@@ -18,6 +19,7 @@ import org.folio.spring.data.OffsetRequest;
 import org.folio.spring.exception.NotFoundException;
 import org.springframework.stereotype.Service;
 
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -29,6 +31,7 @@ public class CirculationItemServiceImpl implements CirculationItemService {
   private final CirculationItemRepository circulationItemRepository;
 
   private final CirculationItemMapper circulationItemMapper;
+  private final LocationsClient locationsClient;
 
   @Override
   public CirculationItem getCirculationItemById(String id) {
@@ -65,6 +68,7 @@ public class CirculationItemServiceImpl implements CirculationItemService {
   @Override
   public CirculationItem createCirculationItem(String circulationItemId, CirculationItem circulationItem) {
     checkForIdMismatch(circulationItemId, circulationItem);
+    validateEffectiveLocationId(circulationItem.getEffectiveLocationId());
 
     if(Objects.isNull(circulationItem.getId())){
       circulationItem.setId(UUID.fromString(circulationItemId));
@@ -89,6 +93,7 @@ public class CirculationItemServiceImpl implements CirculationItemService {
   @Override
   public CirculationItem updateCirculationItem(String circulationItemId, CirculationItem circulationItem) {
     checkForIdMismatch(circulationItemId, circulationItem);
+    validateEffectiveLocationId(circulationItem.getEffectiveLocationId());
 
     if(!checkIfItemExists(circulationItemId)){
       throw new NotFoundException(
@@ -104,6 +109,18 @@ public class CirculationItemServiceImpl implements CirculationItemService {
 
   private boolean checkIfItemExists(String circulationItemId) {
     return circulationItemRepository.existsById(UUID.fromString(circulationItemId));
+  }
+
+  private void validateEffectiveLocationId(String effectiveLocationId) {
+    if(Objects.nonNull(effectiveLocationId)) {
+      try {
+        locationsClient.findLocationById(effectiveLocationId);
+      } catch (FeignException e) {
+        log.error("isEffectiveLocationIdNotExist:: Location Id does not exist: {}", effectiveLocationId, e);
+        throw new IllegalArgumentException(
+          String.format("EffectiveLocationId does not exist: %s", effectiveLocationId));
+      }
+    }
   }
 
   private boolean checkIfItemExistsByBarcode(String barcode) {
