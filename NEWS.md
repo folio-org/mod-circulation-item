@@ -1,11 +1,16 @@
-## v1.2.0 2025-03-XXXX
+## v1.2.0 2025-12-10
 
-* FOLIO-4232 Update Spring support version for Sunflower
+* [MODCITEM-41](https://folio-org.atlassian.net/browse/MODCITEM-41) Accept and store effectiveLocationId from mod-dcb
+* [MODCITEM-44](https://folio-org.atlassian.net/browse/MODCITEM-44) Validate that effectiveLocationId exists
+
+---
 
 ## v1.1.0 2024-10-30
 
 * MODCITEM-30 Update Spring support version for Ramsons
 * MODCITEM-32 Upgrade versions for Ramsons.
+
+---
 
 ## v1.0.0 2024-03-20
 
