@@ -47,9 +47,10 @@ class CirculationItemMapperTest {
   @Test
   void mapDtoToEntity_positive_effectiveLocationIdIsPopulatedIfNull() {
     var effectiveLocationId = UUID.randomUUID().toString();
-    var circItem = new CirculationItem()
+    var circItem = CirculationItem.builder()
       .status(ItemStatus.builder().name(NameEnum.AVAILABLE).build())
-      .effectiveLocationId(effectiveLocationId);
+      .effectiveLocationId(effectiveLocationId)
+      .build();
 
     var result = mapper.mapDtoToEntity(circItem);
     assertThat(result.getEffectiveLocationId()).isEqualTo(effectiveLocationId);
@@ -57,9 +58,10 @@ class CirculationItemMapperTest {
 
   @Test
   void mapDtoToEntity_positive_effectiveLocationIdIsPopulatedIfNotNull() {
-    var circItem = new CirculationItem()
+    var circItem = CirculationItem.builder()
       .status(ItemStatus.builder().name(NameEnum.AVAILABLE).build())
-      .effectiveLocationId(null);
+      .effectiveLocationId(null)
+      .build();
 
     var result = mapper.mapDtoToEntity(circItem);
     assertThat(result.getEffectiveLocationId()).isEqualTo(DCBConstants.LOCATION_ID);
