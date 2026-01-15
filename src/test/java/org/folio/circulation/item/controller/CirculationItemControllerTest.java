@@ -8,6 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.UUID;
@@ -160,6 +161,19 @@ class CirculationItemControllerTest extends BaseIT {
                               .headers(defaultHeaders())
                               .contentType(MediaType.APPLICATION_JSON))
               .andExpect(status().isOk());
+  }
+
+  @Test
+  @Sql("classpath:sql/circulationItemWithNullEffectiveLocationId.sql")
+  void retrieveCirculationItemWithNullEffectiveLocationIdInDatabase() throws Exception {
+    mockMvc.perform(get(URI_TEMPLATE_CIRCULATION_ITEM + "571d526e-a648-4419-9e82-ba70b9b94d8b")
+          .headers(defaultHeaders())
+          .contentType(MediaType.APPLICATION_JSON))
+      .andExpect(status().isOk())
+      .andExpect(jsonPath("$.status.name").value(ItemStatus.NameEnum.AVAILABLE.getValue()))
+      .andExpect(jsonPath("$.materialTypeId").value("materialTypeId_TEST"))
+      .andExpect(jsonPath("$.barcode").value("dcb_barcode"))
+      .andExpect(jsonPath("$.effectiveLocationId").value(DCBConstants.LOCATION_ID));
   }
 
   @Test

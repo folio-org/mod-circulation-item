@@ -3,11 +3,11 @@ package org.folio.circulation.item.domain.mapper;
 import org.folio.circulation.item.domain.entity.Item;
 import org.folio.circulation.item.domain.dto.CirculationItem;
 import org.folio.circulation.item.utils.DCBConstants;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Component;
 import org.folio.circulation.item.domain.dto.ItemStatus;
 
 import java.util.Date;
-import java.util.Optional;
 
 @Component
 public class CirculationItemMapper {
@@ -26,7 +26,7 @@ public class CirculationItemMapper {
       .barcode(circulationItem.getBarcode())
       .pickupLocation(circulationItem.getPickupLocation())
       .dcbItem(true)
-      .effectiveLocationId(circulationItem.getEffectiveLocationId())
+      .effectiveLocationId(ObjectUtils.defaultIfNull(circulationItem.getEffectiveLocationId(), DCBConstants.LOCATION_ID))
       .lendingLibraryCode(circulationItem.getLendingLibraryCode())
       .build();
   }
@@ -42,7 +42,7 @@ public class CirculationItemMapper {
       .barcode(circulationItem.getBarcode())
       .pickupLocation(circulationItem.getPickupLocation())
       .lendingLibraryCode(circulationItem.getLendingLibraryCode())
-      .effectiveLocationId(Optional.ofNullable(circulationItem.getEffectiveLocationId()).orElse(DCBConstants.LOCATION_ID))
+      .effectiveLocationId(ObjectUtils.defaultIfNull(circulationItem.getEffectiveLocationId(), DCBConstants.LOCATION_ID))
       .build();
   }
 }
