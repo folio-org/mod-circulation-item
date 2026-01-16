@@ -1,8 +1,19 @@
-## v1.2.0 2025-12-10
+## v1.2.2 2026-01-16
+
+* [MODCITEM-48](https://folio-org.atlassian.net/browse/MODCITEM-48) Always return default effective location if not set
+
+---
+
+## v1.2.1 2025-12-10
 
 * [MODCITEM-41](https://folio-org.atlassian.net/browse/MODCITEM-41) Accept and store effectiveLocationId from mod-dcb
 * [MODCITEM-44](https://folio-org.atlassian.net/browse/MODCITEM-44) Validate that effectiveLocationId exists
-* [MODCITEM-48](https://folio-org.atlassian.net/browse/MODCITEM-48) Always return default effective location if not set
+
+---
+
+## v1.2.0 2025-03-14
+
+* [FOLIO-4232](https://folio-org.atlassian.net/browse/FOLIO-4232) Update Spring support version for Sunflower
 
 ---
 
