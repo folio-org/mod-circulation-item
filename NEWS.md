@@ -3,6 +3,7 @@
 * [MODCITEM-41](https://folio-org.atlassian.net/browse/MODCITEM-41) Accept and store effectiveLocationId from mod-dcb
 * [MODCITEM-44](https://folio-org.atlassian.net/browse/MODCITEM-44) Validate that effectiveLocationId exists
 * [MODCITEM-48](https://folio-org.atlassian.net/browse/MODCITEM-48) Always return default effective location if not set
+* [MODCITEM-50](https://folio-org.atlassian.net/browse/MODCITEM-50) Use GitHub Workflows for Maven
 
 ## v1.2.0 2025-03-14
 
