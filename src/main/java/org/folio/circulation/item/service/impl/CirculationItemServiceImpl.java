@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-import org.folio.circulation.item.client.feign.LocationsClient;
+import org.folio.circulation.item.invstorage.LocationsClient;
 import org.folio.circulation.item.domain.dto.CirculationItems;
 import org.folio.circulation.item.domain.entity.Item;
 import org.folio.circulation.item.domain.mapper.CirculationItemMapper;
@@ -18,8 +18,6 @@ import org.folio.circulation.item.domain.dto.CirculationItem;
 import org.folio.spring.data.OffsetRequest;
 import org.folio.spring.exception.NotFoundException;
 import org.springframework.stereotype.Service;
-
-import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -113,10 +111,9 @@ public class CirculationItemServiceImpl implements CirculationItemService {
 
   private void validateEffectiveLocationId(String effectiveLocationId) {
     if(Objects.nonNull(effectiveLocationId)) {
-      try {
-        locationsClient.findLocationById(effectiveLocationId);
-      } catch (FeignException e) {
-        log.error("isEffectiveLocationIdNotExist:: Location Id does not exist: {}", effectiveLocationId, e);
+      var location = locationsClient.findLocationById(effectiveLocationId);
+      if (location.isEmpty()) {
+        log.error("isEffectiveLocationIdNotExist:: Location Id does not exist: {}", effectiveLocationId);
         throw new IllegalArgumentException(
           String.format("EffectiveLocationId does not exist: %s", effectiveLocationId));
       }

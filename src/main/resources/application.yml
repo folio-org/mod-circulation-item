@@ -25,10 +25,6 @@ spring:
     change-log: classpath:db/changelog/changelog-master.xml
   jackson:
     default-property-inclusion: non_null
-  cloud:
-    openfeign:
-      okhttp:
-        enabled: true
 folio:
   environment: ${ENV:folio}
   okapi:
@@ -36,11 +32,8 @@ folio:
   tenant:
     validation:
       enabled: false
-feign:
-  client:
-    config:
-      default:
-        loggerLevel: basic
+  exchange:
+    enabled: true
 management:
   endpoints:
     web:
