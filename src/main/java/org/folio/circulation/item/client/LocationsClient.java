@@ -1,8 +1,8 @@
-package org.folio.circulation.item.invstorage;
+package org.folio.circulation.item.client;
 
 import java.util.Optional;
 
-import org.folio.circulation.item.invstorage.model.Location;
+import org.folio.circulation.item.client.model.Location;
 import org.folio.circulation.item.model.ResultList;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;

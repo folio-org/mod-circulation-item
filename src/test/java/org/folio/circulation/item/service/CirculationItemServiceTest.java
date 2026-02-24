@@ -1,12 +1,12 @@
 package org.folio.circulation.item.service;
 
-import org.folio.circulation.item.invstorage.LocationsClient;
+import org.folio.circulation.item.client.LocationsClient;
 import org.folio.circulation.item.domain.dto.CirculationItem;
 import org.folio.circulation.item.domain.dto.ItemStatus;
 import org.folio.circulation.item.domain.entity.Item;
 import org.folio.circulation.item.domain.mapper.CirculationItemMapper;
 import org.folio.circulation.item.exception.IdMismatchException;
-import org.folio.circulation.item.invstorage.model.Location;
+import org.folio.circulation.item.client.model.Location;
 import org.folio.circulation.item.repository.CirculationItemRepository;
 import org.folio.circulation.item.service.impl.CirculationItemServiceImpl;
 import org.folio.spring.exception.NotFoundException;

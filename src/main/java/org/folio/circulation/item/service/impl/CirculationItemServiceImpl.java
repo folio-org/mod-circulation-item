@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-import org.folio.circulation.item.invstorage.LocationsClient;
+import org.folio.circulation.item.client.LocationsClient;
 import org.folio.circulation.item.domain.dto.CirculationItems;
 import org.folio.circulation.item.domain.entity.Item;
 import org.folio.circulation.item.domain.mapper.CirculationItemMapper;

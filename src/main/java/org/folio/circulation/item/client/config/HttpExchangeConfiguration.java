@@ -1,7 +1,7 @@
-package org.folio.circulation.item.config;
+package org.folio.circulation.item.client.config;
 
 import lombok.extern.log4j.Log4j2;
-import org.folio.circulation.item.invstorage.LocationsClient;
+import org.folio.circulation.item.client.LocationsClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;

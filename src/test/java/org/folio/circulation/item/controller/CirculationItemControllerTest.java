@@ -34,7 +34,7 @@ class CirculationItemControllerTest extends BaseIT {
   void createCirculationItemTest() throws Exception {
       wireMockServer.resetRequests();
       var id = UUID.randomUUID();
-      var barcode = RandomStringUtils.randomAlphabetic(10).toUpperCase();
+      var barcode = RandomStringUtils.secure().nextAlphabetic(10).toUpperCase();
       var circulationItemRequest = createCirculationItem(id);
       circulationItemRequest.setBarcode(barcode);
       this.mockMvc.perform(
@@ -110,7 +110,7 @@ class CirculationItemControllerTest extends BaseIT {
   @Test
   void createCirculationItemWithSameBarcodeTest() throws Exception {
     var id = UUID.randomUUID();
-    var barcode = RandomStringUtils.randomAlphabetic(10).toUpperCase();
+    var barcode = RandomStringUtils.secure().nextAlphabetic(10).toUpperCase();
     var circulationItemRequest = createCirculationItem(id);
     circulationItemRequest.setBarcode(barcode);
     this.mockMvc.perform(
@@ -141,7 +141,7 @@ class CirculationItemControllerTest extends BaseIT {
   @Test
   void retrieveCirculationItemSuccessTest() throws Exception {
     var id = UUID.randomUUID();
-    var barcode = RandomStringUtils.randomAlphabetic(10).toUpperCase();
+    var barcode = RandomStringUtils.secure().nextAlphabetic(10).toUpperCase();
     var circulationItemRequest = createCirculationItem(id);
     circulationItemRequest.setBarcode(barcode);
       this.mockMvc.perform(
@@ -209,7 +209,7 @@ class CirculationItemControllerTest extends BaseIT {
   @Test
   void getCirculationItemByBarcodeUsingCqlQuery() throws Exception {
     var id = UUID.randomUUID();
-    var barcode = RandomStringUtils.randomAlphabetic(10).toUpperCase();
+    var barcode = RandomStringUtils.secure().nextAlphabetic(10).toUpperCase();
     var circulationItemRequest = createCirculationItem(id);
     circulationItemRequest.setBarcode(barcode);
     this.mockMvc.perform(
@@ -263,7 +263,7 @@ class CirculationItemControllerTest extends BaseIT {
     @Test
     void updateCirculationItemTest() throws Exception {
         var id = UUID.randomUUID();
-        var barcode = RandomStringUtils.randomAlphabetic(10).toUpperCase();
+        var barcode = RandomStringUtils.secure().nextAlphabetic(10).toUpperCase();
         var circulationItemRequest = createCirculationItem(id);
         circulationItemRequest.setBarcode(barcode);
         //Set up brand-new circulation item.
