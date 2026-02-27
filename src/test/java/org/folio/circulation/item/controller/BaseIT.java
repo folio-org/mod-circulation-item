@@ -1,8 +1,9 @@
 package org.folio.circulation.item.controller;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import lombok.SneakyThrows;
 import org.folio.spring.integration.XOkapiHeaders;
@@ -11,8 +12,8 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -44,9 +45,11 @@ public class BaseIT {
   protected static PostgreSQLContainer<?> postgreDBContainer = new PostgreSQLContainer<>(
     Objects.toString(System.getenv("TESTCONTAINERS_POSTGRES_IMAGE"), "postgres:16-alpine"));
   public final static int WIRE_MOCK_PORT = TestSocketUtils.findAvailableTcpPort();
-  protected static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().setSerializationInclusion(JsonInclude.Include.NON_NULL)
-    .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-    .configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+  protected static final ObjectMapper OBJECT_MAPPER = JsonMapper.builder()
+    .changeDefaultPropertyInclusion(v -> JsonInclude.Value.construct(JsonInclude.Include.NON_NULL, JsonInclude.Include.ALWAYS))
+    .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+    .enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
+    .build();
 
   static {
     postgreDBContainer.start();

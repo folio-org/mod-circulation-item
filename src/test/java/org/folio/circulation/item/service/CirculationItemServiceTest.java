@@ -1,11 +1,12 @@
 package org.folio.circulation.item.service;
 
-import org.folio.circulation.item.client.feign.LocationsClient;
+import org.folio.circulation.item.client.LocationsClient;
 import org.folio.circulation.item.domain.dto.CirculationItem;
 import org.folio.circulation.item.domain.dto.ItemStatus;
 import org.folio.circulation.item.domain.entity.Item;
 import org.folio.circulation.item.domain.mapper.CirculationItemMapper;
 import org.folio.circulation.item.exception.IdMismatchException;
+import org.folio.circulation.item.client.model.Location;
 import org.folio.circulation.item.repository.CirculationItemRepository;
 import org.folio.circulation.item.service.impl.CirculationItemServiceImpl;
 import org.folio.spring.exception.NotFoundException;
@@ -16,7 +17,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -32,9 +32,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-
-import feign.FeignException;
-import feign.Response;
 
 @ExtendWith(MockitoExtension.class)
 class CirculationItemServiceTest {
@@ -53,6 +50,8 @@ class CirculationItemServiceTest {
     @Test
     void shouldCreateCirculationItemTest(){
         var ciIdUnique = UUID.randomUUID();
+        when(locationsClient.findLocationById(MOCK_VALID_EFFECTIVE_LOCATION_ID))
+                .thenReturn(Optional.of(new Location()));
         when(circulationItemMapper.mapDtoToEntity(any())).thenReturn(createCirculationEntityItem(ciIdUnique));
         when(circulationItemMapper.mapEntityToDto(any())).thenReturn(createCirculationItem(ciIdUnique));
         when(circulationItemRepository.save(any()))
@@ -70,12 +69,7 @@ class CirculationItemServiceTest {
     CirculationItem circulationItem = createCirculationItem(ciIdUnique);
     circulationItem.setEffectiveLocationId(MOCK_INVALID_EFFECTIVE_LOCATION_ID);
     when(locationsClient.findLocationById(MOCK_INVALID_EFFECTIVE_LOCATION_ID))
-      .thenThrow(FeignException.errorStatus("FeignException",
-        Response.builder()
-          .status(400)
-          .body("Not Found".getBytes())
-          .request(feign.Request.create(feign.Request.HttpMethod.GET, "/", Map.of(), null, null, null))
-          .build()));
+      .thenReturn(Optional.empty());
 
     var ciIdUniqueStr = ciIdUnique.toString();
     IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
@@ -91,6 +85,8 @@ class CirculationItemServiceTest {
         var updCiDto = createCirculationItemForUpdate(ciIdUnique);
         var updCiEntity = createCirculationEntityItemForUpdate(ciIdUnique);
 
+        when(locationsClient.findLocationById(MOCK_VALID_EFFECTIVE_LOCATION_ID))
+                .thenReturn(Optional.of(new Location()));
         when(circulationItemMapper.mapDtoToEntity(any()))
                 .thenReturn(updCiEntity);
         when(circulationItemMapper.mapEntityToDto(any()))
@@ -112,7 +108,6 @@ class CirculationItemServiceTest {
         when(circulationItemRepository.findById(ciIdUnique))
                 .thenReturn(Optional.ofNullable(createCirculationEntityItem(ciIdUnique)));
         when(circulationItemMapper.mapEntityToDto(any())).thenReturn(createCirculationItem(ciIdUnique));
-
 
         var ciInstance = circulationItemServiceImpl.getCirculationItemById(String.valueOf(ciIdUnique));
         assertNotNull(ciInstance);
@@ -165,8 +160,9 @@ class CirculationItemServiceTest {
         var ciIdUniqueString = String.valueOf(ciIdUnique);
         var circulationItem = createCirculationItem(ciIdUnique);
 
+        when(locationsClient.findLocationById(MOCK_VALID_EFFECTIVE_LOCATION_ID))
+                .thenReturn(Optional.of(new Location()));
         when(circulationItemRepository.existsById(ciIdUnique)).thenReturn(false);
-
 
         Throwable exception = assertThrows(
                 NotFoundException.class, () -> circulationItemServiceImpl.updateCirculationItem(ciIdUniqueString, circulationItem)

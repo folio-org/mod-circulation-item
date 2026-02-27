@@ -1,6 +1,6 @@
 package org.folio.circulation.item.controller;
 
-import feign.FeignException;
+import org.springframework.web.client.HttpServerErrorException;
 import lombok.extern.log4j.Log4j2;
 import org.folio.circulation.item.exception.IdMismatchException;
 import org.folio.circulation.item.domain.dto.Errors;
@@ -55,8 +55,8 @@ public class ExceptionHandlingController {
   }
 
   @ResponseStatus(HttpStatus.BAD_GATEWAY)
-  @ExceptionHandler(FeignException.BadGateway.class)
-  public Errors handleBadGatewayException(FeignException.BadGateway ex) {
+  @ExceptionHandler(HttpServerErrorException.BadGateway.class)
+  public Errors handleBadGatewayException(HttpServerErrorException.BadGateway ex) {
     logExceptionMessage(ex);
     return createInternalError(ex.getMessage(), BAD_GATEWAY);
   }

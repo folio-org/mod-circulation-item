@@ -4,6 +4,7 @@
 * [MODCITEM-44](https://folio-org.atlassian.net/browse/MODCITEM-44) Validate that effectiveLocationId exists
 * [MODCITEM-48](https://folio-org.atlassian.net/browse/MODCITEM-48) Always return default effective location if not set
 * [MODCITEM-50](https://folio-org.atlassian.net/browse/MODCITEM-50) Use GitHub Workflows for Maven
+* [MODCITEM-45](https://folio-org.atlassian.net/browse/MODCITEM-45) Upgrade module to Spring Boot v4.0.2
 
 ## v1.2.0 2025-03-14
 
