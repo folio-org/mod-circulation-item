@@ -1,4 +1,4 @@
-package org.folio.circulation.item.client.config;
+package org.folio.circulation.item.config;
 
 import lombok.extern.log4j.Log4j2;
 import org.folio.circulation.item.client.LocationsClient;

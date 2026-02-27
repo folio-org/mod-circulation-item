@@ -25,6 +25,9 @@ spring:
     change-log: classpath:db/changelog/changelog-master.xml
   jackson:
     default-property-inclusion: non_null
+    deserialization:
+      fail-on-null-for-primitives: false
+      accept-single-value-as-array: true
 folio:
   environment: ${ENV:folio}
   okapi:
