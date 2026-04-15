@@ -1,10 +1,30 @@
-## v1.3.0 ((in progress))
+## v2.0.0 2026-04-16
 
-* [MODCITEM-41](https://folio-org.atlassian.net/browse/MODCITEM-41) Accept and store effectiveLocationId from mod-dcb
-* [MODCITEM-44](https://folio-org.atlassian.net/browse/MODCITEM-44) Validate that effectiveLocationId exists
-* [MODCITEM-48](https://folio-org.atlassian.net/browse/MODCITEM-48) Always return default effective location if not set
-* [MODCITEM-50](https://folio-org.atlassian.net/browse/MODCITEM-50) Use GitHub Workflows for Maven
-* [MODCITEM-45](https://folio-org.atlassian.net/browse/MODCITEM-45) Upgrade module to Spring Boot v4.0.2
+### Breaking changes
+* Upgrade module to Spring Boot v4.0.2 ([MODCITEM-45](https://folio-org.atlassian.net/browse/MODCITEM-45))
+
+### New APIs versions
+* Requires `locations v3.2`
+
+### Features
+* Accept and store effectiveLocationId from mod-dcb ([MODCITEM-41](https://folio-org.atlassian.net/browse/MODCITEM-41))
+* Validate that effectiveLocationId exists ([MODCITEM-44](https://folio-org.atlassian.net/browse/MODCITEM-44))
+* Always return default effective location if not set ([MODCITEM-48](https://folio-org.atlassian.net/browse/MODCITEM-48))
+* Use GitHub Workflows for Maven ([MODCITEM-50](https://folio-org.atlassian.net/browse/MODCITEM-50))
+
+### Tech Debt
+* Add config file for dependabot, code owners and update pull request template ([MODCITEM-40](https://folio-org.atlassian.net/browse/MODCITEM-40))
+
+### Dependencies
+* Bump `spring-boot-starter-parent` from `3.4.3` to `4.0.5`
+* Bump `folio-spring-base` from `9.0.0` to `10.0.0`
+* Bump `openapi-generator` from `7.3.0` to `7.21.0`
+* Bump `jsonschema2pojo-maven-plugin` from `1.2.2` to `1.3.3`
+* Bump `maven-release-plugin` from `3.1.1` to `3.3.1`
+* Bump `commons-lang3` from `3.17.0` to `3.20.0`
+* Bump `wiremock-standalone` from `3.12.1` to `3.13.2`
+
+---
 
 ## v1.2.0 2025-03-14
 
