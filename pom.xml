@@ -12,7 +12,7 @@
   <groupId>org.folio</groupId>
   <artifactId>mod-circulation-item</artifactId>
   <name>mod-circulation-item</name>
-  <version>2.0.0</version>
+  <version>2.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <licenses>
@@ -432,7 +432,7 @@
     <url>https://github.com/folio-org/${project.artifactId}</url>
     <connection>scm:git:git://github.com/folio-org/${project.artifactId}.git</connection>
     <developerConnection>scm:git:git@github.com:folio-org/${project.artifactId}.git</developerConnection>
-    <tag>v2.0.0</tag>
+    <tag>HEAD</tag>
   </scm>
 
 </project>
