@@ -332,7 +332,8 @@
                 <generatedConstructorWithRequiredArgs>false</generatedConstructorWithRequiredArgs>
                 <dateLibrary>java</dateLibrary>
                 <interfaceOnly>true</interfaceOnly>
-                <useSpringBoot3>true</useSpringBoot3>
+                <useJackson3>true</useJackson3>
+                <useSpringBoot4>true</useSpringBoot4>
                 <additionalModelTypeAnnotations>@lombok.Builder @lombok.AllArgsConstructor</additionalModelTypeAnnotations>
               </configOptions>
             </configuration>
