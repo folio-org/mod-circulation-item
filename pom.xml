@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>4.1.0</version>
+    <version>4.1.1</version>
     <relativePath />
   </parent>
 
@@ -24,7 +24,9 @@
 
   <properties>
     <java.version>21</java.version>
-    <folio-spring.version>10.0.0</folio-spring.version>
+    <folio-spring.version>10.0.1</folio-spring.version>
+    <!-- in order to sync with liquibase version declared in folio-spring-base add the following -->
+    <liquibase.version>4.33.0</liquibase.version>
     <testcontainers.version>1.21.4</testcontainers.version>
     <openapi-generator.version>7.23.0</openapi-generator.version>
     <mapstruct.version>1.6.3</mapstruct.version>
@@ -330,7 +332,8 @@
                 <generatedConstructorWithRequiredArgs>false</generatedConstructorWithRequiredArgs>
                 <dateLibrary>java</dateLibrary>
                 <interfaceOnly>true</interfaceOnly>
-                <useSpringBoot3>true</useSpringBoot3>
+                <useJackson3>true</useJackson3>
+                <useSpringBoot4>true</useSpringBoot4>
                 <additionalModelTypeAnnotations>@lombok.Builder @lombok.AllArgsConstructor</additionalModelTypeAnnotations>
               </configOptions>
             </configuration>
