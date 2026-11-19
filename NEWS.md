@@ -1,3 +1,8 @@
+## v2.0.1 2026-11-19
+
+### Dependencies
+* Bump `spring-boot` to `4.1.1` ([MODCITEM-59](https://folio-org.atlassian.net/browse/MODCITEM-59))
+
 ## v2.0.0 2026-04-16
 
 ### Breaking changes
